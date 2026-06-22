@@ -1,0 +1,14 @@
+name = "istanbul-egitim-merkezi"
+compatibility_date = "2024-03-20"
+pages_build_output_dir = "dist"
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "istanbul-egitim-db"
+database_id = "YOUR_DATABASE_ID_HERE" # Cloudflare'dan alacağınız ID
+
+# R2 Bucket Binding
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "istanbul-egitim-bucket"
