@@ -3,9 +3,8 @@ import {
   Sparkles, Award, User, Users, GraduationCap, Building2, 
   HelpCircle, ShieldCheck, CheckCircle2, ChevronRight, X, Search, Menu 
 } from 'lucide-react';
-import { CATEGORIES, COURSES, MOCK_EMPLOYEES, MOCK_CERTIFICATES } from './data';
+// Removed static mock imports. Data is now fetched from Cloudflare APIs.
 import { Course, Certificate } from './types';
-import { MOCK_TEACHERS } from './data/catalogData';
 
 // Importing our modular clean views
 import HomeView from './components/HomeView';
@@ -29,10 +28,55 @@ export default function App() {
   const [activePage, setActivePage] = useState<string>('home'); // home, katalog, detay, video, ogrenci, egitmen, kurumsal
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
+  // Data States
+  const [categories, setCategories] = useState<any[]>([]);
+  const [courses, setCourses] = useState<any[]>([]);
+  const [teachers, setTeachers] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [certificates, setCertificates] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   // Active selected entities
-  const [selectedCourse, setSelectedCourse] = useState<Course>(COURSES[0]);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
   const [selectedTeacherProfile, setSelectedTeacherProfile] = useState<any>(null);
+
+  // Fetch Data on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [catRes, couRes, tRes, empRes, certRes] = await Promise.all([
+          fetch('/api/categories').catch(() => ({ json: () => [] })),
+          fetch('/api/courses').catch(() => ({ json: () => [] })),
+          fetch('/api/teachers').catch(() => ({ json: () => [] })),
+          fetch('/api/employees').catch(() => ({ json: () => [] })),
+          fetch('/api/certificates').catch(() => ({ json: () => [] }))
+        ]);
+        
+        const catData = await (catRes as any).json();
+        const couData = await (couRes as any).json();
+        const tData = await (tRes as any).json();
+        const empData = await (empRes as any).json();
+        const certData = await (certRes as any).json();
+
+        setCategories(Array.isArray(catData) ? catData : []);
+        setCourses(Array.isArray(couData) ? couData : []);
+        setTeachers(Array.isArray(tData) ? tData : []);
+        setEmployees(Array.isArray(empData) ? empData : []);
+        setCertificates(Array.isArray(certData) ? certData : []);
+        
+        if (Array.isArray(couData) && couData.length > 0) {
+          setSelectedCourse(couData[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   // URL Path Routing synchronizer
   useEffect(() => {
@@ -52,7 +96,7 @@ export default function App() {
             .trim()
             .replace(/\s+/g, '-');
         };
-        const found = MOCK_TEACHERS.find(t => getTeacherSlug(t.name) === slug);
+        const found = teachers.find(t => getTeacherSlug(t.name) === slug);
         if (found) {
           setSelectedTeacherProfile(found);
           setActivePage('teacher-profile');
@@ -126,8 +170,8 @@ export default function App() {
       setEnrolledCourseIds([...enrolledCourseIds, courseId]);
     }
     // Instantly navigate to study room
-    const targetCourse = COURSES.find(c => c.id === courseId) || COURSES[0];
-    setSelectedCourse(targetCourse);
+    const targetCourse = courses.find(c => c.id === courseId) || (courses.length > 0 ? courses[0] : null);
+    if (targetCourse) setSelectedCourse(targetCourse);
     setActivePage('video');
   };
 
@@ -136,7 +180,7 @@ export default function App() {
     e.preventDefault();
     if (!searchCertId.trim()) return;
 
-    const found = MOCK_CERTIFICATES.find(c => 
+    const found = certificates.find(c => 
       c.verificationId.toLowerCase() === searchCertId.trim().toLowerCase()
     );
 
@@ -300,8 +344,8 @@ export default function App() {
       <main className="flex-1">
         {activePage === 'home' && (
           <HomeView 
-            courses={COURSES}
-            categories={CATEGORIES}
+            courses={courses}
+            categories={categories}
             onSelectCourse={(course) => {
               setSelectedCourse(course);
               setActivePage('detay');
@@ -317,7 +361,7 @@ export default function App() {
 
         {activePage === 'katalog' && (
           <CatalogView 
-            courses={COURSES}
+            courses={courses}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
             onSelectCourse={(course) => {
@@ -344,8 +388,8 @@ export default function App() {
 
         {activePage === 'ogrenci' && (
           <StudentDashboard 
-            courses={COURSES}
-            certificates={MOCK_CERTIFICATES}
+            courses={courses}
+            certificates={certificates}
             onSelectCourse={(c) => {
               setSelectedCourse(c);
               setActivePage('detay');
@@ -357,15 +401,15 @@ export default function App() {
 
         {activePage === 'egitmen' && (
           <InstructorDashboard 
-            courses={COURSES}
+            courses={courses}
             onLogout={handleLogout}
           />
         )}
 
         {activePage === 'kurumsal' && (
           <B2BDashboard 
-            initialEmployees={MOCK_EMPLOYEES}
-            courses={COURSES}
+            initialEmployees={employees}
+            courses={courses}
             representativeName={loggedInUser || "Ayşe Yankı"}
             representativeCompany="Acme Corporation Ltd."
             onLogout={handleLogout}
@@ -374,7 +418,7 @@ export default function App() {
 
         {activePage === 'teachers-catalog' && (
           <TeachersCatalogView 
-            courses={COURSES}
+            courses={courses}
             onSelectCourse={(course) => {
                setSelectedCourse(course);
                setActivePage('detay');
@@ -388,7 +432,7 @@ export default function App() {
           <TeacherProfileView 
             teacher={selectedTeacherProfile}
             onBack={navigateToTeachersCatalog}
-            courses={COURSES}
+            courses={courses}
             onSelectCourse={(course) => {
               setSelectedCourse(course);
               setActivePage('detay');
@@ -407,7 +451,7 @@ export default function App() {
         {activePage === 'admin' && (
           <AdminDashboard 
             onNavigateTo={setActivePage}
-            courses={COURSES}
+            courses={courses}
           />
         )}
 

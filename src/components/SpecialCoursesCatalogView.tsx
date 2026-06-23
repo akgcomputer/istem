@@ -2,11 +2,26 @@ import React, { useState } from 'react';
 import { 
   Trophy, MapPin, Users, BookOpen, Clock, Star, Plus, X, Search, Award, Eye, EyeOff, SlidersHorizontal 
 } from 'lucide-react';
-import { MOCK_SPECIAL_COURSES, SpecialCourse } from '../data/catalogData';
+import { SpecialCourse } from '../data/catalogData';
 import ShareButtons from './ShareButtons';
 
 export default function SpecialCoursesCatalogView() {
-  const [courses, setCourses] = useState<SpecialCourse[]>(MOCK_SPECIAL_COURSES);
+  const [courses, setCourses] = useState<SpecialCourse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/special-courses')
+      .then(res => res.json())
+      .then(data => {
+        setCourses(Array.isArray(data) ? data : []);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoading(false);
+      });
+  }, []);
+
   const [selectedCourse, setSelectedCourse] = useState<SpecialCourse | null>(null);
   const [showRegForm, setShowRegForm] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');

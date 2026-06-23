@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Building2, MapPin, Users, BookOpen, Clock, Heart, Star, Plus, X, Search, SlidersHorizontal, ChevronDown, ChevronUp, Eye, EyeOff
 } from 'lucide-react';
-import { MOCK_PRIVATE_SCHOOLS, PrivateSchool } from '../data/catalogData';
+import { PrivateSchool } from '../data/catalogData';
 import ShareButtons from './ShareButtons';
 
 const LESSON_OPTIONS_MAP: { [key: string]: string[] } = {
@@ -59,7 +59,6 @@ const isLocationMatch = (schoolLocation: string, selected: string) => {
 };
 
 export default function SchoolsCatalogView() {
-  const [schools, setSchools] = useState<PrivateSchool[]>(MOCK_PRIVATE_SCHOOLS);
   const [selectedSchool, setSelectedSchool] = useState<PrivateSchool | null>(null);
   const [showRegForm, setShowRegForm] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -109,6 +108,22 @@ export default function SchoolsCatalogView() {
   const [showMoreLang, setShowMoreLang] = useState(false);
 
   // Filtration logic
+  const [schools, setSchools] = useState<PrivateSchool[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/schools')
+      .then(res => res.json())
+      .then(data => {
+        setSchools(Array.isArray(data) ? data : []);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoading(false);
+      });
+  }, []);
+
   const filteredSchools = schools.filter(school => {
     // 1. DERS ADI VEYA YETKİNLİK SORGULA / Keyword Search
     if (searchName.trim()) {
