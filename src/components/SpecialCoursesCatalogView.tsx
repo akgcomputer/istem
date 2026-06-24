@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Trophy, MapPin, Users, BookOpen, Clock, Star, Plus, X, Search, Award, Eye, EyeOff, SlidersHorizontal 
 } from 'lucide-react';
@@ -10,10 +10,20 @@ export default function SpecialCoursesCatalogView() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/special-courses')
+    fetch('/api/special_courses')
       .then(res => res.json())
       .then(data => {
-        setCourses(Array.isArray(data) ? data : []);
+        if (Array.isArray(data)) {
+          const sanitized = data.map(c => ({
+            ...c,
+            name: c.name || '',
+            location: c.location || '',
+            classes: Array.isArray(c.classes) ? c.classes : []
+          }));
+          setCourses(sanitized);
+        } else {
+          setCourses([]);
+        }
         setIsLoading(false);
       })
       .catch(err => {

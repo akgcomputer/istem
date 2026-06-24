@@ -104,7 +104,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
 
               {/* Instructor introduction row */}
               <div className="flex items-center gap-3">
-                <img src={course.instructorAvatar} alt={course.instructorName} className="w-12 h-12 rounded-full object-cover border-2 border-amber-200" />
+                <img src={course.instructorAvatar?.includes('ui-avatars.com') && !course.instructorAvatar.includes('size=') ? course.instructorAvatar + '&size=256' : course.instructorAvatar} alt={course.instructorName} className="w-12 h-12 rounded-full object-cover border-2 border-amber-200" />
                 <div>
                   <span className="text-[10px] text-zinc-400 font-bold block uppercase tracking-wider">EĞİTMEN</span>
                   <h3 className="text-sm font-black text-zinc-900">{course.instructorName}</h3>
@@ -235,7 +235,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                 {instructorsList.map((inst, index) => (
                   <div key={inst.id} className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${index > 0 ? 'pt-5 border-t border-zinc-150' : ''}`}>
                     <div className="flex items-center gap-3">
-                      <img src={inst.avatar} alt={inst.name} className="w-12 h-12 rounded-full object-cover border border-zinc-150 shrink-0" />
+                      <img src={inst.avatar?.includes('ui-avatars.com') && !inst.avatar.includes('size=') ? inst.avatar + '&size=256' : inst.avatar} alt={inst.name} className="w-12 h-12 rounded-full object-cover border border-zinc-150 shrink-0" />
                       <div>
                         <h4 className="text-sm font-black text-zinc-900">{inst.name}</h4>
                         <p className="text-xs text-zinc-500 font-medium">{inst.title}</p>
@@ -453,7 +453,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
 
               <div className="flex items-center gap-4">
                 <img 
-                  src={selectedInstructorProfile.avatar} 
+                  src={selectedInstructorProfile.avatar?.includes('ui-avatars.com') && !selectedInstructorProfile.avatar.includes('size=') ? selectedInstructorProfile.avatar + '&size=256' : selectedInstructorProfile.avatar} 
                   alt={selectedInstructorProfile.name} 
                   className="w-16 h-16 rounded-full object-cover border-2 border-[#E58F49] shrink-0" 
                 />

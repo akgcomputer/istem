@@ -1,0 +1,197 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/private_schools/bulk",
+      "mountPath": "/api/private_schools",
+      "method": "POST",
+      "module": [
+        "api/private_schools/bulk.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/special_courses/bulk",
+      "mountPath": "/api/special_courses",
+      "method": "POST",
+      "module": [
+        "api/special_courses/bulk.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/teachers/bulk",
+      "mountPath": "/api/teachers",
+      "method": "POST",
+      "module": [
+        "api/teachers/bulk.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/challenges/:id",
+      "mountPath": "/api/challenges",
+      "method": "DELETE",
+      "module": [
+        "api/challenges/[id].ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/challenges/:id",
+      "mountPath": "/api/challenges",
+      "method": "PUT",
+      "module": [
+        "api/challenges/[id].ts:onRequestPut"
+      ]
+    },
+    {
+      "routePath": "/api/courses/:id",
+      "mountPath": "/api/courses",
+      "method": "DELETE",
+      "module": [
+        "api/courses/[id].ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/courses/:id",
+      "mountPath": "/api/courses",
+      "method": "PUT",
+      "module": [
+        "api/courses/[id].ts:onRequestPut"
+      ]
+    },
+    {
+      "routePath": "/api/private_schools/:id",
+      "mountPath": "/api/private_schools",
+      "method": "DELETE",
+      "module": [
+        "api/private_schools/[id].ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/private_schools/:id",
+      "mountPath": "/api/private_schools",
+      "method": "PUT",
+      "module": [
+        "api/private_schools/[id].ts:onRequestPut"
+      ]
+    },
+    {
+      "routePath": "/api/special_courses/:id",
+      "mountPath": "/api/special_courses",
+      "method": "DELETE",
+      "module": [
+        "api/special_courses/[id].ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/special_courses/:id",
+      "mountPath": "/api/special_courses",
+      "method": "PUT",
+      "module": [
+        "api/special_courses/[id].ts:onRequestPut"
+      ]
+    },
+    {
+      "routePath": "/api/teachers/:id",
+      "mountPath": "/api/teachers",
+      "method": "DELETE",
+      "module": [
+        "api/teachers/[id].ts:onRequestDelete"
+      ]
+    },
+    {
+      "routePath": "/api/teachers/:id",
+      "mountPath": "/api/teachers",
+      "method": "PUT",
+      "module": [
+        "api/teachers/[id].ts:onRequestPut"
+      ]
+    },
+    {
+      "routePath": "/api/categories",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/categories.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/certificates",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/certificates.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/challenges",
+      "mountPath": "/api/challenges",
+      "method": "GET",
+      "module": [
+        "api/challenges/index.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/challenges",
+      "mountPath": "/api/challenges",
+      "method": "POST",
+      "module": [
+        "api/challenges/index.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/courses",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/courses.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/employees",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/employees.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/gemini",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/gemini.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/schools",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/schools.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/special_courses",
+      "mountPath": "/api/special_courses",
+      "method": "GET",
+      "module": [
+        "api/special_courses/index.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/special-courses",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/special-courses.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/teachers",
+      "mountPath": "/api/teachers",
+      "method": "GET",
+      "module": [
+        "api/teachers/index.ts:onRequestGet"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

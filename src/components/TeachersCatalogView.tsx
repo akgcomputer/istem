@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Star, MapPin, Sparkles, Laptop, Building2, Search, Award, 
   SlidersHorizontal, ArrowRight, Plus, Trophy, MessageSquare, Check, X
@@ -106,7 +106,30 @@ export default function TeachersCatalogView({
   
   // Teachers state (To support "+ Siz de Öğretmen Olun" simulation)
   const [teachersList, setTeachersList] = useState<Teacher[]>(MOCK_TEACHERS);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/teachers')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const sanitized = data.map(t => ({
+            ...t,
+            name: t.name || 'İsimsiz Eğitmen',
+            bio: t.bio || '',
+            preferredLocation: t.preferredLocation || 'Merkez',
+            category: t.category || 'Diğer',
+            experienceLabel: t.experienceLabel || 'Uzman',
+            tags: Array.isArray(t.tags) ? t.tags : [],
+            sessions: Array.isArray(t.sessions) ? t.sessions : [{ name: 'Standart Ders', price: 1000, duration: '60 dk' }]
+          }));
+          setTeachersList(sanitized);
+        }
+      })
+      .catch(err => console.error("Error fetching teachers:", err))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   // Hide/Show filters state & Pagination states
   const [showFilters, setShowFilters] = useState(true);
   const [visibleCount, setVisibleCount] = useState(6);
@@ -629,7 +652,7 @@ export default function TeachersCatalogView({
                       <div className="flex items-center gap-2 sm:gap-3">
                         <div className="relative">
                           <img 
-                            src={teacher.avatar} 
+                            src={teacher.avatar?.includes('ui-avatars.com') && !teacher.avatar.includes('size=') ? teacher.avatar + '&size=256' : teacher.avatar} 
                             alt={teacher.name} 
                             className="w-11 sm:w-13 h-11 sm:h-13 rounded-xl sm:rounded-2xl object-cover border-2 border-zinc-100"
                           />
@@ -1039,7 +1062,7 @@ export default function TeachersCatalogView({
 
             <div className="flex items-center gap-4 border-b border-zinc-100 pb-4 mb-4">
               <img 
-                src={selectedProfileTeacher.avatar} 
+                src={selectedProfileTeacher.avatar?.includes('ui-avatars.com') && !selectedProfileTeacher.avatar.includes('size=') ? selectedProfileTeacher.avatar + '&size=256' : selectedProfileTeacher.avatar} 
                 alt={selectedProfileTeacher.name} 
                 className="w-16 h-16 rounded-2xl object-cover border border-zinc-150"
               />

@@ -14,6 +14,7 @@ import { Course } from '../types';
 import ApplicationsTab from './admin/ApplicationsTab';
 import ReportsTab from './admin/ReportsTab';
 import SchoolsTab from './admin/SchoolsTab';
+import AdminContentTab from './admin/AdminContentTab';
 
 interface BulkLesson {
   id: string;
@@ -276,7 +277,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
       });
   };
 
-  const handleSimulateUpload = (type: 'lessons' | 'teachers' | 'schools' | 'courses', customTextContent?: string) => {
+  const handleActualUpload = async (type: 'lessons' | 'teachers' | 'schools' | 'courses', customTextContent?: string) => {
     setUploadStatus(prev => ({
       ...prev,
       [type]: { loading: true, progress: 10 }
@@ -285,107 +286,74 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
     let progressInterval = setInterval(() => {
       setUploadStatus(prev => {
         const current = prev[type];
-        if (current.progress >= 100) {
+        if (current.progress >= 90) {
           clearInterval(progressInterval);
           return prev;
         }
         return {
           ...prev,
-          [type]: { ...current, progress: Math.min(current.progress + 25, 100) }
+          [type]: { ...current, progress: current.progress + 15 }
         };
       });
-    }, 250);
+    }, 200);
 
-    setTimeout(() => {
+    try {
+      const rows = parseCSVLines(customTextContent || '');
+      if (rows.length < 2) throw new Error("Geçerli veri bulunamadı.");
+      const dataRows = rows.slice(1);
+
+      let endpoint = '';
+      let payload: any[] = [];
+
+      if (type === 'teachers') {
+        endpoint = '/api/teachers/bulk';
+        payload = dataRows.map((r, i) => ({
+          name: r[0] || 'İsimsiz Eğitmen',
+          category: r[1] || 'Diğer',
+          phone: r[2] || '',
+          email: r[3] || '',
+          preferredLocation: r[4] || ''
+        }));
+      } else if (type === 'schools') {
+        endpoint = '/api/private_schools/bulk';
+        payload = dataRows.map((r, i) => ({
+          name: r[0] || 'Yeni Okul',
+          location: r[1] || '',
+          capacity: parseInt(r[2]) || 0,
+          teachersCount: parseInt(r[3]) || 0,
+          reviewerName: r[4] || ''
+        }));
+      } else if (type === 'courses') {
+        endpoint = '/api/special_courses/bulk';
+        payload = dataRows.map((r, i) => ({
+          name: r[0] || 'Yeni Kurs',
+          location: r[1] || '',
+          type: r[2] || 'Kurs',
+          hoursPerWeek: r[3] || '',
+          priceRange: r[4] || ''
+        }));
+      }
+
+      if (endpoint && payload.length > 0) {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || "Yükleme hatası");
+
+        showNotification(`${result.count} adet kayıt başarıyla D1 Veritabanına aktarıldı!`);
+      }
+    } catch (err: any) {
+      alert("Toplu yükleme sırasında hata oluştu: " + err.message);
+    } finally {
       clearInterval(progressInterval);
       setUploadStatus(prev => ({
         ...prev,
         [type]: { loading: false, progress: 100 }
       }));
-
-      if (type === 'lessons') {
-        setLessonsPrevCount(lessonsList.length);
-        const defaultRaw = "Ders Kodu;Ders Adı;Haftalık Saat;Kategori;Zorunlu/Seçmeli\n" +
-                           "MAT401;İleri Analiz;6;Sayısal;Zorunlu\n" +
-                           "KMY201;Organik Kimya;4;Sayısal;Zorunlu\n" +
-                           "COG101;Genel Coğrafya;2;Sözel;Seçmeli";
-        const contentToParse = customTextContent || defaultRaw;
-        const rows = parseCSVLines(contentToParse);
-        const dataRows = rows.slice(1);
-
-        const newLessons = dataRows.map((r, i) => ({
-          id: 'l-imported-' + Date.now() + '-' + i,
-          code: r[0] || 'KOD' + Math.floor(Math.random() * 900),
-          name: r[1] || 'Yeni Müfredat Dersi',
-          hours: parseInt(r[2]) || 4,
-          category: r[3] || 'Sayısal',
-          type: r[4] || 'Zorunlu'
-        }));
-
-        setLessonsList(prev => [...newLessons, ...prev]);
-        showNotification(`${newLessons.length} adet ders başarıyla müfredata eklendi!`);
-      } else if (type === 'teachers') {
-        setTeachersPrevCount(teachersList.length);
-        const defaultRaw = "Ad Soyad;Branş;Telefon;E-posta;Şube\n" +
-                           "Merve Şen;Biyoloji;+90 (555) 777 88 99;merve.sen@istanbul-egitimi.gov.tr;Merkez\n" +
-                           "Arda Turan;Beden Eğitimi;+90 (555) 111 22 33;arda.turan@istanbul-egitimi.gov.tr;Ataköy Şube";
-        const contentToParse = customTextContent || defaultRaw;
-        const rows = parseCSVLines(contentToParse);
-        const dataRows = rows.slice(1);
-
-        const newTeachers = dataRows.map((r, i) => ({
-          id: 't-imported-' + Date.now() + '-' + i,
-          name: r[0] || 'Eğitmen Adı',
-          branch: r[1] || 'Branş',
-          phone: r[2] || '+90 (555) 000 00 00',
-          email: r[3] || 'eposta@istanbul-egitimi.gov.tr',
-          assignedBranch: r[4] || 'Merkez'
-        }));
-
-        setTeachersList(prev => [...newTeachers, ...prev]);
-        showNotification(`${newTeachers.length} adet öğretmen başarıyla kadroya eklendi!`);
-      } else if (type === 'schools') {
-        setSchoolsPrevCount(schoolsList.length);
-        const defaultRaw = "Kurum Adı;Lokasyon;Mevcut Kapasite;Öğretmen Sayısı;Yönetici Ünvanı\n" +
-                           "Florya Uğur Koleji;Bakırköy, İstanbul;600;54;Okul Müdürü\n" +
-                           "Kartal Bilim Kursu;Kartal, İstanbul;300;22;Kurucu Müdür";
-        const contentToParse = customTextContent || defaultRaw;
-        const rows = parseCSVLines(contentToParse);
-        const dataRows = rows.slice(1);
-
-        const newSchools = dataRows.map((r, i) => ({
-          id: 's-imported-' + Date.now() + '-' + i,
-          name: r[0] || 'Yeni İstanbul Okulu',
-          location: r[1] || 'İstanbul',
-          capacity: parseInt(r[2]) || 400,
-          teachersCount: parseInt(r[3]) || 30,
-          type: 'okul' as const
-        }));
-
-        setSchoolsList(prev => [...newSchools, ...prev]);
-        showNotification(`${newSchools.length} adet yeni okul/kolej sisteme eklendi!`);
-      } else if (type === 'courses') {
-        setCoursesPrevCount(coursesList.length);
-        const defaultRaw = "Kurs Adı;Lokasyon;Eğitim Kademesi;Haftalık Yoğunluk;Ders Saatleri\n" +
-                           "Atölye İstanbul;Şişli, İstanbul;Kodlama Atölyesi;Haftalık 12 Saat;18:00-21:00\n" +
-                           "Dinamik Matematik Hazırlık;Kadıköy, İstanbul;Haftalık 10 Saat;16:30-19:30";
-        const contentToParse = customTextContent || defaultRaw;
-        const rows = parseCSVLines(contentToParse);
-        const dataRows = rows.slice(1);
-
-        const newCourses = dataRows.map((r, i) => ({
-          id: 'c-imported-' + Date.now() + '-' + i,
-          name: r[0] || 'Yeni Özel Seviye Kurs',
-          location: r[1] || 'İstanbul',
-          educationLevel: r[2] || 'Genel Hazırlık',
-          lessonsIntensity: r[3] || 'Haftalık 20 Saat',
-          hours: r[4] || '17:00-20:00'
-        }));
-
-        setCoursesList(prev => [...newCourses, ...prev]);
-        showNotification(`${newCourses.length} adet özel Kurs başarıyla yüklendi!`);
-      }
-    }, 2000);
+    }
   };
 
   const handleFileSystemUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'lessons' | 'teachers' | 'schools' | 'courses') => {
@@ -396,7 +364,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
     reader.onload = (event) => {
       const text = event.target?.result as string;
       if (text) {
-        handleSimulateUpload(type, text);
+        handleActualUpload(type, text);
       }
     };
     reader.readAsText(file);
@@ -1031,84 +999,9 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
             )}
 
             {/* 3. İÇERİK YÖNETİMİ TAB PANEL */}
-            {activeTab === 'content' && (() => {
-              const filteredContentList = courses.filter(course => 
-                course.title.toLowerCase().includes(searchContentQuery.toLowerCase()) ||
-                course.instructorName.toLowerCase().includes(searchContentQuery.toLowerCase()) ||
-                course.category.toLowerCase().includes(searchContentQuery.toLowerCase())
-              );
-              return (
-                <div className="bg-white p-6 border border-zinc-200/60 rounded-2xl shadow-2xs space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                      <h3 className="text-base font-extrabold font-display text-zinc-950">İçerik Yönetimi</h3>
-                      <p className="text-xs text-zinc-500 font-medium">Müfredatı yayınlanmış tüm derslerin katalog veritabanıdır. Ders fiyatlarını ve öğretmen-ders atamalarını inceleyin.</p>
-                    </div>
-                    <span className="bg-[#E58F49]/10 text-[#E58F49] text-xs font-black px-3.5 py-1.5 rounded-xl font-mono shrink-0 self-start">
-                      Toplam: {filteredContentList.length} İçerik
-                    </span>
-                  </div>
-
-                  {/* Search box working similarly to user membership query */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
-                    <input 
-                      type="text" 
-                      placeholder="Ders Başlığı, Eğitmen Adı veya Kategori İle Ara..."
-                      value={searchContentQuery}
-                      onChange={(e) => setSearchContentQuery(e.target.value)}
-                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
-                    />
-                  </div>
-
-                  {/* Grid in 4 columns for smaller card layouts */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {filteredContentList.map(course => (
-                      <div key={course.id} className="p-3 bg-[#FAF9F5] border border-zinc-150 rounded-xl flex flex-col justify-between gap-2.5 hover:shadow-xs transition duration-150">
-                        <div className="space-y-1.5">
-                          <img src={course.image} alt={course.title} className="w-full h-20 object-cover rounded-lg shrink-0" />
-                          <div>
-                            <span className="text-[8.5px] text-[#E58F49] uppercase font-black tracking-widest block">{course.category}</span>
-                            <h5 className="text-[11px] font-extrabold text-zinc-900 leading-tight line-clamp-2 min-h-[32px] mt-0.5">{course.title}</h5>
-                            <span className="text-[9.5px] text-zinc-400 block font-medium mt-0.5">Yazar: {course.instructorName}</span>
-                          </div>
-                        </div>
-                        <div className="pt-2 border-t border-zinc-100 flex flex-col gap-2 text-xs font-bold">
-                          <div className="flex items-center justify-between">
-                            <span className="text-zinc-500 text-[10px]">Fiyat:</span>
-                            <span className="text-zinc-800 font-mono text-[11px]">₺{course.price.toLocaleString('tr-TR')}</span>
-                          </div>
-                          <div className="flex gap-1">
-                            <button 
-                              onClick={() => {
-                                alert(`✏️ "${course.title}" dersinin içerik düzenleme modülü tetiklendi.`);
-                              }}
-                              className="flex-1 text-[9.5px] bg-zinc-100 hover:bg-zinc-200 text-zinc-800 py-1 rounded transition cursor-pointer font-bold"
-                            >
-                              Düzenle
-                            </button>
-                            <button 
-                              onClick={() => {
-                                alert('İçerik başarıyla gizlendi.');
-                              }}
-                              className="text-[9.5px] bg-red-50 hover:bg-red-155 hover:bg-red-100 text-red-650 px-1.5 py-1 rounded transition cursor-pointer"
-                              title="Sil"
-                            >
-                              Kaldır
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    {filteredContentList.length === 0 && (
-                      <div className="col-span-full py-8 text-center text-zinc-400 text-xs font-medium">
-                        Arama kriterlerine uygun içerik bulunamadı.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
+            {activeTab === 'content' && (
+              <AdminContentTab />
+            )}
 
             {/* 4. BAŞVURU YÖNETİMİ TAB PANEL */}
             {activeTab === 'applications' && (

@@ -15,6 +15,7 @@ interface CatalogViewProps {
   onSelectCourse: (course: Course) => void;
   isLoggedIn: boolean;
   onViewProfile?: (teacher: any) => void;
+  initialSubjectName?: string | null;
 }
 
 interface Subject {
@@ -128,11 +129,42 @@ export default function CatalogView({
   selectedCategory, 
   onSelectCategory, 
   isLoggedIn,
-  onViewProfile 
+  onViewProfile,
+  initialSubjectName 
 }: CatalogViewProps) {
   
   // Teachers state initialized with MOCK_TEACHERS so registered mentors accumulate here
   const [teachersList, setTeachersList] = useState<Teacher[]>(MOCK_TEACHERS);
+  const [coursesList, setCoursesList] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/teachers').then(res => res.json()),
+      fetch('/api/special_courses').then(res => res.json())
+    ]).then(([teachersData, coursesData]) => {
+      if (Array.isArray(teachersData)) {
+        const sanitizedTeachers = teachersData.map(t => ({
+          ...t,
+          name: t.name || 'İsimsiz Eğitmen',
+          bio: t.bio || '',
+          preferredLocation: t.preferredLocation || 'Merkez',
+          category: t.category || 'Diğer',
+          experienceLabel: t.experienceLabel || 'Uzman',
+          tags: Array.isArray(t.tags) ? t.tags : [],
+          sessions: Array.isArray(t.sessions) ? t.sessions : []
+        }));
+        setTeachersList(sanitizedTeachers);
+      }
+      
+      if (Array.isArray(coursesData)) {
+        setCoursesList(coursesData);
+      }
+    })
+    .catch(err => console.error("Error fetching data:", err))
+    .finally(() => setIsLoading(false));
+  }, []);
+
 
   // Form simulation state for registration (Siz de Katılın Portal)
   const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -213,60 +245,23 @@ export default function CatalogView({
     }, 3000);
   };
 
-  // Compile list of unique lesson/subject names
-  const allUniqueLessonNames = Array.from(new Set([
-    ...Object.keys(SUBJECTS_METADATA),
-    ...teachersList.flatMap(t => t.sessions.map(s => s.name))
-  ]));
+  // Build the unified Subject dataset using dynamic coursesList
+  const subjects: Subject[] = coursesList.map(c => {
+    const teachersWhoTeach = teachersList.filter(t => 
+      t.sessions.some(s => s.name.includes(c.name))
+    );
 
-  // Build the unified Subject dataset by matching/synthesizing educators
-  const subjects: Subject[] = allUniqueLessonNames.map(lessonName => {
-    const directTeachers = teachersList.filter(t => t.sessions.some(s => s.name === lessonName));
-    
-    const meta = SUBJECTS_METADATA[lessonName] || {
-      description: 'Uzman eğitmen eşliğinde birebir gelişim, pratik ödevler ve canlı mentörlük seansları.',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
-      category: 'Bilişim'
-    };
-
-    // Fill up to 4 educators to simulate a vibrant, rich catalog
-    let teachersWhoTeach = [...directTeachers];
-    if (teachersWhoTeach.length < 4) {
-      const otherSameCategoryTeachers = teachersList.filter(
-        t => t.category === meta.category && !teachersWhoTeach.some(ex => ex.id === t.id)
-      );
-      
-      for (const t of otherSameCategoryTeachers) {
-        if (teachersWhoTeach.length >= 4) break;
-        const baseMin = lessonName.includes('Python') ? 825 : (meta.category === 'Spor' ? 1000 : 650);
-        const experienceMultiplier = t.experienceLabel === '+10 Yıldan Fazla' ? 1.4 : (t.experienceLabel === '+5 Yıldan Fazla' ? 1.25 : 1.0);
-        const synthPrice = Math.round((baseMin * experienceMultiplier) / 25) * 25;
-        
-        teachersWhoTeach.push({
-          ...t,
-          sessions: [
-            ...t.sessions,
-            { name: lessonName, price: synthPrice }
-          ]
-        });
-      }
-    }
-
-    const prices = teachersWhoTeach.map(t => {
-      const match = t.sessions.find(s => s.name === lessonName);
-      return match ? match.price : 825;
-    });
-
-    const minPrice = prices.length > 0 ? Math.min(...prices) : 825;
-    const maxPrice = prices.length > 0 ? Math.max(...prices) : 2250;
+    const prices = teachersWhoTeach.flatMap(t => 
+      t.sessions.filter(s => s.name.includes(c.name)).map(s => s.price)
+    );
 
     return {
-      name: lessonName,
-      category: meta.category,
-      description: meta.description,
-      image: meta.image,
-      minPrice,
-      maxPrice,
+      name: c.name,
+      category: formatCategory(c.type || c.category || 'Diğer'),
+      description: c.parentReviewText || c.description || 'Bu ders için henüz bir açıklama girilmemiş.',
+      image: c.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+      minPrice: prices.length > 0 ? Math.min(...prices) : 0,
+      maxPrice: prices.length > 0 ? Math.max(...prices) : 0,
       teachersCount: teachersWhoTeach.length,
       teachersList: teachersWhoTeach
     };
@@ -275,6 +270,14 @@ export default function CatalogView({
   // Layout and Detail view states
   const [isFilterOpen, setIsFilterOpen] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+
+  // Initialize selectedSubject from initialSubjectName prop when subjects are ready
+  useEffect(() => {
+    if (initialSubjectName && subjects.length > 0 && !selectedSubject) {
+      const match = subjects.find(s => s.name === initialSubjectName);
+      if (match) setSelectedSubject(match);
+    }
+  }, [initialSubjectName, subjects, selectedSubject]);
 
   // Filters State
   const [searchName, setSearchName] = useState('');
@@ -496,7 +499,7 @@ export default function CatalogView({
                         >
                           <div className="flex items-start gap-4">
                             <img 
-                              src={teacher.avatar} 
+                              src={teacher.avatar?.includes('ui-avatars.com') && !teacher.avatar.includes('size=') ? teacher.avatar + '&size=256' : teacher.avatar} 
                               alt={teacher.name} 
                               className="w-14 h-14 rounded-full object-cover border border-zinc-250 cursor-pointer hover:opacity-90 shrink-0"
                               onClick={() => { if (onViewProfile) onViewProfile(teacher); }}

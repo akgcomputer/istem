@@ -6,9 +6,9 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "istanbul-egitim-db"
-database_id = "YOUR_DATABASE_ID_HERE" # Cloudflare'dan alacağınız ID
+database_id = "4838af92-cbdd-4545-bd41-d63db336b877"
 
 # R2 Bucket Binding
 [[r2_buckets]]
 binding = "BUCKET"
-bucket_name = "istanbul-egitim-bucket"
+bucket_name = "istanbul-egitim-media"

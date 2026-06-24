@@ -59,7 +59,7 @@ export default function TeacherProfileView({
             <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
               <div className="relative shrink-0">
                 <img 
-                  src={teacher.avatar} 
+                  src={teacher.avatar?.includes('ui-avatars.com') && !teacher.avatar.includes('size=') ? teacher.avatar + '&size=256' : teacher.avatar} 
                   alt={teacher.name} 
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl object-cover border-4 border-white shadow-md"
                 />

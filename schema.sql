@@ -33,7 +33,8 @@ CREATE TABLE courses (
   isPremiumIncluded BOOLEAN DEFAULT 0,
   capstoneTitle TEXT,
   capstoneDesc TEXT,
-  benefits TEXT -- JSON array as string
+  benefits TEXT, -- JSON array as string
+  isActive BOOLEAN DEFAULT 1
 );
 
 DROP TABLE IF EXISTS lessons;
@@ -65,7 +66,8 @@ CREATE TABLE teachers (
   canOnline BOOLEAN DEFAULT 0,
   canFaceToFace BOOLEAN DEFAULT 0,
   tags TEXT, -- JSON array
-  category TEXT
+  category TEXT,
+  isActive BOOLEAN DEFAULT 1
 );
 
 DROP TABLE IF EXISTS teacher_sessions;
@@ -105,7 +107,8 @@ CREATE TABLE private_schools (
   physicalFacilities TEXT, -- JSON array
   services TEXT, -- JSON array
   activities TEXT, -- JSON array
-  languages TEXT -- JSON array
+  languages TEXT, -- JSON array
+  isActive BOOLEAN DEFAULT 1
 );
 
 DROP TABLE IF EXISTS special_courses;
@@ -124,7 +127,8 @@ CREATE TABLE special_courses (
   reviewerName TEXT,
   rating REAL DEFAULT 0.0,
   branchesCount INTEGER,
-  averageClassSize INTEGER
+  averageClassSize INTEGER,
+  isActive BOOLEAN DEFAULT 1
 );
 
 DROP TABLE IF EXISTS employees;
@@ -157,4 +161,16 @@ CREATE TABLE contacts (
   subject TEXT,
   message TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS challenges;
+CREATE TABLE challenges (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  category TEXT NOT NULL,
+  sponsor TEXT,
+  limit_text TEXT,
+  date TEXT,
+  status TEXT DEFAULT 'Aktif', -- Aktif, Draft, Completed vb.
+  isActive BOOLEAN DEFAULT 1
 );

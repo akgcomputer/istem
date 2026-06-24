@@ -31,25 +31,27 @@ export default function App() {
   // Data States
   const [categories, setCategories] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
+  const [specialCourses, setSpecialCourses] = useState<any[]>([]);
   const [teachers, setTeachers] = useState<any[]>([]);
   const [employees, setEmployees] = useState<any[]>([]);
   const [certificates, setCertificates] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Active selected entities
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
   const [selectedTeacherProfile, setSelectedTeacherProfile] = useState<any>(null);
+  const [selectedCatalogSubject, setSelectedCatalogSubject] = useState<string | null>(null);
 
   // Fetch Data on mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [catRes, couRes, tRes, empRes, certRes] = await Promise.all([
+        const [catRes, couRes, tRes, specCouRes, empRes, certRes] = await Promise.all([
           fetch('/api/categories').catch(() => ({ json: () => [] })),
           fetch('/api/courses').catch(() => ({ json: () => [] })),
           fetch('/api/teachers').catch(() => ({ json: () => [] })),
+          fetch('/api/special_courses').catch(() => ({ json: () => [] })),
           fetch('/api/employees').catch(() => ({ json: () => [] })),
           fetch('/api/certificates').catch(() => ({ json: () => [] }))
         ]);
@@ -57,17 +59,33 @@ export default function App() {
         const catData = await (catRes as any).json();
         const couData = await (couRes as any).json();
         const tData = await (tRes as any).json();
+        const specCouData = await (specCouRes as any).json();
         const empData = await (empRes as any).json();
         const certData = await (certRes as any).json();
 
         setCategories(Array.isArray(catData) ? catData : []);
         setCourses(Array.isArray(couData) ? couData : []);
         setTeachers(Array.isArray(tData) ? tData : []);
+        setSpecialCourses(Array.isArray(specCouData) ? specCouData : []);
         setEmployees(Array.isArray(empData) ? empData : []);
         setCertificates(Array.isArray(certData) ? certData : []);
         
-        if (Array.isArray(couData) && couData.length > 0) {
+        const currentPath = window.location.pathname;
+        if (currentPath.startsWith('/ders/')) {
+          const id = currentPath.replace('/ders/', '').split('?')[0];
+          const found = (Array.isArray(couData) ? couData : []).find((c: any) => c.id === id);
+          if (found) setSelectedCourse(found);
+        } else if (Array.isArray(couData) && couData.length > 0) {
           setSelectedCourse(couData[0]);
+        }
+        
+        if (currentPath.startsWith('/ogretmen/')) {
+          const slug = currentPath.replace('/ogretmen/', '').split('?')[0];
+          const getTeacherSlug = (name: string): string => {
+            return name.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+          };
+          const foundT = (Array.isArray(tData) ? tData : []).find((t: any) => getTeacherSlug(t.name) === slug);
+          if (foundT) setSelectedTeacherProfile(foundT);
         }
       } catch (error) {
         console.error("Error fetching data", error);
@@ -107,6 +125,21 @@ export default function App() {
         setActivePage('teachers-catalog');
       } else if (pathname === '/admin') {
         setActivePage('admin');
+      } else if (pathname === '/dersler') {
+        setActivePage('katalog');
+      } else if (pathname.startsWith('/ders/')) {
+        const id = pathname.replace('/ders/', '').split('?')[0];
+        // We might not have courses loaded yet if it's initial load, but we rely on the component using URL ID or handling it.
+        // Actually since courses are state, we will just set active page to detay.
+        setActivePage('detay');
+      } else if (pathname === '/okullar') {
+        setActivePage('schools-catalog');
+      } else if (pathname === '/kurslar') {
+        setActivePage('special-courses-catalog');
+      } else if (pathname === '/challenge') {
+        setActivePage('challenges');
+      } else if (pathname === '/' || pathname === '/home') {
+        setActivePage('home');
       }
     };
 
@@ -140,6 +173,11 @@ export default function App() {
     setSelectedTeacherProfile(null);
   };
   
+  const handleNavigate = (page: string, extraState?: any, path?: string) => {
+    setActivePage(page);
+    window.history.pushState({ page, ...extraState }, '', path || '/');
+  };
+  
   // Real enrollment state trackers
   const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>(['kurs-1']); // default enrolled in Next.js
   
@@ -161,10 +199,9 @@ export default function App() {
     setIsLoggedIn(false);
     setLoggedInUser('');
     setLoggedInRole('');
-    setActivePage('home');
+    handleNavigate('home');
   };
 
-  // Enroll in a course (simulated payment)
   const handleEnrollCourse = (courseId: string) => {
     if (!enrolledCourseIds.includes(courseId)) {
       setEnrolledCourseIds([...enrolledCourseIds, courseId]);
@@ -172,7 +209,7 @@ export default function App() {
     // Instantly navigate to study room
     const targetCourse = courses.find(c => c.id === courseId) || (courses.length > 0 ? courses[0] : null);
     if (targetCourse) setSelectedCourse(targetCourse);
-    setActivePage('video');
+    handleNavigate('video');
   };
 
   // Global search lookup for certificate (Section 8 footer)
@@ -203,7 +240,7 @@ export default function App() {
           
           {/* Logo on the left */}
           <button 
-            onClick={() => { setActivePage('home'); setIsMobileMenuOpen(false); }}
+            onClick={() => { handleNavigate('home'); setIsMobileMenuOpen(false); }}
             className="flex items-center gap-2.5 group animate-fade-in"
           >
             <div className="w-9 h-9 bg-zinc-950 text-white rounded-xl flex items-center justify-center font-black font-display text-xs group-hover:bg-[#E58F49] transition duration-200">
@@ -221,31 +258,31 @@ export default function App() {
           {/* Quick link buttons */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-zinc-655 font-semibold">
             <button 
-              onClick={() => setActivePage('teachers-catalog')} 
+              onClick={navigateToTeachersCatalog} 
               className={`hover:text-[#E58F49] transition ${activePage === 'teachers-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
             >
               Öğretmenler
             </button>
             <button 
-              onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); }} 
+              onClick={() => { handleNavigate('katalog', {}, '/dersler'); setSelectedCategory('Tümü'); }} 
               className={`hover:text-[#E58F49] transition ${activePage === 'katalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
             >
               Dersler
             </button>
             <button 
-              onClick={() => setActivePage('schools-catalog')} 
+              onClick={() => handleNavigate('schools-catalog', {}, '/okullar')} 
               className={`hover:text-[#E58F49] transition ${activePage === 'schools-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
             >
               Özel Okul Ara
             </button>
             <button 
-              onClick={() => setActivePage('special-courses-catalog')} 
+              onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')} 
               className={`hover:text-[#E58F49] transition ${activePage === 'special-courses-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
             >
               Kurs ara
             </button>
             <button 
-              onClick={() => setActivePage('challenges')} 
+              onClick={() => handleNavigate('challenges', {}, '/challenge')} 
               className={`hover:text-[#FF6B35] transition ${activePage === 'challenges' ? 'text-[#FF6B35] font-black' : 'text-zinc-650'} flex items-center gap-1 bg-[#1A1825]/5 px-2.5 py-1 rounded-full text-[11px]`}
             >
               🏆 İSTEM Challenge
@@ -348,13 +385,13 @@ export default function App() {
             categories={categories}
             onSelectCourse={(course) => {
               setSelectedCourse(course);
-              setActivePage('detay');
+              handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
             onNavigateTo={setActivePage}
             isLoggedIn={isLoggedIn}
             onSelectCategory={(cat) => {
               setSelectedCategory(cat);
-              setActivePage('katalog');
+              handleNavigate('katalog', {}, '/dersler');
             }}
           />
         )}
@@ -366,10 +403,11 @@ export default function App() {
             onSelectCategory={setSelectedCategory}
             onSelectCourse={(course) => {
               setSelectedCourse(course);
-              setActivePage('detay');
+              handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
             onViewProfile={navigateToTeacherProfile}
             isLoggedIn={isLoggedIn}
+            initialSubjectName={selectedCatalogSubject}
           />
         )}
 
@@ -421,7 +459,7 @@ export default function App() {
             courses={courses}
             onSelectCourse={(course) => {
                setSelectedCourse(course);
-               setActivePage('detay');
+               handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
             onNavigateTo={setActivePage}
             onViewProfile={navigateToTeacherProfile}
@@ -432,10 +470,10 @@ export default function App() {
           <TeacherProfileView 
             teacher={selectedTeacherProfile}
             onBack={navigateToTeachersCatalog}
-            courses={courses}
+            courses={specialCourses}
             onSelectCourse={(course) => {
-              setSelectedCourse(course);
-              setActivePage('detay');
+              setSelectedCatalogSubject(course.title || course.name);
+              handleNavigate('katalog', {}, '/dersler');
             }}
           />
         )}
@@ -485,7 +523,7 @@ export default function App() {
           <div className="md:col-span-4 grid grid-cols-2 gap-6 text-sm">
             <div className="space-y-2.5 text-left">
               <span className="text-sm text-[#E58F49] font-black block tracking-wider">Keşfet</span>
-              <button onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); }} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Tüm dersler</button>
+              <button onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setSelectedCatalogSubject(null); }} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Tüm dersler</button>
               <button onClick={() => setActivePage('teachers-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Öğretmenler</button>
               <button onClick={() => setActivePage('schools-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul ara</button>
               <button onClick={() => setActivePage('special-courses-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Kurs Ara</button>
