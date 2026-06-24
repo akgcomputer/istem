@@ -16,12 +16,16 @@ import { onRequestGet as __api_certificates_ts_onRequestGet } from "C:\\Users\\d
 import { onRequestGet as __api_challenges_index_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\challenges\\index.ts"
 import { onRequestPost as __api_challenges_index_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\challenges\\index.ts"
 import { onRequestGet as __api_courses_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\courses.ts"
+import { onRequestPost as __api_courses_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\courses.ts"
 import { onRequestGet as __api_employees_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\employees.ts"
 import { onRequestPost as __api_gemini_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\gemini.ts"
-import { onRequestGet as __api_schools_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\schools.ts"
+import { onRequestGet as __api_private_schools_index_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\private_schools\\index.ts"
+import { onRequestPost as __api_private_schools_index_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\private_schools\\index.ts"
 import { onRequestGet as __api_special_courses_index_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\special_courses\\index.ts"
 import { onRequestGet as __api_special_courses_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\special-courses.ts"
+import { onRequestPost as __api_special_courses_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\special-courses.ts"
 import { onRequestGet as __api_teachers_index_ts_onRequestGet } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\teachers\\index.ts"
+import { onRequestPost as __api_teachers_ts_onRequestPost } from "C:\\Users\\dell\\.gemini\\antigravity\\scratch\\i̇stanbul-egitim-merkezi-Antigravity\\functions\\api\\teachers.ts"
 
 export const routes = [
     {
@@ -151,6 +155,13 @@ export const routes = [
       modules: [__api_courses_ts_onRequestGet],
     },
   {
+      routePath: "/api/courses",
+      mountPath: "/api",
+      method: "POST",
+      middlewares: [],
+      modules: [__api_courses_ts_onRequestPost],
+    },
+  {
       routePath: "/api/employees",
       mountPath: "/api",
       method: "GET",
@@ -165,11 +176,18 @@ export const routes = [
       modules: [__api_gemini_ts_onRequestPost],
     },
   {
-      routePath: "/api/schools",
-      mountPath: "/api",
+      routePath: "/api/private_schools",
+      mountPath: "/api/private_schools",
       method: "GET",
       middlewares: [],
-      modules: [__api_schools_ts_onRequestGet],
+      modules: [__api_private_schools_index_ts_onRequestGet],
+    },
+  {
+      routePath: "/api/private_schools",
+      mountPath: "/api/private_schools",
+      method: "POST",
+      middlewares: [],
+      modules: [__api_private_schools_index_ts_onRequestPost],
     },
   {
       routePath: "/api/special_courses",
@@ -186,10 +204,24 @@ export const routes = [
       modules: [__api_special_courses_ts_onRequestGet],
     },
   {
+      routePath: "/api/special-courses",
+      mountPath: "/api",
+      method: "POST",
+      middlewares: [],
+      modules: [__api_special_courses_ts_onRequestPost],
+    },
+  {
       routePath: "/api/teachers",
       mountPath: "/api/teachers",
       method: "GET",
       middlewares: [],
       modules: [__api_teachers_index_ts_onRequestGet],
+    },
+  {
+      routePath: "/api/teachers",
+      mountPath: "/api",
+      method: "POST",
+      middlewares: [],
+      modules: [__api_teachers_ts_onRequestPost],
     },
   ]

@@ -87,7 +87,7 @@ async function onRequestPost(context) {
 }
 var init_bulk = __esm({
   "api/private_schools/bulk.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     __name(onRequestPost, "onRequestPost");
   }
 });
@@ -131,7 +131,7 @@ async function onRequestPost2(context) {
 }
 var init_bulk2 = __esm({
   "api/special_courses/bulk.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     __name(onRequestPost2, "onRequestPost");
   }
 });
@@ -174,7 +174,7 @@ async function onRequestPost3(context) {
 }
 var init_bulk3 = __esm({
   "api/teachers/bulk.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     __name(onRequestPost3, "onRequestPost");
   }
 });
@@ -183,7 +183,7 @@ var init_bulk3 = __esm({
 var onRequestPut, onRequestDelete;
 var init_id = __esm({
   "api/challenges/[id].ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestPut = /* @__PURE__ */ __name(async (context) => {
       try {
         const id = context.params.id;
@@ -217,7 +217,7 @@ var init_id = __esm({
 var onRequestPut2, onRequestDelete2;
 var init_id2 = __esm({
   "api/courses/[id].ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestPut2 = /* @__PURE__ */ __name(async (context) => {
       try {
         const id = context.params.id;
@@ -251,7 +251,7 @@ var init_id2 = __esm({
 var onRequestPut3, onRequestDelete3;
 var init_id3 = __esm({
   "api/private_schools/[id].ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestPut3 = /* @__PURE__ */ __name(async (context) => {
       try {
         const id = context.params.id;
@@ -285,7 +285,7 @@ var init_id3 = __esm({
 var onRequestPut4, onRequestDelete4;
 var init_id4 = __esm({
   "api/special_courses/[id].ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestPut4 = /* @__PURE__ */ __name(async (context) => {
       try {
         const id = context.params.id;
@@ -319,7 +319,7 @@ var init_id4 = __esm({
 var onRequestPut5, onRequestDelete5;
 var init_id5 = __esm({
   "api/teachers/[id].ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestPut5 = /* @__PURE__ */ __name(async (context) => {
       try {
         const id = context.params.id;
@@ -353,7 +353,7 @@ var init_id5 = __esm({
 var onRequestGet;
 var init_categories = __esm({
   "api/categories.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet = /* @__PURE__ */ __name(async (context) => {
       try {
         const { results } = await context.env.DB.prepare("SELECT * FROM categories").all();
@@ -384,7 +384,7 @@ var init_categories = __esm({
 var onRequestGet2;
 var init_certificates = __esm({
   "api/certificates.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet2 = /* @__PURE__ */ __name(async (context) => {
       try {
         const { results } = await context.env.DB.prepare("SELECT * FROM certificates").all();
@@ -403,13 +403,24 @@ var init_certificates = __esm({
 var onRequestGet3, onRequestPost4;
 var init_challenges = __esm({
   "api/challenges/index.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet3 = /* @__PURE__ */ __name(async (context) => {
       try {
         const url = new URL(context.request.url);
         const all = url.searchParams.get("all") === "true";
-        const query = all ? "SELECT * FROM challenges" : "SELECT * FROM challenges WHERE isActive = 1 OR isActive IS NULL";
-        const { results } = await context.env.DB.prepare(query).all();
+        const limit = parseInt(url.searchParams.get("limit") || "100");
+        const offset = parseInt(url.searchParams.get("offset") || "0");
+        const search = url.searchParams.get("search") || "";
+        let baseQuery = all ? "SELECT * FROM challenges WHERE 1=1" : "SELECT * FROM challenges WHERE (isActive = 1 OR isActive IS NULL)";
+        const bindParams = [];
+        if (search) {
+          baseQuery += " AND (title LIKE ? OR category LIKE ? OR sponsor LIKE ?)";
+          const searchPattern = `%${search}%`;
+          bindParams.push(searchPattern, searchPattern, searchPattern);
+        }
+        const query = `${baseQuery} ORDER BY id DESC LIMIT ? OFFSET ?`;
+        bindParams.push(limit, offset);
+        const { results } = await context.env.DB.prepare(query).bind(...bindParams).all();
         return new Response(JSON.stringify(results), { headers: { "Content-Type": "application/json" } });
       } catch (err) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });
@@ -431,16 +442,27 @@ var init_challenges = __esm({
 });
 
 // api/courses.ts
-var onRequestGet4;
+var onRequestGet4, onRequestPost5;
 var init_courses = __esm({
   "api/courses.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet4 = /* @__PURE__ */ __name(async (context) => {
       try {
         const url = new URL(context.request.url);
         const all = url.searchParams.get("all") === "true";
-        const query = all ? "SELECT * FROM courses" : "SELECT * FROM courses WHERE isActive = 1 OR isActive IS NULL";
-        const { results } = await context.env.DB.prepare(query).all();
+        const limit = parseInt(url.searchParams.get("limit") || "100");
+        const offset = parseInt(url.searchParams.get("offset") || "0");
+        const search = url.searchParams.get("search") || "";
+        let baseQuery = all ? "SELECT * FROM courses WHERE 1=1" : "SELECT * FROM courses WHERE (isActive = 1 OR isActive IS NULL)";
+        const bindParams = [];
+        if (search) {
+          baseQuery += " AND (title LIKE ? OR capstoneDesc LIKE ? OR instructorName LIKE ? OR category LIKE ?)";
+          const searchPattern = `%${search}%`;
+          bindParams.push(searchPattern, searchPattern, searchPattern, searchPattern);
+        }
+        const query = `${baseQuery} ORDER BY id DESC LIMIT ? OFFSET ?`;
+        bindParams.push(limit, offset);
+        const { results } = await context.env.DB.prepare(query).bind(...bindParams).all();
         const courses = await Promise.all(results.map(async (course) => {
           course.hasChallenge = !!course.hasChallenge;
           course.hasCohort = !!course.hasCohort;
@@ -475,6 +497,46 @@ var init_courses = __esm({
         return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
       }
     }, "onRequestGet");
+    onRequestPost5 = /* @__PURE__ */ __name(async (context) => {
+      try {
+        const data = await context.request.json();
+        const id = data.id || `c-${Date.now()}`;
+        let benefitsStr = "[]";
+        if (data.benefits) {
+          if (Array.isArray(data.benefits)) benefitsStr = JSON.stringify(data.benefits);
+          else if (typeof data.benefits === "string") benefitsStr = JSON.stringify(data.benefits.split(",").map((s) => s.trim()));
+        }
+        await context.env.DB.prepare(`
+      INSERT INTO courses (id, title, category, level, duration, price, enrolledCount, rating, instructorName, instructorAvatar, instructorBio, image, hasChallenge, hasCohort, lessonsCount, xpReward, isPremiumIncluded, capstoneTitle, capstoneDesc, benefits, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+          id,
+          data.title || "",
+          data.category || "",
+          data.level || "",
+          data.duration || "",
+          data.currentPrice || data.price || 0,
+          data.students || data.enrolledCount || 0,
+          data.rating || 5,
+          data.instructorName || "",
+          data.instructorAvatar || "",
+          data.instructorBio || "",
+          data.image || "",
+          data.hasChallenge ? 1 : 0,
+          data.hasCohort ? 1 : 0,
+          data.totalLessons || data.lessonsCount || 0,
+          data.xpReward || 0,
+          data.isPremiumIncluded ? 1 : 0,
+          data.capstoneTitle || "",
+          data.description || data.capstoneDesc || "",
+          benefitsStr,
+          1
+        ).run();
+        return new Response(JSON.stringify({ success: true, id }), { headers: { "Content-Type": "application/json" } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
+    }, "onRequestPost");
   }
 });
 
@@ -482,7 +544,7 @@ var init_courses = __esm({
 var onRequestGet5;
 var init_employees = __esm({
   "api/employees.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet5 = /* @__PURE__ */ __name(async (context) => {
       try {
         const { results } = await context.env.DB.prepare("SELECT * FROM employees").all();
@@ -521,7 +583,7 @@ var init_employees = __esm({
 // ../node_modules/retry/lib/retry_operation.js
 var require_retry_operation = __commonJS({
   "../node_modules/retry/lib/retry_operation.js"(exports, module) {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     function RetryOperation(timeouts, options) {
       if (typeof options === "boolean") {
         options = { forever: options };
@@ -658,7 +720,7 @@ var require_retry_operation = __commonJS({
 // ../node_modules/retry/lib/retry.js
 var require_retry = __commonJS({
   "../node_modules/retry/lib/retry.js"(exports) {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     var RetryOperation = require_retry_operation();
     exports.operation = function(options) {
       var timeouts = exports.timeouts(options);
@@ -745,7 +807,7 @@ var require_retry = __commonJS({
 // ../node_modules/retry/index.js
 var require_retry2 = __commonJS({
   "../node_modules/retry/index.js"(exports, module) {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     module.exports = require_retry();
   }
 });
@@ -754,7 +816,7 @@ var require_retry2 = __commonJS({
 var require_p_retry = __commonJS({
   "../node_modules/p-retry/index.js"(exports, module) {
     "use strict";
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     var retry = require_retry2();
     var networkErrorMsgs = [
       "Failed to fetch",
@@ -12196,7 +12258,7 @@ function sleep(ms) {
 var import_p_retry, _defaultBaseGeminiUrl, _defaultBaseVertexUrl, BaseModule, Outcome, Language, FunctionResponseScheduling, Type, Environment, AuthType, HttpElementLocation, ApiSpec, PhishBlockThreshold, Behavior, DynamicRetrievalConfigMode, ThinkingLevel, PersonGeneration, ProminentPeople, HarmCategory, HarmBlockMethod, HarmBlockThreshold, FunctionCallingConfigMode, FinishReason, HarmProbability, HarmSeverity, UrlRetrievalStatus, BlockedReason, TrafficType, Modality, ModelStage, MediaResolution, TuningMode, AdapterSize, JobState, TuningJobState, AggregationMetric, PairwiseChoice, TuningSpeed, TuningTask, VideoOrientation, DocumentState, PartMediaResolutionLevel, ToolType, ResourceScope, ServiceTier, FeatureSelectionPreference, EmbeddingApiType, SafetyFilterLevel, ImagePromptLanguage, MaskReferenceMode, ControlReferenceType, SubjectReferenceType, EditMode, SegmentMode, VideoGenerationReferenceType, VideoGenerationMaskMode, VideoCompressionQuality, ImageResizeMode, ResponseParseType, MatchOperation, ReinforcementTuningThinkingLevel, TuningMethod, FileState, FileSource, TurnCompleteReason, MediaModality, VadSignalType, VoiceActivityType, StartSensitivity, EndSensitivity, ActivityHandling, TurnCoverage, Scale, MusicGenerationMode, LiveMusicPlaybackControl, HttpResponse, GenerateContentResponse, EmbedContentResponse, GenerateImagesResponse, EditImageResponse, UpscaleImageResponse, RecontextImageResponse, SegmentImageResponse, ListModelsResponse, DeleteModelResponse, CountTokensResponse, ComputeTokensResponse, GenerateVideosOperation, ListTuningJobsResponse, CancelTuningJobResponse, ValidateRewardResponse, DeleteCachedContentResponse, ListCachedContentsResponse, ListDocumentsResponse, ListFileSearchStoresResponse, UploadToFileSearchStoreResumableResponse, ImportFileOperation, ListFilesResponse, CreateFileResponse, DeleteFileResponse, RegisterFilesResponse, ListBatchJobsResponse, LiveServerMessage, LiveMusicServerMessage, UploadToFileSearchStoreOperation, PagedItem, Pager, Batches, Caches, Chats, Chat, ApiError, Files, CONTENT_TYPE_HEADER, SERVER_TIMEOUT_HEADER, USER_AGENT_HEADER, GOOGLE_API_CLIENT_HEADER, SDK_VERSION, LIBRARY_LABEL, VERTEX_AI_API_DEFAULT_VERSION, GOOGLE_AI_API_DEFAULT_VERSION, MULTI_REGIONAL_LOCATIONS, DEFAULT_RETRY_ATTEMPTS, DEFAULT_RETRY_HTTP_STATUS_CODES, ApiClient, MCP_LABEL, hasMcpToolUsageFromMcpToTool, McpCallableTool, LiveMusic, LiveMusicSession, FUNCTION_RESPONSE_REQUIRES_ID, Live, defaultLiveSendClientContentParamerters, Session, DEFAULT_MAX_REMOTE_CALLS, Models, Operations, Tokens, Documents, FileSearchStores, uuid4Internal, uuid4, castToError, GeminiNextGenAPIClientError, APIError, APIUserAbortError, APIConnectionError, APIConnectionTimeoutError, BadRequestError, AuthenticationError, PermissionDeniedError, NotFoundError, ConflictError, UnprocessableEntityError, RateLimitError, InternalServerError, startsWithSchemeRegexp, isAbsoluteURL, isArrayInternal, isArray, isReadonlyArrayInternal, isReadonlyArray, validatePositiveInteger, safeJSON, sleep$1, FallbackEncoder, VERSION, checkFileSupport, isAsyncIterable, isBlobLike, isFileLike, isResponseLike, APIResource, EMPTY, createPathTagFunction, path, BaseAgents, Agents, encodeUTF8_, decodeUTF8_, LineDecoder, levelNumbers, parseLogLevel, noopLogger, cachedLoggers, formatRequestDetails, Stream, SSEDecoder, LEGACY_LYRIA_MODELS, LEGACY_EVENT_TYPE_RENAMES, LegacyLyriaStream, BaseInteractions, Interactions, BaseWebhooks, Webhooks, APIPromise, brand_privateNullableHeaders, buildHeaders, readEnv, _a, BaseGeminiNextGenAPIClient, GeminiNextGenAPIClient, Tunings, BrowserDownloader, MAX_CHUNK_SIZE, MAX_RETRY_COUNT, INITIAL_RETRY_DELAY_MS, DELAY_MULTIPLIER, X_GOOG_UPLOAD_STATUS_HEADER_FIELD, BrowserUploader, BrowserWebSocketFactory, BrowserWebSocket, GOOGLE_API_KEY_HEADER, WebAuth, LANGUAGE_LABEL_PREFIX, GoogleGenAI;
 var init_web = __esm({
   "../node_modules/@google/genai/dist/web/index.mjs"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     import_p_retry = __toESM(require_p_retry(), 1);
     _defaultBaseGeminiUrl = void 0;
     _defaultBaseVertexUrl = void 0;
@@ -20039,12 +20101,12 @@ ${underline}`);
 });
 
 // api/gemini.ts
-var onRequestPost5;
+var onRequestPost6;
 var init_gemini = __esm({
   "api/gemini.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     init_web();
-    onRequestPost5 = /* @__PURE__ */ __name(async (context) => {
+    onRequestPost6 = /* @__PURE__ */ __name(async (context) => {
       try {
         const body = await context.request.json();
         const { prompt, systemInstruction } = body;
@@ -20084,17 +20146,28 @@ var init_gemini = __esm({
   }
 });
 
-// api/schools.ts
-var onRequestGet6;
-var init_schools = __esm({
-  "api/schools.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+// api/private_schools/index.ts
+var onRequestGet6, onRequestPost7;
+var init_private_schools = __esm({
+  "api/private_schools/index.ts"() {
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet6 = /* @__PURE__ */ __name(async (context) => {
       try {
         const url = new URL(context.request.url);
         const all = url.searchParams.get("all") === "true";
-        const query = all ? "SELECT * FROM private_schools" : "SELECT * FROM private_schools WHERE isActive = 1 OR isActive IS NULL";
-        const { results } = await context.env.DB.prepare(query).all();
+        const limit = parseInt(url.searchParams.get("limit") || "100");
+        const offset = parseInt(url.searchParams.get("offset") || "0");
+        const search = url.searchParams.get("search") || "";
+        let baseQuery = all ? "SELECT * FROM private_schools WHERE 1=1" : "SELECT * FROM private_schools WHERE (isActive = 1 OR isActive IS NULL)";
+        const bindParams = [];
+        if (search) {
+          baseQuery += " AND (name LIKE ? OR location LIKE ? OR type LIKE ?)";
+          const searchPattern = `%${search}%`;
+          bindParams.push(searchPattern, searchPattern, searchPattern);
+        }
+        const query = `${baseQuery} ORDER BY id DESC LIMIT ? OFFSET ?`;
+        bindParams.push(limit, offset);
+        const { results } = await context.env.DB.prepare(query).bind(...bindParams).all();
         const schools = results.map((school) => {
           const arrayFields = ["lessons", "deals", "physicalFacilities", "services", "activities", "languages"];
           for (const field of arrayFields) {
@@ -20118,6 +20191,57 @@ var init_schools = __esm({
         return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
       }
     }, "onRequestGet");
+    onRequestPost7 = /* @__PURE__ */ __name(async (context) => {
+      try {
+        const data = await context.request.json();
+        const id = data.id || `s-${Date.now()}`;
+        const arrayFields = ["lessons", "deals", "physicalFacilities", "services", "activities", "languages"];
+        const processed = {};
+        for (const field of arrayFields) {
+          if (data[field]) {
+            if (Array.isArray(data[field])) processed[field] = JSON.stringify(data[field]);
+            else if (typeof data[field] === "string") processed[field] = JSON.stringify(data[field].split(",").map((s) => s.trim()));
+          } else {
+            processed[field] = "[]";
+          }
+        }
+        await context.env.DB.prepare(`
+      INSERT INTO private_schools (id, name, image, location, capacity, teachersCount, type, lessons, lessonHours, schoolHours, parentReviewText, reviewerName, rating, sector, averageClassSize, branchesCount, reviewsCount, imagesCount, deals, monthlyPrice, classSizeCategory, educationSystem, physicalFacilities, services, activities, languages, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+          id,
+          data.name || "",
+          data.image || "",
+          data.district || data.location || "",
+          data.capacity || 0,
+          data.teachers || data.teachersCount || 0,
+          data.type || data.level || "",
+          processed.lessons,
+          data.lessonHours || data.duration || "",
+          data.schoolHours || "",
+          data.parentReviewText || "",
+          data.reviewerName || "",
+          data.rating || 5,
+          data.sector || "",
+          data.averageClassSize || 0,
+          data.branches || data.branchesCount || 1,
+          data.reviews || data.reviewsCount || 0,
+          data.imagesCount || 0,
+          processed.deals,
+          data.price || data.monthlyPrice || 0,
+          data.classSizeCategory || "",
+          data.educationSystem || "",
+          processed.physicalFacilities,
+          processed.services,
+          processed.activities,
+          processed.languages,
+          1
+        ).run();
+        return new Response(JSON.stringify({ success: true, id }), { headers: { "Content-Type": "application/json" } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
+    }, "onRequestPost");
   }
 });
 
@@ -20125,7 +20249,7 @@ var init_schools = __esm({
 var onRequestGet7;
 var init_special_courses = __esm({
   "api/special_courses/index.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet7 = /* @__PURE__ */ __name(async (context) => {
       try {
         const { results } = await context.env.DB.prepare("SELECT * FROM special_courses").all();
@@ -20147,16 +20271,27 @@ var init_special_courses = __esm({
 });
 
 // api/special-courses.ts
-var onRequestGet8;
+var onRequestGet8, onRequestPost8;
 var init_special_courses2 = __esm({
   "api/special-courses.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet8 = /* @__PURE__ */ __name(async (context) => {
       try {
         const url = new URL(context.request.url);
         const all = url.searchParams.get("all") === "true";
-        const query = all ? "SELECT * FROM special_courses" : "SELECT * FROM special_courses WHERE isActive = 1 OR isActive IS NULL";
-        const { results } = await context.env.DB.prepare(query).all();
+        const limit = parseInt(url.searchParams.get("limit") || "100");
+        const offset = parseInt(url.searchParams.get("offset") || "0");
+        const search = url.searchParams.get("search") || "";
+        let baseQuery = all ? "SELECT * FROM special_courses WHERE 1=1" : "SELECT * FROM special_courses WHERE (isActive = 1 OR isActive IS NULL)";
+        const bindParams = [];
+        if (search) {
+          baseQuery += " AND (name LIKE ? OR location LIKE ? OR type LIKE ?)";
+          const searchPattern = `%${search}%`;
+          bindParams.push(searchPattern, searchPattern, searchPattern);
+        }
+        const query = `${baseQuery} ORDER BY id DESC LIMIT ? OFFSET ?`;
+        bindParams.push(limit, offset);
+        const { results } = await context.env.DB.prepare(query).bind(...bindParams).all();
         const specialCourses = results.map((course) => {
           if (typeof course.classes === "string") {
             try {
@@ -20177,6 +20312,41 @@ var init_special_courses2 = __esm({
         return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
       }
     }, "onRequestGet");
+    onRequestPost8 = /* @__PURE__ */ __name(async (context) => {
+      try {
+        const data = await context.request.json();
+        const id = data.id || `sc-${Date.now()}`;
+        let classesStr = "[]";
+        if (data.classes) {
+          if (Array.isArray(data.classes)) classesStr = JSON.stringify(data.classes);
+          else if (typeof data.classes === "string") classesStr = JSON.stringify(data.classes.split(",").map((s) => s.trim()));
+        }
+        await context.env.DB.prepare(`
+      INSERT INTO special_courses (id, name, image, type, location, capacity, teachersCount, classes, hoursPerWeek, priceRange, parentReviewText, reviewerName, rating, branchesCount, averageClassSize, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+          id,
+          data.name || "",
+          data.image || "",
+          data.type || "",
+          data.location || "",
+          data.capacity || data.students || 0,
+          data.teachersCount || data.instructors || 1,
+          classesStr,
+          data.hoursPerWeek || data.duration || "",
+          data.priceRange || data.price || "0",
+          data.parentReviewText || "",
+          data.reviewerName || "",
+          data.rating || 5,
+          data.branchesCount || 1,
+          data.averageClassSize || 0,
+          1
+        ).run();
+        return new Response(JSON.stringify({ success: true, id }), { headers: { "Content-Type": "application/json" } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
+    }, "onRequestPost");
   }
 });
 
@@ -20184,7 +20354,7 @@ var init_special_courses2 = __esm({
 var onRequestGet9;
 var init_teachers = __esm({
   "api/teachers/index.ts"() {
-    init_functionsRoutes_0_24220010223177413();
+    init_functionsRoutes_0_6830749130239826();
     onRequestGet9 = /* @__PURE__ */ __name(async (context) => {
       try {
         const url = new URL(context.request.url);
@@ -20221,10 +20391,61 @@ var init_teachers = __esm({
   }
 });
 
-// ../.wrangler/tmp/pages-I76Fm9/functionsRoutes-0.24220010223177413.mjs
+// api/teachers.ts
+var onRequestPost9;
+var init_teachers2 = __esm({
+  "api/teachers.ts"() {
+    init_functionsRoutes_0_6830749130239826();
+    onRequestPost9 = /* @__PURE__ */ __name(async (context) => {
+      try {
+        const data = await context.request.json();
+        const id = data.id || `t-${Date.now()}`;
+        let tagsStr = "[]";
+        if (data.tags) {
+          if (Array.isArray(data.tags)) tagsStr = JSON.stringify(data.tags);
+          else if (typeof data.tags === "string") tagsStr = JSON.stringify(data.tags.split(",").map((s) => s.trim()));
+        }
+        await context.env.DB.prepare(`
+      INSERT INTO teachers (id, name, avatar, rating, commentsCount, experienceYears, experienceLabel, bio, preferredLocation, canCorporate, canOnline, canFaceToFace, tags, category, isActive)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+          id,
+          data.name || "",
+          data.image || data.avatar || "",
+          data.rating || 5,
+          data.commentsCount || 0,
+          data.since ? (/* @__PURE__ */ new Date()).getFullYear() - data.since : data.experienceYears || 0,
+          data.experienceLabel || "",
+          data.bio || "",
+          data.location || data.preferredLocation || "",
+          data.canCorporate ? 1 : 0,
+          data.canOnline ? 1 : 0,
+          data.canFaceToFace ? 1 : 0,
+          tagsStr,
+          data.categoryId || data.category || "",
+          1
+        ).run();
+        if (data.sessions && Array.isArray(data.sessions)) {
+          for (const session of data.sessions) {
+            if (!session.name || !session.price) continue;
+            await context.env.DB.prepare(`
+          INSERT INTO teacher_sessions (teacherId, name, price, courseId)
+          VALUES (?, ?, ?, ?)
+        `).bind(id, session.name || "", session.price || 0, session.courseId || "").run();
+          }
+        }
+        return new Response(JSON.stringify({ success: true, id }), { headers: { "Content-Type": "application/json" } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+      }
+    }, "onRequestPost");
+  }
+});
+
+// ../.wrangler/tmp/pages-uvOBDt/functionsRoutes-0.6830749130239826.mjs
 var routes;
-var init_functionsRoutes_0_24220010223177413 = __esm({
-  "../.wrangler/tmp/pages-I76Fm9/functionsRoutes-0.24220010223177413.mjs"() {
+var init_functionsRoutes_0_6830749130239826 = __esm({
+  "../.wrangler/tmp/pages-uvOBDt/functionsRoutes-0.6830749130239826.mjs"() {
     init_bulk();
     init_bulk2();
     init_bulk3();
@@ -20243,12 +20464,16 @@ var init_functionsRoutes_0_24220010223177413 = __esm({
     init_challenges();
     init_challenges();
     init_courses();
+    init_courses();
     init_employees();
     init_gemini();
-    init_schools();
+    init_private_schools();
+    init_private_schools();
     init_special_courses();
     init_special_courses2();
+    init_special_courses2();
     init_teachers();
+    init_teachers2();
     routes = [
       {
         routePath: "/api/private_schools/bulk",
@@ -20377,6 +20602,13 @@ var init_functionsRoutes_0_24220010223177413 = __esm({
         modules: [onRequestGet4]
       },
       {
+        routePath: "/api/courses",
+        mountPath: "/api",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost5]
+      },
+      {
         routePath: "/api/employees",
         mountPath: "/api",
         method: "GET",
@@ -20388,14 +20620,21 @@ var init_functionsRoutes_0_24220010223177413 = __esm({
         mountPath: "/api",
         method: "POST",
         middlewares: [],
-        modules: [onRequestPost5]
+        modules: [onRequestPost6]
       },
       {
-        routePath: "/api/schools",
-        mountPath: "/api",
+        routePath: "/api/private_schools",
+        mountPath: "/api/private_schools",
         method: "GET",
         middlewares: [],
         modules: [onRequestGet6]
+      },
+      {
+        routePath: "/api/private_schools",
+        mountPath: "/api/private_schools",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost7]
       },
       {
         routePath: "/api/special_courses",
@@ -20412,21 +20651,35 @@ var init_functionsRoutes_0_24220010223177413 = __esm({
         modules: [onRequestGet8]
       },
       {
+        routePath: "/api/special-courses",
+        mountPath: "/api",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost8]
+      },
+      {
         routePath: "/api/teachers",
         mountPath: "/api/teachers",
         method: "GET",
         middlewares: [],
         modules: [onRequestGet9]
+      },
+      {
+        routePath: "/api/teachers",
+        mountPath: "/api",
+        method: "POST",
+        middlewares: [],
+        modules: [onRequestPost9]
       }
     ];
   }
 });
 
 // ../node_modules/wrangler/templates/pages-template-worker.ts
-init_functionsRoutes_0_24220010223177413();
+init_functionsRoutes_0_6830749130239826();
 
 // ../node_modules/wrangler/node_modules/path-to-regexp/dist.es2015/index.js
-init_functionsRoutes_0_24220010223177413();
+init_functionsRoutes_0_6830749130239826();
 function lexer(str) {
   var tokens = [];
   var i = 0;

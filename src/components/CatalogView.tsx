@@ -248,15 +248,15 @@ export default function CatalogView({
   // Build the unified Subject dataset using dynamic coursesList
   const subjects: Subject[] = coursesList.map(c => {
     const teachersWhoTeach = teachersList.filter(t => 
-      t.sessions.some(s => s.name.includes(c.name))
+      (t.sessions || []).some(s => s.name.includes((c.title || c.name || "")))
     );
 
     const prices = teachersWhoTeach.flatMap(t => 
-      t.sessions.filter(s => s.name.includes(c.name)).map(s => s.price)
+      (t.sessions || []).filter(s => s.name.includes((c.title || c.name || ""))).map(s => s.price)
     );
 
     return {
-      name: c.name,
+      name: (c.title || c.name || ""),
       category: formatCategory(c.type || c.category || 'Diğer'),
       description: c.parentReviewText || c.description || 'Bu ders için henüz bir açıklama girilmemiş.',
       image: c.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
@@ -1253,3 +1253,6 @@ export default function CatalogView({
     </div>
   );
 }
+
+
+

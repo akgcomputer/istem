@@ -145,6 +145,14 @@
       ]
     },
     {
+      "routePath": "/api/courses",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/courses.ts:onRequestPost"
+      ]
+    },
+    {
       "routePath": "/api/employees",
       "mountPath": "/api",
       "method": "GET",
@@ -161,11 +169,19 @@
       ]
     },
     {
-      "routePath": "/api/schools",
-      "mountPath": "/api",
+      "routePath": "/api/private_schools",
+      "mountPath": "/api/private_schools",
       "method": "GET",
       "module": [
-        "api/schools.ts:onRequestGet"
+        "api/private_schools/index.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/private_schools",
+      "mountPath": "/api/private_schools",
+      "method": "POST",
+      "module": [
+        "api/private_schools/index.ts:onRequestPost"
       ]
     },
     {
@@ -185,11 +201,27 @@
       ]
     },
     {
+      "routePath": "/api/special-courses",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/special-courses.ts:onRequestPost"
+      ]
+    },
+    {
       "routePath": "/api/teachers",
       "mountPath": "/api/teachers",
       "method": "GET",
       "module": [
         "api/teachers/index.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/teachers",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/teachers.ts:onRequestPost"
       ]
     }
   ],

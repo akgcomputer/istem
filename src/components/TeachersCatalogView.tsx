@@ -211,8 +211,8 @@ export default function TeachersCatalogView({
       const q = searchQuery.toLowerCase();
       const matchName = teacher.name.toLowerCase().includes(q);
       const matchBio = teacher.bio.toLowerCase().includes(q);
-      const matchTags = teacher.tags.some(tag => tag.toLowerCase().includes(q));
-      const matchLectures = teacher.sessions.some(s => s.name.toLowerCase().includes(q));
+      const matchTags = (teacher.tags || []).some(tag => tag.toLowerCase().includes(q));
+      const matchLectures = (teacher.sessions || []).some(s => s.name.toLowerCase().includes(q));
       if (!matchName && !matchBio && !matchTags && !matchLectures) return false;
     }
 
@@ -222,7 +222,7 @@ export default function TeachersCatalogView({
     }
 
     // 3. Price Filter (matches any session that is <= maxPrice)
-    const hasAffordableSession = teacher.sessions.some(s => s.price <= maxPrice);
+    const hasAffordableSession = (teacher.sessions || []).some(s => s.price <= maxPrice);
     if (!hasAffordableSession) return false;
 
     // 4. Education Type (radio buttons)
@@ -235,7 +235,7 @@ export default function TeachersCatalogView({
 
     // 6. Lesson check (Only valid if category selected)
     if (selectedCategory !== 'Tümü' && selectedLesson !== 'Tümü') {
-      const teachesLesson = teacher.sessions.some(s => s.name.includes(selectedLesson) || teacher.tags.includes(selectedLesson));
+      const teachesLesson = (teacher.sessions || []).some(s => s.name.includes(selectedLesson) || teacher.tags.includes(selectedLesson));
       if (!teachesLesson) return false;
     }
 

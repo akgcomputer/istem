@@ -119,12 +119,12 @@ export default function App() {
           setSelectedTeacherProfile(found);
           setActivePage('teacher-profile');
         } else {
-          setActivePage('teachers-catalog');
+          handleNavigate('teachers-catalog', {}, '/ogretmenler');
         }
       } else if (pathname === '/ogretmenler') {
-        setActivePage('teachers-catalog');
+        handleNavigate('teachers-catalog', {}, '/ogretmenler');
       } else if (pathname === '/admin') {
-        setActivePage('admin');
+        handleNavigate('admin', {}, '/admin');
       } else if (pathname === '/dersler') {
         setActivePage('katalog');
       } else if (pathname.startsWith('/ders/')) {
@@ -133,9 +133,9 @@ export default function App() {
         // Actually since courses are state, we will just set active page to detay.
         setActivePage('detay');
       } else if (pathname === '/okullar') {
-        setActivePage('schools-catalog');
+        handleNavigate('schools-catalog', {}, '/okullar');
       } else if (pathname === '/kurslar') {
-        setActivePage('special-courses-catalog');
+        handleNavigate('special-courses-catalog', {}, '/kurslar');
       } else if (pathname === '/challenge') {
         setActivePage('challenges');
       } else if (pathname === '/' || pathname === '/home') {
@@ -169,7 +169,7 @@ export default function App() {
 
   const navigateToTeachersCatalog = () => {
     window.history.pushState({ page: 'teachers-catalog' }, '', '/ogretmenler');
-    setActivePage('teachers-catalog');
+    handleNavigate('teachers-catalog', {}, '/ogretmenler');
     setSelectedTeacherProfile(null);
   };
   
@@ -339,7 +339,7 @@ export default function App() {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-zinc-200/80 shadow-lg px-4 py-4 space-y-2 animate-fade-in relative z-40">
             <button 
-              onClick={() => { setActivePage('teachers-catalog'); setIsMobileMenuOpen(false); }}
+              onClick={() => { handleNavigate('teachers-catalog', {}, '/ogretmenler'); setIsMobileMenuOpen(false); }}
               className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'teachers-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Öğretmenler</span>
@@ -353,14 +353,14 @@ export default function App() {
               <ChevronRight className="w-4 h-4 opacity-40" />
             </button>
             <button 
-              onClick={() => { setActivePage('schools-catalog'); setIsMobileMenuOpen(false); }}
+              onClick={() => { handleNavigate('schools-catalog', {}, '/okullar'); setIsMobileMenuOpen(false); }}
               className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'schools-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Özel Okul Ara</span>
               <ChevronRight className="w-4 h-4 opacity-40" />
             </button>
             <button 
-              onClick={() => { setActivePage('special-courses-catalog'); setIsMobileMenuOpen(false); }}
+              onClick={() => { handleNavigate('special-courses-catalog', {}, '/kurslar'); setIsMobileMenuOpen(false); }}
               className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'special-courses-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Kurs ara</span>
@@ -524,9 +524,9 @@ export default function App() {
             <div className="space-y-2.5 text-left">
               <span className="text-sm text-[#FF6600] font-black block tracking-wider">Keşfet</span>
               <button onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setSelectedCatalogSubject(null); }} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Tüm dersler</button>
-              <button onClick={() => setActivePage('teachers-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Öğretmenler</button>
-              <button onClick={() => setActivePage('schools-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul ara</button>
-              <button onClick={() => setActivePage('special-courses-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Kurs Ara</button>
+              <button onClick={() => handleNavigate('teachers-catalog', {}, '/ogretmenler')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Öğretmenler</button>
+              <button onClick={() => handleNavigate('schools-catalog', {}, '/okullar')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul ara</button>
+              <button onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Kurs Ara</button>
             </div>
             <div className="space-y-3 text-left">
               <div>
@@ -781,7 +781,7 @@ export default function App() {
           } else if (role === 'Kurs Temsilcisi') {
             setActivePage('course-mgmt');
           } else if (role === 'Yönetici') {
-            setActivePage('admin');
+            handleNavigate('admin', {}, '/admin');
           }
         }}
       />
@@ -789,3 +789,4 @@ export default function App() {
     </div>
   );
 }
+

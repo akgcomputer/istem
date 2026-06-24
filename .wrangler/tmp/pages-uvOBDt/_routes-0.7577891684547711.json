@@ -5,7 +5,7 @@
     "/api/teachers",
     "/api/special-courses",
     "/api/special_courses",
-    "/api/schools",
+    "/api/private_schools",
     "/api/gemini",
     "/api/employees",
     "/api/courses",

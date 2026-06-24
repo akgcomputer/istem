@@ -166,7 +166,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
               <h3 className="text-lg font-bold font-display text-zinc-950 mb-4">Eğitim Müfredatı</h3>
               
               <div className="flex flex-col gap-3">
-                {course.lessons.map((lesson, index) => {
+                {(course.lessons || []).map((lesson, index) => {
                   const accordionId = `acc-${index}`;
                   const isOpen = !!openAccordions[accordionId];
 
@@ -479,7 +479,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
               <div>
                 <h4 className="font-extrabold text-[#FF6600] uppercase tracking-wider text-[10px] mb-2 text-zinc-400">UZMANLIK ALANLARI</h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {selectedInstructorProfile.specialties.map((spec: string) => (
+                  {(selectedInstructorProfile.specialties || selectedInstructorProfile.tags || []).map((spec: string) => (
                     <span key={spec} className="bg-zinc-100 text-zinc-700 font-extrabold px-2.5 py-1 rounded-xl border border-zinc-250">
                       #{spec}
                     </span>

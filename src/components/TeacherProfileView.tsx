@@ -98,7 +98,7 @@ export default function TeacherProfileView({
             <div className="bg-zinc-50 border border-zinc-150 p-4 rounded-2xl flex flex-col items-center justify-center text-center max-w-xs mx-auto shrink-0">
               <span className="text-[10px] font-bold text-zinc-400 block mb-1">Başlangıç Seans Ücreti</span>
               <span className="text-2xl font-black text-zinc-900 font-mono">
-                {Math.min(...teacher.sessions.map(s => s.price))}₺ <span className="text-xs font-normal text-zinc-500">/saat</span>
+                {Math.min(...(teacher.sessions || []).map(s => s.price))}₺ <span className="text-xs font-normal text-zinc-500">/saat</span>
               </span>
               <span className="text-[10px] text-zinc-500 font-bold mt-1.5 bg-amber-50 border border-amber-200/50 text-[#8C3F03] px-2 py-0.5 rounded-md">
                 Komisyonsuz Direkt Ödeme
@@ -133,7 +133,7 @@ export default function TeacherProfileView({
                   Dilediğiniz dersi seçerek anında eğitim programınızı başlatabilir ve sepet adımlarına geçebilirsiniz.
                 </p>
                 <div className="space-y-3">
-                  {teacher.sessions.slice(0, 5).map((sess, idx) => (
+                  {(teacher.sessions || []).slice(0, 5).map((sess, idx) => (
                     <div 
                       key={idx}
                       className="bg-zinc-50 border border-zinc-250/50 p-4 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition"
@@ -230,7 +230,7 @@ export default function TeacherProfileView({
               <div className="bg-zinc-50 border border-zinc-200/60 rounded-3xl p-5 space-y-2.5">
                 <span className="text-zinc-400 text-[10px] block font-bold">Uzmanlık etiketleri</span>
                 <div className="flex flex-wrap gap-1.5">
-                  {teacher.tags.map((tag, i) => (
+                  {(teacher.tags || []).map((tag, i) => (
                     <span key={i} className="text-[10px] bg-white border border-zinc-150 text-zinc-650 px-2.5 py-1 rounded-xl font-bold">
                       #{tag}
                     </span>

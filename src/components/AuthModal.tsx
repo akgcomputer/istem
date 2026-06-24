@@ -235,19 +235,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                 </div>
               </div>
 
-              {/* Şifre Göster Checkbox */}
-              <div className="flex items-center">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input 
-                    type="checkbox" 
-                    checked={showLoginPassword}
-                    onChange={() => setShowLoginPassword(!showLoginPassword)}
-                    className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer" 
-                  />
-                  <span className="text-xs font-bold text-zinc-600">Şifre Göster</span>
-                </label>
-              </div>
-
               {/* Roles radio controls */}
               <div className="space-y-2 pt-1 border-t border-zinc-100">
                 <span className="text-xs font-extrabold text-zinc-750 block">Giriş yapılacak rol:</span>
@@ -387,19 +374,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
-              </div>
-
-              {/* Şifre Göster checkbox */}
-              <div className="flex items-center">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input 
-                    type="checkbox" 
-                    checked={showRegPassword}
-                    onChange={() => setShowRegPassword(!showRegPassword)}
-                    className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer" 
-                  />
-                  <span className="text-xs font-bold text-zinc-600">Şifre Göster</span>
-                </label>
               </div>
 
               {/* Doğum Yılı * */}
@@ -602,3 +576,4 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
     </div>
   );
 }
+
