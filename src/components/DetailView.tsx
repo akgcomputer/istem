@@ -70,7 +70,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
           <span>/</span>
           <span>Bilişim Eğitimi &gt; {course.category}</span>
           <span>/</span>
-          <span className="text-[#E58F49]">{course.title}</span>
+          <span className="text-[#FF6600]">{course.title}</span>
         </div>
 
         {/* MAIN GRID */}
@@ -123,7 +123,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                 </span>
 
                 <div className="flex items-center gap-4 text-white">
-                  <button className="w-14 h-14 bg-[#E58F49] hover:bg-[#D4803A] text-white flex items-center justify-center rounded-full shadow-lg hover:scale-110 transition shrink-0 active:scale-95">
+                  <button className="w-14 h-14 bg-[#FF6600] hover:bg-[#CC5200] text-white flex items-center justify-center rounded-full shadow-lg hover:scale-110 transition shrink-0 active:scale-95">
                     <Play className="w-6 h-6 fill-current ml-1" />
                   </button>
                   <div>
@@ -141,7 +141,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                   <Sparkles className="w-5 h-5 text-yellow-300" />
                 </span>
                 <div>
-                  <span className="text-[9px] font-black tracking-widest text-[#E58F49] uppercase">BU KURSTA YAPILACAK BİTİRME PROJESİ</span>
+                  <span className="text-[9px] font-black tracking-widest text-[#FF6600] uppercase">BU KURSTA YAPILACAK BİTİRME PROJESİ</span>
                   <h3 className="text-base sm:text-lg font-black text-indigo-950">Capstone Project (Uygulamalı Portfoy)</h3>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                         <p className="text-xs text-zinc-500 font-medium">{inst.title}</p>
                         <div className="flex items-center gap-1 mt-0.5 text-[11px] text-zinc-500">
                           <Star className="w-3.5 h-3.5 text-amber-500 fill-current" />
-                          <span className="font-extrabold text-[#E58F49]">{inst.rating}</span>
+                          <span className="font-extrabold text-[#FF6600]">{inst.rating}</span>
                           <span>({inst.reviewCount} değerlendirme)</span>
                         </div>
                       </div>
@@ -261,7 +261,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                           alert(`🎉 ${inst.name} eşliğinde ${course.title} eğitimine kaydoluyorsunuz! Tebrikler!`);
                           onEnroll(course.id);
                         }}
-                        className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-[11px] font-black px-4 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
+                        className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-[11px] font-black px-4 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
                       >
                         Eğitim Al
                       </button>
@@ -313,14 +313,14 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                 <div className="border border-zinc-150 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-[#FAF9F5]">
                   <div>
                     <h4 className="font-extrabold text-zinc-900 text-sm flex items-center gap-1.5">
-                      <Clock className="w-4 h-4 text-[#E58F49] shrink-0" />
+                      <Clock className="w-4 h-4 text-[#FF6600] shrink-0" />
                       Tahmini Ders Saati
                     </h4>
                     <p className="text-[11px] text-zinc-500 font-bold mt-1">
                       *Eğitmenlere göre değişim sağlayabilmektedir.
                     </p>
                   </div>
-                  <span className="text-sm font-black font-mono text-[#E58F49] bg-white border border-zinc-200 px-4 py-2.5 rounded-xl shrink-0">
+                  <span className="text-sm font-black font-mono text-[#FF6600] bg-white border border-zinc-200 px-4 py-2.5 rounded-xl shrink-0">
                     85 Saat
                   </span>
                 </div>
@@ -383,7 +383,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                   </div>
                   <button
                     onClick={() => onNavigateTo('video')}
-                    className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3.5 rounded-xl transition duration-150 flex items-center justify-center gap-1.5"
+                    className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3.5 rounded-xl transition duration-150 flex items-center justify-center gap-1.5"
                   >
                     Ders Çalışmaya Başla <ArrowRight className="w-4 h-4" />
                   </button>
@@ -391,7 +391,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
               ) : (
                 <button
                   onClick={() => onEnroll(course.id)}
-                  className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3.5 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 shadow-sm hover:scale-102 active:scale-98"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3.5 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 shadow-sm hover:scale-102 active:scale-98"
                 >
                   Hemen Satın Al / Sepete Ekle <ShoppingCart className="w-4 h-4 shrink-0" />
                 </button>
@@ -400,7 +400,7 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
               {/* Premium packet mention */}
               {course.isPremiumIncluded && (
                 <div className="bg-amber-50/60 border border-amber-200 p-3.5 rounded-2xl flex items-start gap-2 text-[10px] leading-relaxed text-[#7E5E3D]">
-                  <Sparkles className="w-4 h-4 text-[#E58F49] shrink-0 mt-0.5" />
+                  <Sparkles className="w-4 h-4 text-[#FF6600] shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-amber-955 block font-bold mb-0.5">Premium Üyeliğe Dahil Kurs!</strong>
                     Eğer aylık Premium Pakete üyeyseniz bu kurs için ayrıca bir sepet ücreti ödemezsiniz!
@@ -455,10 +455,10 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
                 <img 
                   src={selectedInstructorProfile.avatar?.includes('ui-avatars.com') && !selectedInstructorProfile.avatar.includes('size=') ? selectedInstructorProfile.avatar + '&size=256' : selectedInstructorProfile.avatar} 
                   alt={selectedInstructorProfile.name} 
-                  className="w-16 h-16 rounded-full object-cover border-2 border-[#E58F49] shrink-0" 
+                  className="w-16 h-16 rounded-full object-cover border-2 border-[#FF6600] shrink-0" 
                 />
                 <div>
-                  <span className="text-[9px] bg-[#E58F49]/10 text-[#E58F49] font-black uppercase tracking-wider px-2 py-0.5 rounded-md">
+                  <span className="text-[9px] bg-[#FF6600]/10 text-[#FF6600] font-black uppercase tracking-wider px-2 py-0.5 rounded-md">
                     AKADEMİ EĞİTMENİ
                   </span>
                   <h3 className="text-base font-black text-zinc-950 mt-1">{selectedInstructorProfile.name}</h3>
@@ -470,14 +470,14 @@ export default function DetailView({ course, onEnroll, isEnrolled, onNavigateTo 
             {/* Modal Body */}
             <div className="p-6 space-y-4 text-xs">
               <div>
-                <h4 className="font-extrabold text-[#E58F49] uppercase tracking-wider text-[10px] mb-1.5 text-zinc-400">ÖZGEÇMİŞ / BİYOGRAFİ</h4>
+                <h4 className="font-extrabold text-[#FF6600] uppercase tracking-wider text-[10px] mb-1.5 text-zinc-400">ÖZGEÇMİŞ / BİYOGRAFİ</h4>
                 <p className="text-zinc-650 leading-relaxed font-semibold">
                   {selectedInstructorProfile.bio}
                 </p>
               </div>
 
               <div>
-                <h4 className="font-extrabold text-[#E58F49] uppercase tracking-wider text-[10px] mb-2 text-zinc-400">UZMANLIK ALANLARI</h4>
+                <h4 className="font-extrabold text-[#FF6600] uppercase tracking-wider text-[10px] mb-2 text-zinc-400">UZMANLIK ALANLARI</h4>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedInstructorProfile.specialties.map((spec: string) => (
                     <span key={spec} className="bg-zinc-100 text-zinc-700 font-extrabold px-2.5 py-1 rounded-xl border border-zinc-250">

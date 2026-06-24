@@ -60,7 +60,7 @@ export default function ApplicationsTab({ applications, onApprove, onReject }: A
           placeholder="Başvuru Sahibi, Detay veya Tip İle Ara..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
+          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
         />
       </div>
 

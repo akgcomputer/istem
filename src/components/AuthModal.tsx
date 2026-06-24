@@ -150,12 +150,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
         {/* Brand Header */}
         <div className="bg-zinc-950 px-6 py-5 shrink-0 flex items-center justify-between text-white">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#E58F49] text-white rounded-lg flex items-center justify-center font-black text-xs font-display">
+            <div className="w-8 h-8 bg-[#FF6600] text-white rounded-lg flex items-center justify-center font-black text-xs font-display">
               İST
             </div>
             <div>
               <span className="text-[14px] font-black uppercase tracking-widest font-display">
-                <span className="text-[#E58F49]">İST</span>EM
+                <span className="text-[#FF6600]">İST</span>EM
               </span>
               <span className="text-[9px] text-zinc-400 font-bold block leading-none font-mono">EĞİTİM PAZARYERİ</span>
             </div>
@@ -205,7 +205,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="5XX XXX XX XX"
                     value={loginTel}
                     onChange={(e) => handlePhoneChange(e.target.value, setLoginTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -223,7 +223,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="***"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-10 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-10 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                   <button
                     type="button"
@@ -242,7 +242,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     type="checkbox" 
                     checked={showLoginPassword}
                     onChange={() => setShowLoginPassword(!showLoginPassword)}
-                    className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] w-4 h-4 cursor-pointer" 
+                    className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer" 
                   />
                   <span className="text-xs font-bold text-zinc-600">Şifre Göster</span>
                 </label>
@@ -257,7 +257,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                       key={r.id} 
                       className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition select-none ${
                         loginRole === r.id 
-                          ? 'border-[#E58F49] bg-amber-50/40 text-zinc-900 shadow-3xs' 
+                          ? 'border-[#FF6600] bg-amber-50/40 text-zinc-900 shadow-3xs' 
                           : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50'
                       }`}
                     >
@@ -267,7 +267,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                         value={r.id}
                         checked={loginRole === r.id}
                         onChange={() => setLoginRole(r.id)}
-                        className="text-[#E58F49] focus:ring-[#E58F49] w-4 h-4 cursor-pointer"
+                        className="text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer"
                       />
                       <span className="text-xs font-bold">{r.label}</span>
                     </label>
@@ -279,7 +279,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
               <div className="pt-4 space-y-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer flex items-center justify-center gap-1.5"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Giriş Yap</span>
@@ -329,7 +329,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="Ör. Ali Ekin"
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="5XX XXX XX XX"
                     value={regTel}
                     onChange={(e) => handlePhoneChange(e.target.value, setRegTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -366,7 +366,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="***"
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -384,7 +384,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="***"
                     value={regPasswordConfirm}
                     onChange={(e) => setRegPasswordConfirm(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -396,7 +396,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     type="checkbox" 
                     checked={showRegPassword}
                     onChange={() => setShowRegPassword(!showRegPassword)}
-                    className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] w-4 h-4 cursor-pointer" 
+                    className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer" 
                   />
                   <span className="text-xs font-bold text-zinc-600">Şifre Göster</span>
                 </label>
@@ -417,7 +417,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="Örn. 1995"
                     value={regBirthYear}
                     onChange={(e) => setRegBirthYear(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -435,7 +435,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="Örn. Öğrenci, Psikolog, Hemşire gibi.."
                     value={regProfession}
                     onChange={(e) => setRegProfession(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -452,7 +452,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="Örn. İşletme adı, Çalışmıyorum, Öğrenciyim gibi"
                     value={regWorkplace}
                     onChange={(e) => setRegWorkplace(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -466,7 +466,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                       <label 
                         className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition select-none ${
                           regRole === r.id 
-                            ? 'border-[#E58F49] bg-amber-50/40 text-zinc-900 shadow-3xs' 
+                            ? 'border-[#FF6600] bg-amber-50/40 text-zinc-900 shadow-3xs' 
                             : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50'
                         }`}
                       >
@@ -476,7 +476,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                           value={r.id}
                           checked={regRole === r.id}
                           onChange={() => setRegRole(r.id)}
-                          className="text-[#E58F49] focus:ring-[#E58F49] w-4 h-4 cursor-pointer"
+                          className="text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer"
                         />
                         <span className="text-xs font-bold">{r.label}</span>
                       </label>
@@ -522,7 +522,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
               <div className="pt-4 space-y-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer"
                 >
                   Kaydol
                 </button>
@@ -560,7 +560,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
                     placeholder="5XX XXX XX XX"
                     value={forgotTel}
                     onChange={(e) => handlePhoneChange(e.target.value, setForgotTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#E58F49] outline-hidden shadow-2xs font-bold"
+                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
                   />
                 </div>
               </div>
@@ -568,7 +568,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
               <div className="pt-4 space-y-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-extrabold py-3 rounded-xl transition shadow-md cursor-pointer"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition shadow-md cursor-pointer"
                 >
                   Sıfırlama Kodu Gönder
                 </button>

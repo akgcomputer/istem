@@ -243,12 +243,12 @@ export default function App() {
             onClick={() => { handleNavigate('home'); setIsMobileMenuOpen(false); }}
             className="flex items-center gap-2.5 group animate-fade-in"
           >
-            <div className="w-9 h-9 bg-zinc-950 text-white rounded-xl flex items-center justify-center font-black font-display text-xs group-hover:bg-[#E58F49] transition duration-200">
+            <div className="w-9 h-9 bg-zinc-950 text-white rounded-xl flex items-center justify-center font-black font-display text-xs group-hover:bg-[#FF6600] transition duration-200">
               İST
             </div>
             <div className="text-left">
               <span className="text-xs font-black uppercase tracking-widest block font-display leading-tight">
-                <span className="text-[#E58F49]">İST</span>
+                <span className="text-[#FF6600]">İST</span>
                 <span className="text-zinc-900 group-hover:text-amber-600 transition">EM</span>
               </span>
               <span className="text-[10px] text-zinc-400 font-bold block leading-none font-mono">EĞİTİM PAZARYERİ</span>
@@ -259,25 +259,25 @@ export default function App() {
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-zinc-655 font-semibold">
             <button 
               onClick={navigateToTeachersCatalog} 
-              className={`hover:text-[#E58F49] transition ${activePage === 'teachers-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
+              className={`hover:text-[#FF6600] transition ${activePage === 'teachers-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
             >
               Öğretmenler
             </button>
             <button 
               onClick={() => { handleNavigate('katalog', {}, '/dersler'); setSelectedCategory('Tümü'); }} 
-              className={`hover:text-[#E58F49] transition ${activePage === 'katalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
+              className={`hover:text-[#FF6600] transition ${activePage === 'katalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
             >
               Dersler
             </button>
             <button 
               onClick={() => handleNavigate('schools-catalog', {}, '/okullar')} 
-              className={`hover:text-[#E58F49] transition ${activePage === 'schools-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
+              className={`hover:text-[#FF6600] transition ${activePage === 'schools-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
             >
               Özel Okul Ara
             </button>
             <button 
               onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')} 
-              className={`hover:text-[#E58F49] transition ${activePage === 'special-courses-catalog' ? 'text-[#E58F49] font-black' : 'text-zinc-650'}`}
+              className={`hover:text-[#FF6600] transition ${activePage === 'special-courses-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
             >
               Kurs ara
             </button>
@@ -295,7 +295,7 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => { setActivePage('ogrenci'); setIsMobileMenuOpen(false); }}
-                  className="bg-zinc-100 hover:bg-[#E58F49]/10 text-zinc-800 text-xs font-bold px-3.5 py-2 rounded-xl transition"
+                  className="bg-zinc-100 hover:bg-[#FF6600]/10 text-zinc-800 text-xs font-bold px-3.5 py-2 rounded-xl transition"
                 >
                   Kurslarım Panelim
                 </button>
@@ -303,7 +303,7 @@ export default function App() {
                   onClick={() => { setActivePage('ogrenci'); setIsMobileMenuOpen(false); }} 
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" 
                   alt="Avatar" 
-                  className="w-8.5 h-8.5 rounded-full object-cover border-2 border-[#E58F49] cursor-pointer hover:opacity-90 hover:scale-[1.05] transition"
+                  className="w-8.5 h-8.5 rounded-full object-cover border-2 border-[#FF6600] cursor-pointer hover:opacity-90 hover:scale-[1.05] transition"
                 />
               </div>
             ) : (
@@ -316,7 +316,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => { setAuthModalInitialMode('register'); setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }} 
-                  className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl transition shadow-xs cursor-pointer"
+                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl transition shadow-xs cursor-pointer"
                 >
                   Kayıt Ol
                 </button>
@@ -340,28 +340,28 @@ export default function App() {
           <div className="md:hidden bg-white border-t border-zinc-200/80 shadow-lg px-4 py-4 space-y-2 animate-fade-in relative z-40">
             <button 
               onClick={() => { setActivePage('teachers-catalog'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'teachers-catalog' ? 'bg-[#E58F49]/10 text-[#E58F49]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'teachers-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Öğretmenler</span>
               <ChevronRight className="w-4 h-4 opacity-40 text-rose-500" />
             </button>
             <button 
               onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'katalog' ? 'bg-[#E58F49]/10 text-[#E58F49]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'katalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Dersler</span>
               <ChevronRight className="w-4 h-4 opacity-40" />
             </button>
             <button 
               onClick={() => { setActivePage('schools-catalog'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'schools-catalog' ? 'bg-[#E58F49]/10 text-[#E58F49]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'schools-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Özel Okul Ara</span>
               <ChevronRight className="w-4 h-4 opacity-40" />
             </button>
             <button 
               onClick={() => { setActivePage('special-courses-catalog'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'special-courses-catalog' ? 'bg-[#E58F49]/10 text-[#E58F49]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'special-courses-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
             >
               <span>Kurs ara</span>
               <ChevronRight className="w-4 h-4 opacity-40" />
@@ -387,7 +387,7 @@ export default function App() {
               setSelectedCourse(course);
               handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
-            onNavigateTo={setActivePage}
+            onNavigateTo={(page) => handleNavigate(page)}
             isLoggedIn={isLoggedIn}
             onSelectCategory={(cat) => {
               setSelectedCategory(cat);
@@ -416,7 +416,7 @@ export default function App() {
             course={selectedCourse}
             onEnroll={handleEnrollCourse}
             isEnrolled={enrolledCourseIds.includes(selectedCourse.id)}
-            onNavigateTo={setActivePage}
+            onNavigateTo={(page) => handleNavigate(page)}
           />
         )}
 
@@ -430,9 +430,9 @@ export default function App() {
             certificates={certificates}
             onSelectCourse={(c) => {
               setSelectedCourse(c);
-              setActivePage('detay');
+              handleNavigate('detay', { courseId: c.id }, `/ders/${c.id}`);
             }}
-            onNavigateTo={setActivePage}
+            onNavigateTo={(page) => handleNavigate(page)}
             onLogout={handleLogout}
           />
         )}
@@ -461,7 +461,7 @@ export default function App() {
                setSelectedCourse(course);
                handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
-            onNavigateTo={setActivePage}
+            onNavigateTo={(page) => handleNavigate(page)}
             onViewProfile={navigateToTeacherProfile}
           />
         )}
@@ -488,7 +488,7 @@ export default function App() {
 
         {activePage === 'admin' && (
           <AdminDashboard 
-            onNavigateTo={setActivePage}
+            onNavigateTo={(page) => handleNavigate(page)}
             courses={courses}
           />
         )}
@@ -522,7 +522,7 @@ export default function App() {
           {/* QUICK LINKS */}
           <div className="md:col-span-4 grid grid-cols-2 gap-6 text-sm">
             <div className="space-y-2.5 text-left">
-              <span className="text-sm text-[#E58F49] font-black block tracking-wider">Keşfet</span>
+              <span className="text-sm text-[#FF6600] font-black block tracking-wider">Keşfet</span>
               <button onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setSelectedCatalogSubject(null); }} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Tüm dersler</button>
               <button onClick={() => setActivePage('teachers-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Öğretmenler</button>
               <button onClick={() => setActivePage('schools-catalog')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul ara</button>
@@ -572,7 +572,7 @@ export default function App() {
 
           {/* "VERIFY CERTIFICATE" FOOTER SEARCH ("FARK" implementation!) */}
           <div className="md:col-span-4 bg-[#151412] p-5 rounded-2xl border border-zinc-850">
-            <span className="text-[9px] font-black tracking-widest text-[#E58F49] uppercase block mb-1">DİPLOMA / SERTİFİKA DOĞRULAMA</span>
+            <span className="text-[9px] font-black tracking-widest text-[#FF6600] uppercase block mb-1">DİPLOMA / SERTİFİKA DOĞRULAMA</span>
             <span className="text-xs font-black text-white block mb-2 leading-tight">Belgenizi almayı unutmayın!!</span>
             <p className="text-[11px] text-zinc-500 leading-relaxed mb-3">
               Şirketlerin direkt İK departmanları veya üçüncü şahıslar için öğrencinin ödev PDF'ini, kod test sonucunu ve biyografisini sorgulatın.
@@ -585,11 +585,11 @@ export default function App() {
                 value={searchCertId}
                 onChange={(e) => setSearchCertId(e.target.value)}
                 placeholder="Örn: NEXT-9842-12 veya GEMINI-3421-08"
-                className="w-full bg-[#252321] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#E58F49] placeholder-zinc-600 font-mono"
+                className="w-full bg-[#252321] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#FF6600] placeholder-zinc-600 font-mono"
               />
               <button 
                 type="submit"
-                className="bg-[#E58F49] hover:bg-[#D4803A] text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shrink-0"
+                className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shrink-0"
               >
                 Sorgula
               </button>
@@ -607,7 +607,7 @@ export default function App() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-zinc-850/60 flex flex-col gap-4 text-xs sm:text-sm text-zinc-500 text-left">
           <p className="leading-relaxed font-semibold text-zinc-400">
-            © 1999&apos;dan günümüze.. İstanbul Eğitim Merkezi DD İnternet topluluğu Markasıdır ve Markamız <a href="https://MeetWork.com.tr" target="_blank" rel="noopener noreferrer" className="underline text-[#E58F49] hover:text-white font-bold transition">MeetWork</a> İştirakidir.
+            © 1999&apos;dan günümüze.. İstanbul Eğitim Merkezi DD İnternet topluluğu Markasıdır ve Markamız <a href="https://MeetWork.com.tr" target="_blank" rel="noopener noreferrer" className="underline text-[#FF6600] hover:text-white font-bold transition">MeetWork</a> İştirakidir.
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2 font-bold text-zinc-400">
             <button 
@@ -701,7 +701,7 @@ export default function App() {
                 </button>
                 <button
                   onClick={() => alert('Sertifika resmi PDF formatında indiriliyor...')}
-                  className="flex-1 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3 rounded-xl transition"
+                  className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition"
                 >
                   Belgeyi PDF İndir
                 </button>
@@ -727,7 +727,7 @@ export default function App() {
             </button>
 
             <div className="text-center">
-              <span className="w-12 h-12 bg-amber-50 text-[#E58F49] flex items-center justify-center rounded-full mx-auto mb-4 border border-amber-100">
+              <span className="w-12 h-12 bg-amber-50 text-[#FF6600] flex items-center justify-center rounded-full mx-auto mb-4 border border-amber-100">
                 <Sparkles className="w-6 h-6 animate-pulse" />
               </span>
 
@@ -749,7 +749,7 @@ export default function App() {
                     alert('Detaylı döküman sayfasına yönlendiriliyorsunuz...');
                     setPopupModal(null);
                   }}
-                  className="flex-1 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer"
+                  className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer"
                 >
                   Devamı
                 </button>

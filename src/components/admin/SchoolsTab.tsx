@@ -59,7 +59,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
         <button 
           type="button"
           onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+          className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
         >
           <PlusCircle className="w-4 h-4" />
           Yeni Okul Ekle
@@ -76,7 +76,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
               placeholder="Örn: Kuzey Koleji"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#E58F49] font-bold text-zinc-800"
+              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#FF6600] font-bold text-zinc-800"
             />
           </div>
           <div className="space-y-1">
@@ -87,7 +87,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
               placeholder="Örn: Sarıyer, İstanbul"
               value={newLocation}
               onChange={(e) => setNewLocation(e.target.value)}
-              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#E58F49] font-bold text-zinc-800"
+              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#FF6600] font-bold text-zinc-800"
             />
           </div>
           <div className="space-y-1">
@@ -97,7 +97,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
               placeholder="Örn: 250"
               value={newCapacity}
               onChange={(e) => setNewCapacity(e.target.value)}
-              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#E58F49] font-bold text-zinc-800"
+              className="w-full bg-white border border-zinc-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#FF6600] font-bold text-zinc-800"
             />
           </div>
           <div className="space-y-1 flex flex-col justify-end">
@@ -119,7 +119,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
           placeholder="İsim veya Konuma Göre Ara..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
+          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
         />
       </div>
 
@@ -128,7 +128,7 @@ export default function SchoolsTab({ schools, onAddSchool, onDeleteSchool }: Sch
         {filtered.map(school => (
           <div key={school.id} className="p-4 border border-zinc-150 rounded-xl bg-zinc-50/40 flex flex-col justify-between gap-4">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[#E58F49]">
+              <div className="flex items-center gap-1.5 text-[#FF6600]">
                 <Building className="w-4 h-4 shrink-0" />
                 <span className="text-[10px] font-bold tracking-wider uppercase font-mono">Okul / Kolej</span>
               </div>

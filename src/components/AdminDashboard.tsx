@@ -147,8 +147,8 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
       root.style.setProperty('--primary-theme', '#6d28d9');
       root.style.setProperty('--primary-theme-hover', '#5b21b6');
     } else {
-      root.style.setProperty('--primary-theme', '#E58F49');
-      root.style.setProperty('--primary-theme-hover', '#D4803A');
+      root.style.setProperty('--primary-theme', '#FF6600');
+      root.style.setProperty('--primary-theme-hover', '#CC5200');
     }
     
     window.dispatchEvent(new Event('brandColorChange'));
@@ -509,11 +509,11 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="text-left">
             <div className="flex items-center gap-2 mb-2">
-              <span className="bg-[#E58F49] text-white text-[10px] uppercase font-black tracking-widest px-2.5 py-1 rounded">SİSTEM YÖNETİCİSİ</span>
+              <span className="bg-[#FF6600] text-white text-[10px] uppercase font-black tracking-widest px-2.5 py-1 rounded">SİSTEM YÖNETİCİSİ</span>
               <span className="text-zinc-400 text-xs">• Port 3000 Güvenli Panel</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white flex items-center gap-2.5">
-              <Shield className="w-8 h-8 text-[#E58F49]" />
+              <Shield className="w-8 h-8 text-[#FF6600]" />
               <span>İSTEM Admin Kontrol Merkezi</span>
             </h1>
             <p className="text-xs text-zinc-405 text-zinc-400 max-w-2xl mt-1.5 leading-relaxed">
@@ -523,7 +523,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
           </div>
           <button 
             onClick={() => onNavigateTo('home')}
-            className="bg-white/10 hover:bg-[#E58F49] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer self-start md:self-auto border border-white/10"
+            className="bg-white/10 hover:bg-[#FF6600] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer self-start md:self-auto border border-white/10"
           >
             Ana Sayfaya Dön
           </button>
@@ -536,7 +536,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           
           <div className="bg-white border border-zinc-200/60 p-5 rounded-2xl shadow-2xs flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-[#E58F49] flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-[#FF6600] flex items-center justify-center shrink-0">
               <Users className="w-6 h-6" />
             </div>
             <div>
@@ -553,7 +553,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
             <div>
               <span className="text-[10px] text-zinc-400 font-bold block uppercase leading-none">BEKLEYEN BAŞVURU</span>
               <span className="text-xl font-bold font-mono text-zinc-900 mt-1 block">{pendingApplicationsCount} Onay</span>
-              <span className="text-[9px] text-amber-655 text-[#E58F49] font-bold">Lütfen inceleyin</span>
+              <span className="text-[9px] text-amber-655 text-[#FF6600] font-bold">Lütfen inceleyin</span>
             </div>
           </div>
 
@@ -586,11 +586,11 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
           
           {/* SIDEBAR TABS - Left list */}
           <div className="lg:col-span-3 space-y-2 bg-white border border-zinc-200/60 p-4 rounded-2xl shadow-2xs">
-            <span className="text-[10px] font-black tracking-widest text-[#E58F49] uppercase block mb-3 px-2">YÖNETİM MENÜLERİ</span>
+            <span className="text-[10px] font-black tracking-widest text-[#FF6600] uppercase block mb-3 px-2">YÖNETİM MENÜLERİ</span>
             
             <button 
               onClick={() => setActiveTab('dashboard')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'dashboard' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-blue-50/50 text-blue-700 hover:bg-blue-100/80 border-blue-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'dashboard' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-blue-50/50 text-blue-700 hover:bg-blue-100/80 border-blue-100'}`}
             >
               <LayoutDashboard className="w-4 h-4 text-blue-600 shrink-0" />
               <span>1. Genel Bakış (Dashboard)</span>
@@ -598,7 +598,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('users')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'users' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-purple-50/50 text-purple-700 hover:bg-purple-100/80 border-purple-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'users' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-purple-50/50 text-purple-700 hover:bg-purple-100/80 border-purple-100'}`}
             >
               <Users className="w-4 h-4 text-purple-600 shrink-0" />
               <span>2. Kullanıcı Yönetimi (Users)</span>
@@ -606,7 +606,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('content')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'content' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-amber-50/50 text-amber-700 hover:bg-amber-100/80 border-amber-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'content' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-amber-50/50 text-amber-700 hover:bg-amber-100/80 border-amber-100'}`}
             >
               <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
               <span>3. İçerik Yönetimi (Content)</span>
@@ -614,7 +614,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('applications')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'applications' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-indigo-50/50 text-indigo-700 hover:bg-indigo-100/80 border-indigo-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'applications' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-indigo-50/50 text-indigo-700 hover:bg-indigo-100/80 border-indigo-100'}`}
             >
               <ClipboardCheck className="w-4 h-4 text-indigo-600 shrink-0" />
               <span className="flex-1 flex justify-between items-center">
@@ -627,7 +627,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('challenge_mgmt')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'challenge_mgmt' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-rose-50/50 text-rose-700 hover:bg-rose-100/80 border-rose-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'challenge_mgmt' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-rose-50/50 text-rose-700 hover:bg-rose-100/80 border-rose-100'}`}
             >
               <Sparkles className="w-4 h-4 text-rose-600 shrink-0" />
               <span>5. Challenge Özel Yönetimi</span>
@@ -635,7 +635,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('certifications')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'certifications' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-cyan-50/50 text-cyan-700 hover:bg-cyan-100/80 border-cyan-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'certifications' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-cyan-50/50 text-cyan-700 hover:bg-cyan-100/80 border-cyan-100'}`}
             >
               <Award className="w-4 h-4 text-cyan-600 shrink-0" />
               <span>6. Sertifika ve Doğrulama</span>
@@ -643,7 +643,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('payments')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'payments' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-teal-50/50 text-teal-700 hover:bg-teal-100/80 border-teal-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'payments' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-teal-50/50 text-teal-700 hover:bg-teal-100/80 border-teal-100'}`}
             >
               <CreditCard className="w-4 h-4 text-teal-600 shrink-0" />
               <span>7. Ödeme &amp; Finans</span>
@@ -651,7 +651,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('settings')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'settings' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-zinc-100/70 text-zinc-700 hover:bg-zinc-200/80 border-zinc-200'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'settings' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-zinc-100/70 text-zinc-700 hover:bg-zinc-200/80 border-zinc-200'}`}
             >
               <Settings className="w-4 h-4 text-zinc-650 shrink-0" />
               <span>8. Site Ayarları</span>
@@ -659,7 +659,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('reports')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'reports' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-lime-50/50 text-lime-800 hover:bg-lime-100/80 border-lime-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'reports' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-lime-50/50 text-lime-800 hover:bg-lime-100/80 border-lime-100'}`}
             >
               <BarChart3 className="w-4 h-4 text-lime-700 shrink-0" />
               <span>9. İstatistik &amp; Raporlar</span>
@@ -667,7 +667,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('support')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'support' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-fuchsia-50/50 text-fuchsia-700 hover:bg-fuchsia-100/80 border-fuchsia-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'support' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-fuchsia-50/50 text-fuchsia-700 hover:bg-fuchsia-100/80 border-fuchsia-100'}`}
             >
               <HelpCircle className="w-4 h-4 text-fuchsia-600 shrink-0" />
               <span>10. Yardım &amp; Destek</span>
@@ -675,7 +675,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('uicustomize')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'uicustomize' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-violet-50/50 text-violet-750 hover:bg-violet-100/80 border-violet-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'uicustomize' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-violet-50/50 text-violet-750 hover:bg-violet-100/80 border-violet-100'}`}
             >
               <Palette className="w-4 h-4 text-violet-600 shrink-0" />
               <span>11. Görünüm Özelleştirme</span>
@@ -683,7 +683,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
             <button 
               onClick={() => setActiveTab('bulk_import')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'bulk_import' ? 'bg-[#E58F49] text-white border-[#E58F49]' : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100/80 border-emerald-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'bulk_import' ? 'bg-[#FF6600] text-white border-[#FF6600]' : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100/80 border-emerald-100'}`}
               id="btn-admin-bulk-import"
             >
               <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -693,7 +693,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
             <button 
               type="button"
               onClick={() => setActiveTab('schools_mgmt')}
-              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'schools_mgmt' ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-sm' : 'bg-sky-50 text-sky-800 hover:bg-sky-100/80 border-sky-100'}`}
+              className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition cursor-pointer border ${activeTab === 'schools_mgmt' ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-sm' : 'bg-sky-50 text-sky-800 hover:bg-sky-100/80 border-sky-100'}`}
               id="btn-admin-schools-mgmt"
             >
               <Building className="w-4 h-4 text-sky-600 shrink-0" />
@@ -720,15 +720,15 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         <AreaChart data={REGISTRATION_CHART_DATA}>
                           <defs>
                             <linearGradient id="colorOgrenci" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#E58F49" stopOpacity={0.8}/>
-                              <stop offset="95%" stopColor="#E58F49" stopOpacity={0}/>
+                              <stop offset="5%" stopColor="#FF6600" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#FF6600" stopOpacity={0}/>
                             </linearGradient>
                           </defs>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <XAxis dataKey="label" stroke="#888888" fontSize={11} tickLine={false} />
                           <YAxis stroke="#888888" fontSize={11} tickLine={false} />
                           <Tooltip />
-                          <Area type="monotone" dataKey="Ogrenci" stroke="#E58F49" fillOpacity={1} fill="url(#colorOgrenci)" name="Yeni Kayıt" />
+                          <Area type="monotone" dataKey="Ogrenci" stroke="#FF6600" fillOpacity={1} fill="url(#colorOgrenci)" name="Yeni Kayıt" />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
@@ -737,7 +737,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                   {/* System statistics widget summaries */}
                   <div className="bg-white p-5 border border-zinc-200/60 rounded-2xl shadow-2xs flex flex-col justify-between">
                     <div>
-                      <span className="text-[10px] text-[#E58F49] font-black uppercase tracking-wider block">SİSTEM ÖNEMLİ VERİLERİ</span>
+                      <span className="text-[10px] text-[#FF6600] font-black uppercase tracking-wider block">SİSTEM ÖNEMLİ VERİLERİ</span>
                       <h4 className="text-base font-extrabold font-display text-zinc-950 mt-1">Platform Altyapı Aktifliği</h4>
                       <p className="text-xs text-zinc-500 mt-1">Sertifika ID doğrulayıcı, YouTube API entegrasyonu ve komisyon havuzu aktiftir.</p>
                       
@@ -748,7 +748,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         </div>
                         <div className="flex justify-between items-center text-xs pb-2 border-b border-zinc-100">
                           <span className="text-zinc-550 font-medium">Müşteri Destek Biletleri:</span>
-                          <span className="font-bold text-[#E58F49]">{tickets.filter(t => t.status === 'Açık').length} Bekleyen</span>
+                          <span className="font-bold text-[#FF6600]">{tickets.filter(t => t.status === 'Açık').length} Bekleyen</span>
                         </div>
                         <div className="flex justify-between items-center text-xs pb-2">
                           <span className="text-zinc-550 font-medium">Platform Komisyon Oranı:</span>
@@ -788,7 +788,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
                   {/* Top Popular Content in Arena */}
                   <div className="bg-white p-5 border border-zinc-200/60 rounded-2xl shadow-2xs">
-                    <span className="text-[10px] text-[#E58F49] font-black uppercase block mb-3">Son Eklenen ve Popüler İçerikler</span>
+                    <span className="text-[10px] text-[#FF6600] font-black uppercase block mb-3">Son Eklenen ve Popüler İçerikler</span>
                     <div className="space-y-3">
                       {POPULAR_COURSES.map((course, idx) => (
                         <div key={idx} className="p-3 bg-[#FAF9F5] rounded-xl border border-zinc-100 text-xs flex justify-between items-center">
@@ -817,7 +817,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                   </div>
                   <button 
                     onClick={() => setModalNewUser(true)}
-                    className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer self-start"
+                    className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer self-start"
                   >
                     <PlusCircle className="w-4 h-4" />
                     <span>Yeni Kullanıcı Ekle</span>
@@ -833,7 +833,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       placeholder="Adı Soyadı, Telefon veya E-posta İle Ara..."
                       value={searchUserQuery}
                       onChange={(e) => setSearchUserQuery(e.target.value)}
-                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
+                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
                     />
                   </div>
                   <select 
@@ -923,7 +923,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                   <div className="pt-4 pb-2 border-t border-zinc-100 flex flex-col items-center justify-center gap-1.5">
                     <button 
                       onClick={() => setVisibleUsersCount(prev => prev + 10)}
-                      className="bg-zinc-900 text-white hover:bg-[#E58F49] text-[11px] font-extrabold tracking-wider uppercase px-4 py-2 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      className="bg-zinc-900 text-white hover:bg-[#FF6600] text-[11px] font-extrabold tracking-wider uppercase px-4 py-2 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '4s' }} />
                       <span>Daha Fazla Sonuç Getir ({filteredUsers.length - visibleUsersCount} Kişi Gizli)</span>
@@ -987,7 +987,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         <button type="button" onClick={() => setModalNewUser(false)} className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold rounded-xl transition">
                           İptal
                         </button>
-                        <button type="submit" className="flex-1 py-2.5 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold rounded-xl transition">
+                        <button type="submit" className="flex-1 py-2.5 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold rounded-xl transition">
                           Ekle (Sistem Kaydı)
                         </button>
                       </div>
@@ -1031,7 +1031,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       onClick={() => setModalNewChallenge(true)}
                       className="bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer self-start shrink-0"
                     >
-                      <Plus className="w-4 h-4 text-[#E58F49]" />
+                      <Plus className="w-4 h-4 text-[#FF6600]" />
                       <span>Yeni Challenge Başlat</span>
                     </button>
                   </div>
@@ -1044,7 +1044,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       placeholder="Challenge Başlığı, Kategori veya Sponsor İle Ara..."
                       value={searchChallengeQuery}
                       onChange={(e) => setSearchChallengeQuery(e.target.value)}
-                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
+                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
                     />
                   </div>
 
@@ -1054,7 +1054,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       <div key={c.id} className="p-3 bg-[#FAF9F5] border border-zinc-150 rounded-xl flex flex-col justify-between gap-3 hover:shadow-xs transition duration-150 text-xs">
                         <div className="space-y-1.5">
                           <div className="flex justify-between items-start gap-1">
-                            <span className="bg-[#E58F49]/10 text-[#E58F49] text-[8px] font-black px-2 py-0.5 rounded uppercase font-sans">
+                            <span className="bg-[#FF6600]/10 text-[#FF6600] text-[8px] font-black px-2 py-0.5 rounded uppercase font-sans">
                               {c.category}
                             </span>
                             <span className={`text-[8.5px] font-black uppercase px-2 py-0.5 rounded ${
@@ -1171,7 +1171,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         <button type="button" onClick={() => setModalNewChallenge(false)} className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-805 text-xs font-bold rounded-xl transition">
                           İptal
                         </button>
-                        <button type="submit" className="flex-1 py-2.5 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold rounded-xl transition">
+                        <button type="submit" className="flex-1 py-2.5 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold rounded-xl transition">
                           Challenge Başlat (Canlı)
                         </button>
                       </div>
@@ -1196,7 +1196,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-zinc-150">
                     <div className="p-4 bg-amber-50/50 border border-amber-200/50 rounded-2xl space-y-2">
-                      <span className="text-[10px] text-[#E58F49] font-black uppercase tracking-wider block">Manuel Sertifika Atama Paneli</span>
+                      <span className="text-[10px] text-[#FF6600] font-black uppercase tracking-wider block">Manuel Sertifika Atama Paneli</span>
                       <p className="text-[11px] text-zinc-650 leading-relaxed">Başarı puanını, mezuniyet tarihini ve öğrencinin bilgilerini girerek anında QR onaylı sertifika şablonu üretin.</p>
                       <button 
                         onClick={() => {
@@ -1206,7 +1206,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                             alert(`✓ Başarıyla ${sName} adlı öğrenciye ${sCode} ID'li doğrulama sertifikası üretildi.`);
                           }
                         }}
-                        className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-3 py-1.5 rounded-lg transition mt-1 cursor-pointer"
+                        className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-3 py-1.5 rounded-lg transition mt-1 cursor-pointer"
                       >
                         Yeni Sertifika Şablonu Üret
                       </button>
@@ -1235,7 +1235,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                           placeholder="Sertifika ID, Sonuç veya IP ile ara..."
                           value={searchCertQuery}
                           onChange={(e) => setSearchCertQuery(e.target.value)}
-                          className="w-full bg-[#FAF9F5] border border-zinc-150 rounded-lg pl-7 pr-3 py-1 text-[11px] focus:outline-none focus:border-[#E58F49] font-medium"
+                          className="w-full bg-[#FAF9F5] border border-zinc-150 rounded-lg pl-7 pr-3 py-1 text-[11px] focus:outline-none focus:border-[#FF6600] font-medium"
                         />
                       </div>
                     </div>
@@ -1287,7 +1287,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                   {/* Highlight Commission Settings info for İSTEM */}
                   <div className="p-4 bg-zinc-950 text-white rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                      <span className="text-[10px] text-[#E58F49] font-black uppercase tracking-widest block">KOMİSYON YAPILANDIRMASI</span>
+                      <span className="text-[10px] text-[#FF6600] font-black uppercase tracking-widest block">KOMİSYON YAPILANDIRMASI</span>
                       <h4 className="text-sm font-black text-white mt-1">Platform Hizmet Payı Oranı</h4>
                       <p className="text-[11px] text-zinc-400">Şu anda İSTEM bağımsız pazarında komisyon sıfır (%0) olarak uygulanmakta, tüm gelir eğitmene gitmektedir.</p>
                     </div>
@@ -1321,7 +1321,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                           placeholder="Öğrenci, ders adı veya sipariş ID ile ara..."
                           value={searchPaymentQuery}
                           onChange={(e) => setSearchPaymentQuery(e.target.value)}
-                          className="w-full bg-[#FAF9F5] border border-zinc-150 rounded-lg pl-7 pr-3 py-1 text-[11px] focus:outline-none focus:border-[#E58F49] font-medium"
+                          className="w-full bg-[#FAF9F5] border border-zinc-150 rounded-lg pl-7 pr-3 py-1 text-[11px] focus:outline-none focus:border-[#FF6600] font-medium"
                         />
                       </div>
                     </div>
@@ -1446,7 +1446,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       localStorage.setItem('hotline_number', hotlineNumber);
                       alert('✓ Site ayarları ve entegrasyon anahtarları başarıyla veritabanına kaydedildi.');
                     }}
-                    className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+                    className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
                     <span>Değişiklikleri Kaydet</span>
@@ -1476,11 +1476,11 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                       placeholder="Ör. İSTEM Challenge Liderlik Tablosu Güncellendi! Detaylar Arenada..."
                       value={broadcastingText}
                       onChange={(e) => setBroadcastingText(e.target.value)}
-                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 outline-none focus:border-[#E58F49]"
+                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 outline-none focus:border-[#FF6600]"
                     />
                     <button 
                       type="submit"
-                      className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-4 rounded-xl transition shrink-0 cursor-pointer"
+                      className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-4 rounded-xl transition shrink-0 cursor-pointer"
                     >
                       Duyuru Yayınla
                     </button>
@@ -1507,7 +1507,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
 
                         {ticket.reply && (
                           <div className="p-3 bg-white border border-zinc-100 rounded-xl text-zinc-550 leading-relaxed font-mono mt-2">
-                            <span className="font-bold text-[#E58F49] block text-[10px] uppercase font-sans mb-1">✓ Admin Cevabı:</span>
+                            <span className="font-bold text-[#FF6600] block text-[10px] uppercase font-sans mb-1">✓ Admin Cevabı:</span>
                             {ticket.reply}
                           </div>
                         )}
@@ -1524,7 +1524,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                                   onChange={(e) => setSupportReplyText(e.target.value)}
                                   className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-1 text-xs outline-none"
                                 />
-                                <button type="submit" className="bg-[#E58F49] text-white font-bold px-3 py-1.5 rounded-xl text-[11px]">Gönder</button>
+                                <button type="submit" className="bg-[#FF6600] text-white font-bold px-3 py-1.5 rounded-xl text-[11px]">Gönder</button>
                                 <button type="button" onClick={() => setSelectedTicketId(null)} className="text-zinc-400 font-bold px-2 py-1">Vazgeç</button>
                               </form>
                             ) : (
@@ -1559,10 +1559,10 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                     <button 
                       onClick={() => { setActiveTheme('orange'); alert('🎨 Sıcak Turuncu teması aktif edildi.'); }}
                       className={`p-3 bg-white border rounded-xl text-center font-bold hover:bg-zinc-50 cursor-pointer transition ${
-                        activeTheme === 'orange' ? 'border-[#E58F49] ring-2 ring-[#E58F49]/40' : 'border-zinc-200'
+                        activeTheme === 'orange' ? 'border-[#FF6600] ring-2 ring-[#FF6600]/40' : 'border-zinc-200'
                       }`}
                     >
-                      <span className="w-3 h-3 bg-[#E58F49] rounded-full inline-block mr-1.5 align-middle" />
+                      <span className="w-3 h-3 bg-[#FF6600] rounded-full inline-block mr-1.5 align-middle" />
                       Sıcak Turuncu
                     </button>
                     <button 
@@ -1603,7 +1603,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         type="checkbox" 
                         checked={showHeroBannerSetting} 
                         onChange={(e) => setShowHeroBannerSetting(e.target.checked)} 
-                        className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] cursor-pointer" 
+                        className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] cursor-pointer" 
                       />
                       <span>Kahraman Giriş Modülü (Hero Banner)</span>
                     </label>
@@ -1612,7 +1612,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         type="checkbox" 
                         checked={showSearchBarsSetting} 
                         onChange={(e) => setShowSearchBarsSetting(e.target.checked)} 
-                        className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] cursor-pointer" 
+                        className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] cursor-pointer" 
                       />
                       <span>Özel Okul / Kurs Seçim Arama Çubukları</span>
                     </label>
@@ -1621,7 +1621,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         type="checkbox" 
                         checked={showChallengeSetting} 
                         onChange={(e) => setShowChallengeSetting(e.target.checked)} 
-                        className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] cursor-pointer" 
+                        className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] cursor-pointer" 
                       />
                       <span>Challenge Arena Sıralaması Tablosu</span>
                     </label>
@@ -1630,7 +1630,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                         type="checkbox" 
                         checked={showCertificateSetting} 
                         onChange={(e) => setShowCertificateSetting(e.target.checked)} 
-                        className="rounded border-zinc-350 text-[#E58F49] focus:ring-[#E58F49] cursor-pointer" 
+                        className="rounded border-zinc-350 text-[#FF6600] focus:ring-[#FF6600] cursor-pointer" 
                       />
                       <span>Sertifika Sorgulama Form Paneli</span>
                     </label>
@@ -1920,7 +1920,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                           </button>
 
                           <div className="grid grid-cols-2 gap-1.5">
-                            <label className="bg-[#E58F49] hover:bg-[#D4803A] text-white font-extrabold text-[10px] py-2 rounded-lg transition cursor-pointer flex items-center justify-center gap-1 shadow-sm text-center">
+                            <label className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold text-[10px] py-2 rounded-lg transition cursor-pointer flex items-center justify-center gap-1 shadow-sm text-center">
                               <Upload className="w-3 h-3 shrink-0" />
                               Dosya Seç
                               <input
@@ -1933,7 +1933,7 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                             <button
                               type="button"
                               onClick={() => handleSimulateUpload('courses')}
-                              className="bg-[#FAF9F5] hover:bg-zinc-100 text-[#E58F49] font-extrabold text-[10px] py-2 rounded-lg transition cursor-pointer text-center text-[10px]"
+                              className="bg-[#FAF9F5] hover:bg-zinc-100 text-[#FF6600] font-extrabold text-[10px] py-2 rounded-lg transition cursor-pointer text-center text-[10px]"
                             >
                               Simüle Et
                             </button>
@@ -1946,11 +1946,11 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
                 </div>
 
                 {/* TOPLU YÜKLEME DURUM & ÖNCE - SONRA SAYI TAKİP EKRANI */}
-                <div id="bulk-import-stats-board" className="bg-white border border-[#E58F49]/40 rounded-2xl p-6 shadow-2xs space-y-6 text-left">
+                <div id="bulk-import-stats-board" className="bg-white border border-[#FF6600]/40 rounded-2xl p-6 shadow-2xs space-y-6 text-left">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-4 border-b border-zinc-100">
                     <div>
                       <h4 className="text-sm font-black text-zinc-900 flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-[#E58F49] shrink-0" />
+                        <TrendingUp className="w-4 h-4 text-[#FF6600] shrink-0" />
                         <span>Sayısal Sayaç Takip Ekranı (Önceki vs Sonraki)</span>
                       </h4>
                       <p className="text-[11px] text-zinc-500 font-semibold leading-relaxed">

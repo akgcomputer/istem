@@ -137,7 +137,7 @@ export default function AdminContentTab() {
           <button
             key={tab.id}
             onClick={() => setActiveSubTab(tab.id)}
-            className={`px-4 py-2 text-xs font-bold rounded-t-lg transition whitespace-nowrap ${activeSubTab === tab.id ? 'bg-[#E58F49] text-white' : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'}`}
+            className={`px-4 py-2 text-xs font-bold rounded-t-lg transition whitespace-nowrap ${activeSubTab === tab.id ? 'bg-[#FF6600] text-white' : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'}`}
           >
             {tab.label}
           </button>
@@ -152,12 +152,12 @@ export default function AdminContentTab() {
             placeholder="İsim veya başlık ile tüm kayıtlarda ara..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#E58F49] font-medium"
+            className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
           />
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center justify-center gap-2 bg-[#E58F49] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#d47d38] transition"
+          className="flex items-center justify-center gap-2 bg-[#FF6600] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#d47d38] transition"
         >
           <Plus className="w-4 h-4" /> Ekle
         </button>

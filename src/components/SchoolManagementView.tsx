@@ -593,7 +593,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
         
         {/* Banner notification */}
         {successMessage && (
-          <div className="fixed bottom-6 right-6 bg-zinc-950 text-white border border-[#E58F49] py-3.5 px-6 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 animate-slide-up font-bold text-xs">
+          <div className="fixed bottom-6 right-6 bg-zinc-950 text-white border border-[#FF6600] py-3.5 px-6 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 animate-slide-up font-bold text-xs">
             <CheckCircle className="w-5 h-5 text-[#39FF14]" />
             <span>{successMessage}</span>
           </div>
@@ -603,7 +603,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-zinc-200 pb-6 mb-8 gap-4">
           <div className="text-left">
             <div className="inline-flex items-center gap-1.5 bg-amber-100/70 border border-amber-200/50 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#8C3F03] mb-3">
-              <School className="w-4 h-4 text-[#E58F49] shrink-0" />
+              <School className="w-4 h-4 text-[#FF6600] shrink-0" />
               Giriş Türü: {school.type === 'okul' ? 'Okul / Kolej Yetkilisi' : 'Özel Kurs Yönetimi'}
             </div>
             <h1 className="text-3xl font-black text-zinc-950 tracking-tight font-display">
@@ -632,7 +632,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                 saveSchoolState(school);
                 showNotification('Tebrikler! Değişiklikler başarıyla kaydedildi ve tüm portal şubelerinde eş zamanlı yayına alındı. (SEO Güncellendi)');
               }}
-              className="bg-zinc-950 hover:bg-zinc-800 text-white font-black text-xs px-5 py-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] active:scale-[0.99] border border-[#E58F49]/40 hover:border-[#E58F49]"
+              className="bg-zinc-950 hover:bg-zinc-800 text-white font-black text-xs px-5 py-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] active:scale-[0.99] border border-[#FF6600]/40 hover:border-[#FF6600]"
               id="header-save-and-publish"
             >
               <CheckCircle className="w-4 h-4 text-[#39FF14]" />
@@ -642,7 +642,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
             <div className="flex bg-white p-1 rounded-xl border border-zinc-200 shadow-sm">
               <button 
                 onClick={() => setActiveTab('form')}
-                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'form' ? 'bg-[#E58F49] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
+                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'form' ? 'bg-[#FF6600] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
                 id="btn-edit-mode"
               >
                 <Layout className="w-4 h-4" />
@@ -650,7 +650,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
               </button>
               <button 
                 onClick={() => setActiveTab('bulk')}
-                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'bulk' ? 'bg-[#E58F49] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
+                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'bulk' ? 'bg-[#FF6600] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
                 id="btn-bulk-mode"
               >
                 <FileSpreadsheet className="w-4 h-4 font-black text-emerald-500" />
@@ -658,7 +658,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
               </button>
               <button 
                 onClick={() => setActiveTab('preview')}
-                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'preview' ? 'bg-[#E58F49] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
+                className={`px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer ${activeTab === 'preview' ? 'bg-[#FF6600] text-white shadow-sm' : 'text-zinc-600 hover:text-zinc-950'}`}
                 id="btn-preview-mode"
               >
                 <Globe className="w-4 h-4" />
@@ -679,7 +679,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
               <div className="bg-white border border-zinc-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
                 <div className="border-b border-zinc-100 pb-3 flex justify-between items-center">
                   <h2 className="text-sm font-black text-zinc-900 uppercase tracking-widest flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 bg-[#E58F49] rounded-full" />
+                    <span className="w-2.5 h-2.5 bg-[#FF6600] rounded-full" />
                     Kurum Temel Bilgileri
                   </h2>
                   <div className="flex items-center gap-1.5 bg-zinc-100 px-2.5 py-1 rounded-lg">
@@ -703,7 +703,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                       value={school.name}
                       onChange={(e) => handleUpdateSchoolField('name', e.target.value)}
                       placeholder="Örn: Kuzey Bahçeşehir Koleji ve Fen Lisesi"
-                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                      className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                     />
                   </div>
 
@@ -715,7 +715,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                         value={school.location}
                         onChange={(e) => handleUpdateSchoolField('location', e.target.value)}
                         placeholder="Örn: Sarıyer, İstanbul"
-                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                       />
                     </div>
                     <div>
@@ -725,7 +725,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                         value={school.teachersCount || ''}
                         onChange={(e) => handleUpdateSchoolField('teachersCount', parseInt(e.target.value) || 0)}
                         placeholder="Örn: 24"
-                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                       />
                     </div>
                   </div>
@@ -738,7 +738,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                         value={school.capacity || ''}
                         onChange={(e) => handleUpdateSchoolField('capacity', parseInt(e.target.value) || 0)}
                         placeholder="Örn: 200"
-                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                       />
                     </div>
                     <div>
@@ -772,7 +772,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                       key={b.id}
                       type="button"
                       onClick={() => setSelectedBranchId(b.id)}
-                      className={`px-4.5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${selectedBranchId === b.id ? 'bg-[#E58F49] text-white shadow-sm' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'}`}
+                      className={`px-4.5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${selectedBranchId === b.id ? 'bg-[#FF6600] text-white shadow-sm' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'}`}
                     >
                       <Building2 className="w-3.5 h-3.5 shrink-0 opacity-70" />
                       {b.name || (idx === 0 ? 'Merkez' : `Şube ${idx + 1}`)}
@@ -782,7 +782,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                   <button 
                     type="button"
                     onClick={handleAddBranch}
-                    className="px-4.5 py-2.5 text-[#E58F49] hover:bg-orange-50 rounded-xl text-xs font-black transition flex items-center gap-1 cursor-pointer ml-auto border-l border-dashed border-zinc-200"
+                    className="px-4.5 py-2.5 text-[#FF6600] hover:bg-orange-50 rounded-xl text-xs font-black transition flex items-center gap-1 cursor-pointer ml-auto border-l border-dashed border-zinc-200"
                     id="btn-add-branch"
                   >
                     <Plus className="w-4 h-4 shrink-0" />
@@ -819,7 +819,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           value={activeBranch.name}
                           onChange={(e) => handleUpdateBranchField(activeBranch.id, 'name', e.target.value)}
                           placeholder="Örn: Bebek Şubesi veya Kadıköy Şube"
-                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                         />
                       </div>
                       <div>
@@ -829,7 +829,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           value={activeBranch.capacity || ''}
                           onChange={(e) => handleUpdateBranchField(activeBranch.id, 'capacity', parseInt(e.target.value) || 0)}
                           placeholder="Örn: 100"
-                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                         />
                       </div>
                     </div>
@@ -847,12 +847,12 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                               onClick={() => handleToggleEducationLevel(activeBranch.id, activeBranch.educationLevel, option)}
                               className={`px-3 py-2.5 rounded-xl text-left text-xs font-bold transition flex items-center gap-2 cursor-pointer border ${
                                 isSelected 
-                                  ? 'bg-[#E58F49]/10 border-[#E58F49] text-[#8C3F03] shadow-xs' 
+                                  ? 'bg-[#FF6600]/10 border-[#FF6600] text-[#8C3F03] shadow-xs' 
                                   : 'bg-white border-zinc-200 text-zinc-650 hover:border-zinc-300'
                               }`}
                             >
                               <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 transition-all ${
-                                isSelected ? 'bg-[#E58F49] border-[#E58F49]' : 'border-zinc-300 bg-white'
+                                isSelected ? 'bg-[#FF6600] border-[#FF6600]' : 'border-zinc-300 bg-white'
                               }`}>
                                 {isSelected && (
                                   <svg className="w-2.5 h-2.5 text-white stroke-[3.5px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -875,7 +875,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           value={activeBranch.lessonsIntensity}
                           onChange={(e) => handleUpdateBranchField(activeBranch.id, 'lessonsIntensity', e.target.value)}
                           placeholder="Örn: Haftalık 42 Ders Saati"
-                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                         />
                       </div>
                       <div>
@@ -885,7 +885,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           value={activeBranch.hours}
                           onChange={(e) => handleUpdateBranchField(activeBranch.id, 'hours', e.target.value)}
                           placeholder="Örn: 08:30-14:30"
-                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                         />
                       </div>
                     </div>
@@ -897,14 +897,14 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                         value={activeBranch.ateliers}
                         onChange={(e) => handleUpdateBranchField(activeBranch.id, 'ateliers', e.target.value)}
                         placeholder="Örn: Drama, Kodlama, Ekoloji, Piyano"
-                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                        className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                       />
                     </div>
 
                     {/* NEW FIELDS REQUESTED: Adres, Telefon, Yetkili Kişi & Ünvanı */}
                     <div className="border-t border-dashed border-zinc-200 pt-4 space-y-4">
                       <h4 className="text-xs font-black text-zinc-800 uppercase tracking-wider flex items-center gap-1.5">
-                        <Phone className="w-3.5 h-3.5 text-[#E58F49]" /> 
+                        <Phone className="w-3.5 h-3.5 text-[#FF6600]" /> 
                         Şube İletişim ve Yetkili Bilgileri
                       </h4>
 
@@ -916,7 +916,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                             value={activeBranch.phone || ''}
                             onChange={(e) => handleUpdateBranchField(activeBranch.id, 'phone', e.target.value)}
                             placeholder="Örn: +90 (212) 555 12 34"
-                            className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                            className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-2">
@@ -927,7 +927,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                               value={activeBranch.authorizedPerson || ''}
                               onChange={(e) => handleUpdateBranchField(activeBranch.id, 'authorizedPerson', e.target.value)}
                               placeholder="Örn: Ahmet Öztürk"
-                              className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                              className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                             />
                           </div>
                           <div>
@@ -937,7 +937,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                               value={activeBranch.authorizedTitle || ''}
                               onChange={(e) => handleUpdateBranchField(activeBranch.id, 'authorizedTitle', e.target.value)}
                               placeholder="Örn: Şube Müdürü"
-                              className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                              className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                             />
                           </div>
                         </div>
@@ -950,7 +950,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           value={activeBranch.address || ''}
                           onChange={(e) => handleUpdateBranchField(activeBranch.id, 'address', e.target.value)}
                           placeholder="Örn: Atatürk Caddesi, Ihlamur Sokak No:12, Sarıyer / İstanbul"
-                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#E58F49] transition"
+                          className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl px-4 py-3 text-xs text-zinc-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#FF6600] transition"
                         />
                       </div>
                     </div>
@@ -959,14 +959,14 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                     <div className="space-y-3 pt-2">
                       <div className="flex items-center justify-between">
                         <label className="text-xs font-bold text-zinc-500 block">Şube &amp; Sınıf Görselleri (Sırayla Listelenir, En Fazla 10 Adet)</label>
-                        <span className="text-[10px] font-bold text-[#E58F49]">({activeBranch.images?.length || 0} / 10 Ekli)</span>
+                        <span className="text-[10px] font-bold text-[#FF6600]">({activeBranch.images?.length || 0} / 10 Ekli)</span>
                       </div>
 
                       {/* Mock Drag & Drop Upload Zone */}
                       <div 
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={handleMockFileDrop}
-                        className="border-2 border-dashed border-zinc-200 bg-zinc-50 rounded-2xl p-6 text-center hover:border-[#E58F49] hover:bg-orange-50/10 cursor-pointer transition flex flex-col items-center justify-center animate-fade-in"
+                        className="border-2 border-dashed border-zinc-200 bg-zinc-50 rounded-2xl p-6 text-center hover:border-[#FF6600] hover:bg-orange-50/10 cursor-pointer transition flex flex-col items-center justify-center animate-fade-in"
                         onClick={() => {
                           const randPic = STOCK_PHOTOS[Math.floor(Math.random() * STOCK_PHOTOS.length)];
                           handleAddStockImage(activeBranch.id, randPic);
@@ -986,7 +986,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                               key={label}
                               type="button"
                               onClick={() => handleAddStockImage(activeBranch.id, STOCK_PHOTOS[idx % STOCK_PHOTOS.length])}
-                              className="text-[10px] bg-white border border-zinc-200 hover:border-[#E58F49] text-zinc-700 hover:text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg transition shrink-0 cursor-pointer"
+                              className="text-[10px] bg-white border border-zinc-200 hover:border-[#FF6600] text-zinc-700 hover:text-zinc-950 font-bold px-2.5 py-1.5 rounded-lg transition shrink-0 cursor-pointer"
                             >
                               + {label}
                             </button>
@@ -1016,10 +1016,10 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                     </div>
 
                     {/* Secondary Save & Publish prominent panel */}
-                    <div className="bg-gradient-to-r from-amber-500/5 to-amber-550/10 border border-[#E58F49]/30 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 animate-fade-in text-left">
+                    <div className="bg-gradient-to-r from-amber-500/5 to-amber-550/10 border border-[#FF6600]/30 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 animate-fade-in text-left">
                       <div className="flex items-center gap-3 text-left">
                         <div className="w-10 h-10 bg-amber-100/80 rounded-full flex items-center justify-center shrink-0">
-                          <Sparkles className="w-5 h-5 text-[#E58F49]" />
+                          <Sparkles className="w-5 h-5 text-[#FF6600]" />
                         </div>
                         <div>
                           <h3 className="text-sm font-black text-zinc-950">Değişiklikleri Dünyayla Paylaşın</h3>
@@ -1034,7 +1034,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           saveSchoolState(school);
                           showNotification('Tebrikler! Değişiklikler başarıyla kaydedildi ve tüm portal şubelerinde eş zamanlı yayına alındı. (SEO Güncellendi)');
                         }}
-                        className="w-full sm:w-auto bg-zinc-950 hover:bg-zinc-800 text-white font-black text-xs px-6 py-3.5 rounded-2xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] active:scale-[0.99] border border-[#E58F49]/40 hover:border-[#E58F49] whitespace-nowrap"
+                        className="w-full sm:w-auto bg-zinc-950 hover:bg-zinc-800 text-white font-black text-xs px-6 py-3.5 rounded-2xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] active:scale-[0.99] border border-[#FF6600]/40 hover:border-[#FF6600] whitespace-nowrap"
                         id="btn-save-and-publish"
                       >
                         <CheckCircle className="w-4 h-4 text-[#39FF14]" />
@@ -1067,7 +1067,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                   
                   {/* Dynamic address bar */}
                   <div className="bg-[#12110F] border border-zinc-805 text-zinc-400 px-3.5 py-1.5 rounded-lg text-[10px] font-mono flex items-center gap-2 max-w-sm w-3/4 mx-auto select-all justify-center">
-                    <Globe className="w-3 h-3 text-[#E58F49]" />
+                    <Globe className="w-3 h-3 text-[#FF6600]" />
                     <span className="truncate">{simulatedPath}</span>
                   </div>
                 </div>
@@ -1079,7 +1079,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                     {/* Upper title context */}
                     <div className="flex justify-between items-start gap-4 mb-4 border-b border-zinc-800 pb-4">
                       <div>
-                        <span className="text-[9px] bg-[#E58F49]/10 text-[#E58F49] px-2 py-0.5 rounded-md font-black tracking-widest uppercase mb-1 inline-block">
+                        <span className="text-[9px] bg-[#FF6600]/10 text-[#FF6600] px-2 py-0.5 rounded-md font-black tracking-widest uppercase mb-1 inline-block">
                           {school.type === 'okul' ? 'ÖZEL OKUL SAYFASI' : 'ÖZEL KURS PORTALI'}
                         </span>
                         <h3 className="text-lg font-black text-white font-display leading-tight">{school.name || 'Ad Belirtilmedi'}</h3>
@@ -1098,17 +1098,17 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                     {/* Stats strip */}
                     <div className="grid grid-cols-3 gap-2 border-b border-zinc-850 pb-4 mb-4">
                       <div className="bg-zinc-900 border border-zinc-800/80 p-2 text-center">
-                        <Users className="w-3.5 h-3.5 text-[#E58F49] mx-auto mb-1 opacity-85" />
+                        <Users className="w-3.5 h-3.5 text-[#FF6600] mx-auto mb-1 opacity-85" />
                         <span className="text-[9px] text-zinc-400 block font-semibold">Öğretmen</span>
                         <span className="text-xs font-mono font-black text-white">{school.teachersCount || 0}</span>
                       </div>
                       <div className="bg-zinc-900 border border-zinc-800/80 p-2 text-center">
-                        <BookOpen className="w-3.5 h-3.5 text-[#E58F49] mx-auto mb-1 opacity-85" />
+                        <BookOpen className="w-3.5 h-3.5 text-[#FF6600] mx-auto mb-1 opacity-85" />
                         <span className="text-[9px] text-zinc-400 block font-semibold">Şube Kapasitesi</span>
                         <span className="text-xs font-mono font-bold text-white">{activeBranch?.capacity || 0}</span>
                       </div>
                       <div className="bg-zinc-900 border border-zinc-800/80 p-2 text-center">
-                        <Clock className="w-3.5 h-3.5 text-[#E58F49] mx-auto mb-1 opacity-85" />
+                        <Clock className="w-3.5 h-3.5 text-[#FF6600] mx-auto mb-1 opacity-85" />
                         <span className="text-[9px] text-zinc-400 block font-semibold">Giriş-Çıkış</span>
                         <span className="text-[10px] font-bold text-white leading-none truncate block mt-0.5">{activeBranch?.hours || '--:--'}</span>
                       </div>
@@ -1134,7 +1134,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                         </div>
                         <div>
                           <span className="text-[9px] text-zinc-550 font-bold uppercase tracking-wider block">Yetkili</span>
-                          <span className="text-[#E58F49] truncate block" title={`${activeBranch?.authorizedPerson} (${activeBranch?.authorizedTitle})`}>
+                          <span className="text-[#FF6600] truncate block" title={`${activeBranch?.authorizedPerson} (${activeBranch?.authorizedTitle})`}>
                             {activeBranch?.authorizedPerson || 'Yönetici'}
                           </span>
                         </div>
@@ -1148,7 +1148,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                             activeBranch.ateliers.split(',').map((tag, idx) => (
                               <span 
                                 key={idx} 
-                                className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-[#E58F49] font-black px-2 py-0.5 rounded"
+                                className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-[#FF6600] font-black px-2 py-0.5 rounded"
                               >
                                 {tag.trim()}
                               </span>
@@ -1187,14 +1187,14 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
               {/* Informative Guidance details */}
               <div className="bg-gradient-to-r from-amber-50 to-[#FAF9F5] border border-amber-200/50 rounded-3xl p-5 text-left space-y-3">
                 <h4 className="font-extrabold text-xs text-[#8C3F03] flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#E58F49]" /> Şube Başına Benzersiz SEO Adresleri
+                  <Sparkles className="w-4 h-4 text-[#FF6600]" /> Şube Başına Benzersiz SEO Adresleri
                 </h4>
                 <p className="text-[11px] text-zinc-600 leading-relaxed font-semibold">
                   Kaydettiğiniz her şube, sistemimiz üzerinde bağımsız ve arama motorlarıyla tam uyumlu benzersiz alt adreslere sahiptir. Okul ve şube isimlerini girdikçe SEO URL yapısı otomatik üretilir:
                 </p>
                 <div className="bg-white border border-amber-200/40 p-3 rounded-xl font-mono text-[10px] text-zinc-600 space-y-1">
-                  <div>Okul için: <span className="text-[#E58F49] font-bold">/{schoolSlug}/merkez-subesi</span></div>
-                  <div>Kurs için: <span className="text-[#E58F49] font-bold">/{schoolSlug}/cadde-subesi</span></div>
+                  <div>Okul için: <span className="text-[#FF6600] font-bold">/{schoolSlug}/merkez-subesi</span></div>
+                  <div>Kurs için: <span className="text-[#FF6600] font-bold">/{schoolSlug}/cadde-subesi</span></div>
                 </div>
               </div>
 
@@ -1209,17 +1209,17 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
         {activeTab === 'bulk' && (
           <div className="space-y-8 animate-fade-in text-left">
             {/* Informational Intro Banner */}
-            <div className="bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent border border-[#E58F49]/35 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent border border-[#FF6600]/35 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
               <div className="space-y-2 max-w-2xl">
-                <div className="inline-flex items-center gap-1.5 bg-[#E58F49]/10 border border-[#E58F49]/30 px-3 py-1 rounded-full text-xs font-black text-[#8C3F03]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#E58F49]" /> Multi-Format Excel Seeding Engine
+                <div className="inline-flex items-center gap-1.5 bg-[#FF6600]/10 border border-[#FF6600]/30 px-3 py-1 rounded-full text-xs font-black text-[#8C3F03]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#FF6600]" /> Multi-Format Excel Seeding Engine
                 </div>
                 <h2 className="text-xl font-black text-zinc-950 font-display">Sihirbaz Destekli Toplu Veri Yönetimi</h2>
                 <p className="text-xs text-zinc-650 font-semibold leading-relaxed">
                   Aşağıdaki hazır şablon dosyalarını indirip dilediğiniz verileri doldurduktan sonra sisteme geri yükleyebilir veya <strong className="text-[#8C3F03]">Hızlı Demo Yükle</strong> butonuyla simüle edilmiş hazır verileri tek tıkla yükleyebilirsiniz.
                 </p>
               </div>
-              <div className="flex flex-col items-center justify-center shrink-0 w-24 h-24 bg-white/70 border border-[#E58F49]/20 rounded-2xl shadow-inner select-none p-2 text-center">
+              <div className="flex flex-col items-center justify-center shrink-0 w-24 h-24 bg-white/70 border border-[#FF6600]/20 rounded-2xl shadow-inner select-none p-2 text-center">
                 <span className="text-[10px] font-bold text-zinc-400 uppercase">Toplam Yük</span>
                 <span className="text-2xl font-black font-mono text-zinc-900">
                   {lessonsList.length + teachersList.length + schoolsList.length + coursesList.length}
@@ -1541,7 +1541,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                     <tbody className="divide-y divide-zinc-100 text-zinc-700 font-semibold">
                       {lessonsList.map(l => (
                         <tr key={l.id} className="hover:bg-zinc-50/50 transition">
-                          <td className="py-2.5 font-mono font-black text-[11px] text-[#E58F49] uppercase">{l.code}</td>
+                          <td className="py-2.5 font-mono font-black text-[11px] text-[#FF6600] uppercase">{l.code}</td>
                           <td className="py-2.5 font-extrabold text-zinc-900">{l.name}</td>
                           <td className="py-2.5">
                             <span className="bg-zinc-100 text-zinc-650 px-2 py-0.5 rounded text-[10px]">
@@ -1694,7 +1694,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                           </td>
                           <td className="py-2.5 text-zinc-650">{s.location}</td>
                           <td className="py-2.5 text-center font-mono font-bold text-zinc-900">{s.capacity} Ort.</td>
-                          <td className="py-2.5 text-center font-mono font-bold text-[#E58F49]">{s.teachersCount} Öğr.</td>
+                          <td className="py-2.5 text-center font-mono font-bold text-[#FF6600]">{s.teachersCount} Öğr.</td>
                           <td className="py-2.5 text-right" onClick={(e) => e.stopPropagation()}>
                             <button
                               type="button"
@@ -1808,8 +1808,8 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
             {/* Address Bar Emulator inside the public page */}
             <div className="bg-zinc-50 border-b border-zinc-200 px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-3">
               <span className="text-zinc-500 font-extrabold text-xs shrink-0">Canlı SEO Portal URL Adresi:</span>
-              <div className="bg-white border border-zinc-250 text-[#E58F49] px-4 py-2 rounded-xl text-xs font-mono flex items-center gap-2 select-all flex-1 shadow-inner truncate">
-                <Globe className="w-4 h-4 text-[#E58F49] shrink-0" />
+              <div className="bg-white border border-zinc-250 text-[#FF6600] px-4 py-2 rounded-xl text-xs font-mono flex items-center gap-2 select-all flex-1 shadow-inner truncate">
+                <Globe className="w-4 h-4 text-[#FF6600] shrink-0" />
                 <span>{currentSimulatedUrl}</span>
               </div>
               <button
@@ -1907,7 +1907,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                   {/* Branch images gallery list view */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-black font-display text-zinc-900 border-b border-zinc-100 pb-2 tracking-tight flex items-center gap-1.5">
-                      <ImageIcon className="w-5 h-5 text-[#E58F49]" />
+                      <ImageIcon className="w-5 h-5 text-[#FF6600]" />
                       Şube Sınıfları, Bahçe ve Atölye Görselleri ({activeBranch?.images?.length || 0} Fotoğraf)
                     </h3>
                     {activeBranch?.images && activeBranch.images.length > 0 ? (
@@ -1953,7 +1953,7 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                             key={id} 
                             className="bg-white px-3.5 py-3 rounded-xl border border-zinc-200 shadow-xs flex items-center gap-2 text-xs font-bold text-zinc-850 hover:bg-zinc-50 transition"
                           >
-                            <span className="w-2 h-2 rounded-full bg-[#E58F49] shrink-0" />
+                            <span className="w-2 h-2 rounded-full bg-[#FF6600] shrink-0" />
                             <span>{item.trim()} Atölyesi</span>
                           </div>
                         ))
@@ -1980,10 +1980,10 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
                             setSelectedBranchId(b.id);
                             window.scrollTo({ top: 120, behavior: 'smooth' });
                           }}
-                          className={`w-full text-left p-3.5 rounded-xl border text-xs font-bold transition flex items-center justify-between cursor-pointer ${selectedBranchId === b.id ? 'bg-[#E58F49]/10 border-[#E58F49] text-zinc-900' : 'bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50'}`}
+                          className={`w-full text-left p-3.5 rounded-xl border text-xs font-bold transition flex items-center justify-between cursor-pointer ${selectedBranchId === b.id ? 'bg-[#FF6600]/10 border-[#FF6600] text-zinc-900' : 'bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50'}`}
                         >
                           <div className="flex items-center gap-2 truncate">
-                            <span className={`w-2 h-2 rounded-full ${selectedBranchId === b.id ? 'bg-[#E58F49]' : 'bg-zinc-300'}`} />
+                            <span className={`w-2 h-2 rounded-full ${selectedBranchId === b.id ? 'bg-[#FF6600]' : 'bg-zinc-300'}`} />
                             <span className="truncate">{b.name} Şubesi</span>
                           </div>
                           <span className="text-[9px] bg-zinc-100 text-zinc-500 px-2 py-0.5 rounded shrink-0">

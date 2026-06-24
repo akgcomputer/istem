@@ -48,7 +48,7 @@ export function TeacherForm({ initialData = null, onSubmit, onCancel }: any) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-      <div className="font-bold text-sm text-[#E58F49] mb-4">Eğitmen Formu</div>
+      <div className="font-bold text-sm text-[#FF6600] mb-4">Eğitmen Formu</div>
       <div>
         <label className="block text-zinc-700 font-bold mb-1">Eğitmen Adı ve Soyadı *</label>
         <input name="name" value={formData.name} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" placeholder="Örn: Serdar Yılmaz" />
@@ -88,7 +88,7 @@ export function TeacherForm({ initialData = null, onSubmit, onCancel }: any) {
           </div>
         ))}
         {formData.sessions.length < 5 && (
-          <button type="button" onClick={addSession} className="text-[#E58F49] font-bold">+ Ders Ekle</button>
+          <button type="button" onClick={addSession} className="text-[#FF6600] font-bold">+ Ders Ekle</button>
         )}
       </div>
 
@@ -103,7 +103,7 @@ export function TeacherForm({ initialData = null, onSubmit, onCancel }: any) {
 
       <div className="flex justify-end gap-2 pt-4">
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-zinc-100 rounded text-zinc-700 font-bold hover:bg-zinc-200">İptal</button>
-        <button type="submit" className="px-4 py-2 bg-[#E58F49] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
+        <button type="submit" className="px-4 py-2 bg-[#FF6600] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
       </div>
     </form>
   );
@@ -144,7 +144,7 @@ export function SchoolForm({ initialData = null, onSubmit, onCancel }: any) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-      <div className="font-bold text-sm text-[#E58F49] mb-4">Okul Başvuru Formu</div>
+      <div className="font-bold text-sm text-[#FF6600] mb-4">Okul Başvuru Formu</div>
       <div>
         <label className="block text-zinc-700 font-bold mb-1">Kurum/Okul Resmi Adı *</label>
         <input name="name" value={formData.name} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" placeholder="Örn: Kuzey Bahçeşehir Koleji" />
@@ -191,7 +191,7 @@ export function SchoolForm({ initialData = null, onSubmit, onCancel }: any) {
       </div>
       <div className="flex justify-end gap-2 pt-4">
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-zinc-100 rounded text-zinc-700 font-bold hover:bg-zinc-200">İptal</button>
-        <button type="submit" className="px-4 py-2 bg-[#E58F49] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
+        <button type="submit" className="px-4 py-2 bg-[#FF6600] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
       </div>
     </form>
   );
@@ -224,7 +224,7 @@ export function CourseForm({ initialData = null, onSubmit, onCancel }: any) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-      <div className="font-bold text-sm text-[#E58F49] mb-4">Ders / E-Eğitim Formu</div>
+      <div className="font-bold text-sm text-[#FF6600] mb-4">Ders / E-Eğitim Formu</div>
       <div>
         <label className="block text-zinc-700 font-bold mb-1">Eğitim Başlığı *</label>
         <input name="title" value={formData.title} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" />
@@ -266,7 +266,7 @@ export function CourseForm({ initialData = null, onSubmit, onCancel }: any) {
       </div>
       <div className="flex justify-end gap-2 pt-4">
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-zinc-100 rounded text-zinc-700 font-bold hover:bg-zinc-200">İptal</button>
-        <button type="submit" className="px-4 py-2 bg-[#E58F49] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
+        <button type="submit" className="px-4 py-2 bg-[#FF6600] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
       </div>
     </form>
   );
@@ -301,7 +301,7 @@ export function SpecialCourseForm({ initialData = null, onSubmit, onCancel }: an
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-      <div className="font-bold text-sm text-[#E58F49] mb-4">Özel Kurs Formu</div>
+      <div className="font-bold text-sm text-[#FF6600] mb-4">Özel Kurs Formu</div>
       <div>
         <label className="block text-zinc-700 font-bold mb-1">Kurs Adı *</label>
         <input name="name" value={formData.name} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" />
@@ -328,7 +328,7 @@ export function SpecialCourseForm({ initialData = null, onSubmit, onCancel }: an
       </div>
       <div className="flex justify-end gap-2 pt-4">
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-zinc-100 rounded text-zinc-700 font-bold hover:bg-zinc-200">İptal</button>
-        <button type="submit" className="px-4 py-2 bg-[#E58F49] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
+        <button type="submit" className="px-4 py-2 bg-[#FF6600] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
       </div>
     </form>
   );
@@ -361,7 +361,7 @@ export function ChallengeForm({ initialData = null, onSubmit, onCancel }: any) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-      <div className="font-bold text-sm text-[#E58F49] mb-4">🎙️ Yeni Challenge Oluşturma Sihirbazı</div>
+      <div className="font-bold text-sm text-[#FF6600] mb-4">🎙️ Yeni Challenge Oluşturma Sihirbazı</div>
       <div>
         <label className="block text-zinc-700 font-bold mb-1">Challenge Başlığı *</label>
         <input name="title" value={formData.title} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" />
@@ -384,7 +384,7 @@ export function ChallengeForm({ initialData = null, onSubmit, onCancel }: any) {
       </div>
       <div className="flex justify-end gap-2 pt-4">
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-zinc-100 rounded text-zinc-700 font-bold hover:bg-zinc-200">İptal</button>
-        <button type="submit" className="px-4 py-2 bg-[#E58F49] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
+        <button type="submit" className="px-4 py-2 bg-[#FF6600] rounded text-white font-bold hover:bg-[#d47d38]">Kaydet & Yayınla</button>
       </div>
     </form>
   );

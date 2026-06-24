@@ -377,7 +377,7 @@ export default function TeachersCatalogView({
         <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#E11A4F]/5 rounded-full blur-2xl pointer-events-none" />
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">
+            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">
               TÜRKİYE'NİN İLK KİŞİSELLEŞTİRİLMİŞ BAĞIMSIZ ÖĞRETMEN EKOSİSTEMİ
             </span>
             <h1 id="teachers-catalog-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
@@ -405,7 +405,7 @@ export default function TeachersCatalogView({
             <div className="lg:col-span-3 bg-white border border-zinc-200/60 rounded-3xl p-5 shadow-xs space-y-6">
             
             <div className="flex items-center gap-2 border-b border-zinc-100 pb-3 text-zinc-800 font-bold text-sm">
-              <SlidersHorizontal className="w-4 h-4 text-[#E58F49]" />
+              <SlidersHorizontal className="w-4 h-4 text-[#FF6600]" />
               Gelişmiş Filtre Sistemi
             </div>
 
@@ -422,7 +422,7 @@ export default function TeachersCatalogView({
                   }}
                   onFocus={() => setShowSuggestions(true)}
                   placeholder="Örn: 'Python', 'Matematik', 'TOEFL'"
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2.5 text-xs text-zinc-800 font-semibold focus:outline-none focus:ring-1 focus:ring-[#E58F49]"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2.5 text-xs text-zinc-800 font-semibold focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                 />
                 <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3.5 top-3.5" />
                 
@@ -462,7 +462,7 @@ export default function TeachersCatalogView({
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#E58F49]"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
               >
                 <option value="Tümü">📍 Tüm Konumlar</option>
                 <option value="Online">💻 Online Ders</option>
@@ -489,7 +489,7 @@ export default function TeachersCatalogView({
                   setSelectedCategory(e.target.value);
                   setSelectedLesson('Tümü'); // reset lesson when category changes
                 }}
-                className="w-full bg-zinc-55 bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs font-bold text-zinc-755 focus:outline-none focus:ring-1 focus:ring-[#E58F49] text-zinc-700"
+                className="w-full bg-zinc-55 bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs font-bold text-zinc-755 focus:outline-none focus:ring-1 focus:ring-[#FF6600] text-zinc-700"
               >
                 <option value="Tümü">Tüm Kategoriler</option>
                 <option value="Bilişim">💻 Bilişim &amp; Yazılım</option>
@@ -533,7 +533,7 @@ export default function TeachersCatalogView({
                     onClick={() => setSelectedExperience(exp)}
                     className={`text-left text-xs px-3 py-2 rounded-xl border transition ${
                       selectedExperience === exp 
-                        ? 'border-[#E58F49] bg-amber-50/70 text-[#8C3F03] font-black' 
+                        ? 'border-[#FF6600] bg-amber-50/70 text-[#8C3F03] font-black' 
                         : 'border-zinc-200/60 text-zinc-600 font-bold hover:bg-zinc-50'
                     }`}
                   >
@@ -547,7 +547,7 @@ export default function TeachersCatalogView({
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <label className="text-[11px] font-black uppercase tracking-wider text-zinc-400">MAX SEANS FİYATI</label>
-                <span className="text-xs font-bold text-[#E58F49] font-mono">₺{maxPrice}</span>
+                <span className="text-xs font-bold text-[#FF6600] font-mono">₺{maxPrice}</span>
               </div>
               <input 
                 type="range"
@@ -556,7 +556,7 @@ export default function TeachersCatalogView({
                 step="50"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-[#E58F49] cursor-pointer"
+                className="w-full accent-[#FF6600] cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-zinc-400 font-bold font-mono">
                 <span>₺400</span>
@@ -581,7 +581,7 @@ export default function TeachersCatalogView({
                       name="educationType"
                       checked={selectedType === opt.value}
                       onChange={() => setSelectedType(opt.value)}
-                      className="accent-[#E58F49]"
+                      className="accent-[#FF6600]"
                     />
                     <span>{opt.label}</span>
                   </label>
@@ -619,7 +619,7 @@ export default function TeachersCatalogView({
                   onClick={() => setShowFilters(!showFilters)}
                   className="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-black rounded-xl transition duration-150"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#E58F49]" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#FF6600]" />
                   {showFilters ? 'Filtreleri Gizle' : 'Filtreleri Göster'}
                 </button>
                 <span className="text-xs font-bold text-zinc-500 text-center sm:text-left">
@@ -654,7 +654,7 @@ export default function TeachersCatalogView({
                   {sortedTeachers.slice(0, visibleCount).map((teacher) => (
                   <div 
                     key={teacher.id}
-                    className="bg-white border border-zinc-200 rounded-2xl md:rounded-3xl p-3 sm:p-5 shadow-xs hover:shadow-md hover:border-[#E58F49] transition flex flex-col justify-between gap-3 sm:gap-4 group"
+                    className="bg-white border border-zinc-200 rounded-2xl md:rounded-3xl p-3 sm:p-5 shadow-xs hover:shadow-md hover:border-[#FF6600] transition flex flex-col justify-between gap-3 sm:gap-4 group"
                   >
                     
                     {/* Header: Photo and Badges */}
@@ -671,7 +671,7 @@ export default function TeachersCatalogView({
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-xs sm:text-sm font-black text-zinc-950 line-clamp-1 group-hover:text-[#E58F49] transition">
+                          <h3 className="text-xs sm:text-sm font-black text-zinc-950 line-clamp-1 group-hover:text-[#FF6600] transition">
                             {teacher.name}
                           </h3>
                           
@@ -709,7 +709,7 @@ export default function TeachersCatalogView({
                             onClick={() => handleCourseLinkClick(sess.name, sess.courseId)}
                             className="bg-white hover:bg-amber-50/40 border border-zinc-150/80 px-2 py-1.5 rounded-lg flex items-center justify-between gap-1.5 cursor-pointer transition text-[10px] sm:text-[11px]"
                           >
-                            <span className="font-bold text-[#E58F49] hover:underline truncate line-clamp-1">
+                            <span className="font-bold text-[#FF6600] hover:underline truncate line-clamp-1">
                               {sess.name}
                             </span>
                             <span className="font-black text-zinc-900 font-mono shrink-0">
@@ -764,7 +764,7 @@ export default function TeachersCatalogView({
                             setSelectedProfileTeacher(teacher);
                           }
                         }}
-                        className="w-full bg-[#E58F49] hover:bg-zinc-950 text-zinc-950 hover:text-white font-black text-xs sm:text-sm py-3 px-4 rounded-xl transition duration-200 text-center hover:scale-[1.01] active:scale-95 shadow-md cursor-pointer"
+                        className="w-full bg-[#FF6600] hover:bg-zinc-950 text-zinc-950 hover:text-white font-black text-xs sm:text-sm py-3 px-4 rounded-xl transition duration-200 text-center hover:scale-[1.01] active:scale-95 shadow-md cursor-pointer"
                       >
                         Öğretmeni İncele
                       </button>
@@ -813,7 +813,7 @@ export default function TeachersCatalogView({
             </button>
 
             <div className="mb-6">
-              <span className="text-[10px] bg-[#E58F49]/10 text-[#8C3F03] px-2.5 py-1 rounded-full font-extrabold tracking-widest block w-fit mb-1">
+              <span className="text-[10px] bg-[#FF6600]/10 text-[#8C3F03] px-2.5 py-1 rounded-full font-extrabold tracking-widest block w-fit mb-1">
                 Eğitmen Ön Kayıt Portalı
               </span>
               <h3 className="text-xl sm:text-2xl font-black font-display text-rose-600">
@@ -842,7 +842,7 @@ export default function TeachersCatalogView({
                       placeholder="Örn: Serdar Yılmaz"
                       value={newTeacher.name}
                       onChange={(e) => setNewTeacher({...newTeacher, name: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                   <div>
@@ -852,7 +852,7 @@ export default function TeachersCatalogView({
                       placeholder="Örn: Ankara Mamak, Konya Meram veya İstanbul Kartal"
                       value={newTeacher.preferredLocation}
                       onChange={(e) => setNewTeacher({...newTeacher, preferredLocation: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                 </div>
@@ -863,7 +863,7 @@ export default function TeachersCatalogView({
                     <select
                       value={newTeacher.category}
                       onChange={(e) => setNewTeacher({...newTeacher, category: e.target.value as any})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-zinc-700 font-bold"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-zinc-700 font-bold"
                     >
                       <option value="Bilişim">Bilişim &amp; Yazılım</option>
                       <option value="Dil">Dil &amp; Lisans</option>
@@ -884,7 +884,7 @@ export default function TeachersCatalogView({
                       placeholder="Örn: React, C#, CSS, İngilizce"
                       value={newTeacher.tags}
                       onChange={(e) => setNewTeacher({...newTeacher, tags: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                 </div>
@@ -900,7 +900,7 @@ export default function TeachersCatalogView({
                     placeholder="2018 yılından beri özel ders vermekteyim..."
                     value={newTeacher.bio}
                     onChange={(e) => setNewTeacher({...newTeacher, bio: e.target.value})}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                   />
                   <div className="text-[10px] text-zinc-400 text-right font-mono">{newTeacher.bio.length}/200 karakter</div>
                 </div>
@@ -924,7 +924,7 @@ export default function TeachersCatalogView({
                                 updated[idx].name = options[0] || '';
                                 setRegisteredSessions(updated);
                               }}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] text-xs font-semibold"
+                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold"
                             >
                               {Object.keys(LESSON_OPTIONS_MAP).map(cat => (
                                 <option key={cat} value={cat}>{cat}</option>
@@ -944,7 +944,7 @@ export default function TeachersCatalogView({
                                 updated[idx].name = e.target.value;
                                 setRegisteredSessions(updated);
                               }}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] text-xs font-semibold text-zinc-800"
+                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold text-zinc-800"
                             >
                               <option value="">Ders Seçiniz *</option>
                               {lessonsForCategory.map(lesson => (
@@ -968,7 +968,7 @@ export default function TeachersCatalogView({
                                   updated[idx].price = e.target.value;
                                   setRegisteredSessions(updated);
                                 }}
-                                className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] font-mono text-xs text-right"
+                                className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] font-mono text-xs text-right"
                               />
                             </div>
                             {registeredSessions.length > 1 && (
@@ -1002,7 +1002,7 @@ export default function TeachersCatalogView({
                             { category: firstCat, name: defaultLesson, price: '' }
                           ]);
                         }}
-                        className="text-[#E58F49] hover:text-[#b0672e] text-xs font-bold underline transition"
+                        className="text-[#FF6600] hover:text-[#b0672e] text-xs font-bold underline transition"
                       >
                         + Ders Ekle
                       </button>
@@ -1018,7 +1018,7 @@ export default function TeachersCatalogView({
                       type="checkbox" 
                       checked={newTeacher.canOnline} 
                       onChange={(e) => setNewTeacher({...newTeacher, canOnline: e.target.checked})}
-                      className="accent-[#E58F49]" 
+                      className="accent-[#FF6600]" 
                     />
                     <span>Online Sınıflar</span>
                   </label>
@@ -1027,7 +1027,7 @@ export default function TeachersCatalogView({
                       type="checkbox" 
                       checked={newTeacher.canFaceToFace} 
                       onChange={(e) => setNewTeacher({...newTeacher, canFaceToFace: e.target.checked})}
-                      className="accent-[#E58F49]" 
+                      className="accent-[#FF6600]" 
                     />
                     <span>Yüz Yüze Konum</span>
                   </label>
@@ -1036,7 +1036,7 @@ export default function TeachersCatalogView({
                       type="checkbox" 
                       checked={newTeacher.canCorporate} 
                       onChange={(e) => setNewTeacher({...newTeacher, canCorporate: e.target.checked})}
-                      className="accent-[#E58F49]" 
+                      className="accent-[#FF6600]" 
                     />
                     <span>Kurumsal Davet</span>
                   </label>
@@ -1045,7 +1045,7 @@ export default function TeachersCatalogView({
                 <div className="pt-4">
                   <button 
                     type="submit"
-                    className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white font-extrabold py-3 rounded-xl transition text-center shadow-sm text-sm"
+                    className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold py-3 rounded-xl transition text-center shadow-sm text-sm"
                   >
                     Başvur
                   </button>
@@ -1105,7 +1105,7 @@ export default function TeachersCatalogView({
                       onClick={() => handleCourseLinkClick(sess.name, sess.courseId)}
                       className="bg-zinc-50 hover:bg-amber-50/50 border border-zinc-200 rounded-xl p-3 flex justify-between items-center transition cursor-pointer"
                     >
-                      <div className="text-left font-bold text-[#E58F49] hover:underline">
+                      <div className="text-left font-bold text-[#FF6600] hover:underline">
                         📚 {sess.name}
                         {sess.courseId && <span className="ml-1.5 text-[9px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">Müfredatı Gör</span>}
                       </div>
@@ -1148,7 +1148,7 @@ export default function TeachersCatalogView({
                   setSelectedProfileTeacher(null);
                   alert(`Teklif alındı! ${selectedProfileTeacher.name} sizinle doğrudan sisteme kayıtlı mail/telefon numaranız üzerinden iletişime geçecektir.`);
                 }}
-                className="flex-1 bg-[#E58F49] hover:bg-[#D4803A] text-white font-extrabold py-3.5 rounded-xl transition text-center"
+                className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold py-3.5 rounded-xl transition text-center"
               >
                 Hemen İletişim Kur
               </button>

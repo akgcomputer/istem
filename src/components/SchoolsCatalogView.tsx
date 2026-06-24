@@ -282,7 +282,7 @@ export default function SchoolsCatalogView() {
         {/* BANNER ROW */}
         <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">
+            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">
               GÜVENİLİR RESMİ ÖZEL OKULLAR VE LİSELER
             </span>
             <h1 id="schools-catalog-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
@@ -312,7 +312,7 @@ export default function SchoolsCatalogView() {
                 <div className="lg:col-span-3 bg-white border border-zinc-200/60 rounded-3xl p-6 shadow-md space-y-6">
                   <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
                     <h3 className="text-sm font-black text-zinc-900 flex items-center gap-2">
-                      <SlidersHorizontal className="w-4 h-4 text-[#E58F49]" /> Gelişmiş filtre sistemi
+                      <SlidersHorizontal className="w-4 h-4 text-[#FF6600]" /> Gelişmiş filtre sistemi
                     </h3>
                     <button 
                       onClick={handleClearFilters}
@@ -331,7 +331,7 @@ export default function SchoolsCatalogView() {
                       value={searchName}
                       onChange={(e) => setSearchName(e.target.value)}
                       placeholder="Okul adı"
-                      className="w-full bg-zinc-50 border border-zinc-250 rounded-xl pl-9 pr-3 py-3 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold"
+                      className="w-full bg-zinc-50 border border-zinc-250 rounded-xl pl-9 pr-3 py-3 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold"
                     />
                     <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5" />
                   </div>
@@ -343,7 +343,7 @@ export default function SchoolsCatalogView() {
                   <select
                     value={filterLocation}
                     onChange={(e) => setFilterLocation(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-250 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:ring-1 focus:ring-[#E58F49]"
+                    className="w-full bg-zinc-50 border border-zinc-250 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:ring-1 focus:ring-[#FF6600]"
                   >
                     <option value="Tümü">📍 Tüm Konumlar</option>
                     <optgroup label="Büyük şehirler">
@@ -378,7 +378,7 @@ export default function SchoolsCatalogView() {
                         onClick={() => setFilterSector(sec.key)}
                         className={`py-2 px-1 text-center rounded-xl border transition ${
                           filterSector === sec.key 
-                            ? 'border-[#E58F49] bg-orange-50 text-[#8C3F03]' 
+                            ? 'border-[#FF6600] bg-orange-50 text-[#8C3F03]' 
                             : 'border-zinc-200 hover:border-zinc-300 bg-zinc-50 text-zinc-650'
                         }`}
                       >
@@ -399,7 +399,7 @@ export default function SchoolsCatalogView() {
                         onClick={() => setFilterSchoolCategory(cat)}
                         className={`py-1.5 px-3 rounded-lg border transition ${
                           filterSchoolCategory === cat 
-                            ? 'border-[#E58F49] bg-orange-50 text-[#8C3F03]' 
+                            ? 'border-[#FF6600] bg-orange-50 text-[#8C3F03]' 
                             : 'border-zinc-200 hover:border-zinc-300 bg-zinc-50 text-zinc-650'
                         }`}
                       >
@@ -413,7 +413,7 @@ export default function SchoolsCatalogView() {
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-[11px] font-black tracking-wider text-zinc-400">
                   <span>Aylık ortalama fiyat</span>
-                  <span className="text-[#E58F49] font-mono">₺{filterMonthlyPrice}</span>
+                  <span className="text-[#FF6600] font-mono">₺{filterMonthlyPrice}</span>
                 </div>
                 <input 
                   type="range"
@@ -442,7 +442,7 @@ export default function SchoolsCatalogView() {
                       onClick={() => setFilterClassSize(size)}
                       className={`py-2 px-2 text-left rounded-xl border transition flex items-center justify-between ${
                         filterClassSize === size 
-                          ? 'border-[#E58F49] bg-orange-50 text-[#8C3F03]' 
+                          ? 'border-[#FF6600] bg-orange-50 text-[#8C3F03]' 
                           : 'border-zinc-200 hover:border-zinc-300 bg-zinc-50 text-zinc-650'
                       }`}
                     >
@@ -611,7 +611,7 @@ export default function SchoolsCatalogView() {
                   className="flex items-center gap-1.5 px-3 py-2 bg-zinc-100/80 hover:bg-zinc-200 hover:scale-[1.02] active:scale-98 text-zinc-950 text-xs font-extrabold rounded-xl transition duration-150 border border-zinc-200 cursor-pointer"
                   title={showFilters ? "Filtreleri Gizle" : "Filtreleri Göster"}
                 >
-                  {showFilters ? <EyeOff className="w-3.5 h-3.5 text-zinc-650" /> : <SlidersHorizontal className="w-3.5 h-3.5 text-[#E58F49]" />}
+                  {showFilters ? <EyeOff className="w-3.5 h-3.5 text-zinc-650" /> : <SlidersHorizontal className="w-3.5 h-3.5 text-[#FF6600]" />}
                   <span>{showFilters ? "Filtreleri Gizle" : "Filtreleri Göster"}</span>
                 </button>
                 <span className="text-xs font-extrabold text-zinc-500">
@@ -628,7 +628,7 @@ export default function SchoolsCatalogView() {
                 {filteredSchools.map((school) => (
                   <div 
                     key={school.id}
-                    className="bg-white border border-zinc-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg hover:border-[#E58F49] transition duration-300 flex flex-col justify-between group"
+                    className="bg-white border border-zinc-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg hover:border-[#FF6600] transition duration-300 flex flex-col justify-between group"
                   >
                     
                     {/* Cover Image */}
@@ -652,7 +652,7 @@ export default function SchoolsCatalogView() {
                       <div>
                         {/* Title & Branch Row alongside review counters without static word labels */}
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-1">
-                          <h3 className="text-base font-extrabold text-zinc-950 group-hover:text-[#E58F49] transition leading-snug line-clamp-2">
+                          <h3 className="text-base font-extrabold text-zinc-950 group-hover:text-[#FF6600] transition leading-snug line-clamp-2">
                             {school.name}
                           </h3>
                           <span className="text-xs font-semibold text-zinc-500 whitespace-nowrap">
@@ -685,14 +685,14 @@ export default function SchoolsCatalogView() {
                             <span>💰</span>
                             <span className="text-zinc-550 font-semibold">Aylık Ort. Ücret</span>
                             <span className="text-zinc-400 font-normal">:</span>
-                            <span className="text-[#E58F49] font-black">₺{school.monthlyPrice || 8000}</span>
+                            <span className="text-[#FF6600] font-black">₺{school.monthlyPrice || 8000}</span>
                           </div>
                         </div>
 
                         {/* Fırsatlar yan yana yaz (buton gibi) */}
                         {school.deals && school.deals.length > 0 && (
                            <div className="space-y-1 mt-2.5 mb-2">
-                             <span className="text-[9px] font-black uppercase text-[#E58F49] tracking-wider block">🎁 Güncel Fırsatlar &amp; Kampanyalar:</span>
+                             <span className="text-[9px] font-black uppercase text-[#FF6600] tracking-wider block">🎁 Güncel Fırsatlar &amp; Kampanyalar:</span>
                              <div className="flex flex-wrap gap-1">
                                {school.deals.map((deal, idx) => (
                                  <span 
@@ -798,7 +798,7 @@ export default function SchoolsCatalogView() {
                       placeholder="Örn: Kuzey Bahçeşehir Koleji ve Fen Lisesi"
                       value={newSchool.name}
                       onChange={(e) => setNewSchool({...newSchool, name: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                   <div>
@@ -809,7 +809,7 @@ export default function SchoolsCatalogView() {
                       placeholder="Örn: Sarıyer, İstanbul"
                       value={newSchool.location}
                       onChange={(e) => setNewSchool({...newSchool, location: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                 </div>
@@ -843,7 +843,7 @@ export default function SchoolsCatalogView() {
                       placeholder="Örn: 3"
                       value={newSchool.branchesCount}
                       onChange={(e) => setNewSchool({...newSchool, branchesCount: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                   <div>
@@ -851,7 +851,7 @@ export default function SchoolsCatalogView() {
                     <select
                       value={newSchool.type}
                       onChange={(e) => setNewSchool({...newSchool, type: e.target.value as any})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-zinc-700 font-bold"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-zinc-700 font-bold"
                     >
                       <option value="Anaokulu">Anaokulu</option>
                       <option value="İlkokul">İlkokul</option>
@@ -950,7 +950,7 @@ export default function SchoolsCatalogView() {
                 </div>
                 <div className="bg-white border border-zinc-200 p-3 rounded-2xl text-center">
                   <span className="text-[10px] text-zinc-400 font-bold block uppercase font-mono">Aylık Ücret</span>
-                  <span className="text-sm font-black text-[#E58F49] mt-1 block font-mono">₺{selectedSchool.monthlyPrice || 8000}</span>
+                  <span className="text-sm font-black text-[#FF6600] mt-1 block font-mono">₺{selectedSchool.monthlyPrice || 8000}</span>
                 </div>
                 <div className="bg-white border border-zinc-200 p-3 rounded-2xl text-center">
                   <span className="text-[10px] text-zinc-400 font-bold block uppercase font-mono">Eğitim Sistemi</span>
@@ -960,7 +960,7 @@ export default function SchoolsCatalogView() {
 
               {/* Atölyeler / Programlar */}
               <div className="bg-white border border-zinc-200 rounded-2xl p-4 space-y-2">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#E58F49]">🔬 Öne Çıkan Atölye Programları</h4>
+                <h4 className="text-xs font-black uppercase tracking-wider text-[#FF6600]">🔬 Öne Çıkan Atölye Programları</h4>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {selectedSchool.lessons.map((les, index) => (
                     <span key={index} className="bg-zinc-100/90 border border-zinc-200 text-zinc-850 px-2.5 py-1 text-xs rounded-xl font-bold">

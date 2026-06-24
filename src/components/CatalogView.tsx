@@ -402,7 +402,7 @@ export default function CatalogView({
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#E11A4F]/5 rounded-full blur-2xl pointer-events-none" />
             
             <div className="max-w-xl">
-              <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block leading-tight">KOMİSYONSUZ PAZARYERİ KATALOĞU</span>
+              <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block leading-tight">KOMİSYONSUZ PAZARYERİ KATALOĞU</span>
               <h1 className="text-2xl sm:text-3xl font-extrabold font-display text-zinc-950 mt-1">Eğitim Kataloğu</h1>
               <p className="text-xs text-zinc-550 mt-1.5 leading-relaxed">Eğitmenlerden kesintisiz, komisyonsuz doğrudan seanslarla yayında olan güncel özel dersler ve eğitim alanları.</p>
             </div>
@@ -427,7 +427,7 @@ export default function CatalogView({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <button 
                 onClick={() => setSelectedSubject(null)}
-                className="flex items-center gap-2 hover:text-[#E58F49] text-zinc-700 text-xs font-bold transition cursor-pointer w-fit"
+                className="flex items-center gap-2 hover:text-[#FF6600] text-zinc-700 text-xs font-bold transition cursor-pointer w-fit"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Ders Kataloğuna Geri Dön
@@ -436,7 +436,7 @@ export default function CatalogView({
               <span className="text-xs text-zinc-500 font-extrabold bg-zinc-100 px-3.5 py-1.5 rounded-full w-fit flex items-center gap-1">
                 <span>Bilişim Eğitimi</span>
                 <span className="text-zinc-400 font-normal">&gt;</span>
-                <span className="text-[#E58F49] uppercase tracking-wide">{selectedSubject.category === 'Bilişim' ? 'Yazılım' : selectedSubject.category}</span>
+                <span className="text-[#FF6600] uppercase tracking-wide">{selectedSubject.category === 'Bilişim' ? 'Yazılım' : selectedSubject.category}</span>
               </span>
             </div>
 
@@ -469,7 +469,7 @@ export default function CatalogView({
 
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-zinc-500 font-medium">Fiyat Aralığı:</span>
-                        <span className="text-[#E58F49] font-black font-mono">₺{selectedSubject.minPrice} - ₺{selectedSubject.maxPrice}</span>
+                        <span className="text-[#FF6600] font-black font-mono">₺{selectedSubject.minPrice} - ₺{selectedSubject.maxPrice}</span>
                       </div>
 
                       <div className="flex justify-between items-center text-xs">
@@ -516,7 +516,7 @@ export default function CatalogView({
                               <div className="flex flex-wrap items-center gap-2">
                                 <button
                                   onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
-                                  className="text-sm font-extrabold text-zinc-950 hover:text-[#E58F49] text-left transition"
+                                  className="text-sm font-extrabold text-zinc-950 hover:text-[#FF6600] text-left transition"
                                 >
                                   {teacher.name}
                                 </button>
@@ -556,7 +556,7 @@ export default function CatalogView({
                           <div className="flex md:flex-col items-end justify-between md:justify-center w-full md:w-auto p-3 md:p-0 bg-white md:bg-transparent rounded-xl border md:border-0 border-zinc-200 leading-none shrink-0 gap-2">
                             <div className="mb-1 md:mb-0">
                               <span className="text-[9px] text-zinc-400 font-bold block text-left md:text-right uppercase">SEANS ÜCRETİ</span>
-                              <span className="text-lg font-black text-[#E58F49] font-mono whitespace-nowrap block mt-1">₺{displayPrice} <strong className="text-[10px] text-zinc-400 font-medium font-sans">/ Seans</strong></span>
+                              <span className="text-lg font-black text-[#FF6600] font-mono whitespace-nowrap block mt-1">₺{displayPrice} <strong className="text-[10px] text-zinc-400 font-medium font-sans">/ Seans</strong></span>
                             </div>
 
                             <div className="flex items-center gap-1.5">
@@ -571,7 +571,7 @@ export default function CatalogView({
                                 onClick={() => { 
                                   alert(`🎉 ${teacher.name} eşliğinde "${selectedSubject.name}" eğitim seansına kaydoluyorsunuz! Tebrikler!`);
                                 }}
-                                className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-[11px] font-black px-3 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
+                                className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-[11px] font-black px-3 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
                               >
                                 Eğitim Al
                               </button>
@@ -628,14 +628,14 @@ export default function CatalogView({
                     <div className="border border-zinc-150 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#FAF9F5]">
                       <div>
                         <h4 className="font-extrabold text-zinc-900 text-sm flex items-center gap-1.5">
-                          <Clock className="w-4 h-4 text-[#E58F49] shrink-0" />
+                          <Clock className="w-4 h-4 text-[#FF6600] shrink-0" />
                           Tahmini Ders Saati
                         </h4>
                         <p className="text-[11px] text-zinc-500 font-bold mt-1">
                           *Eğitmenlere göre değişim sağlayabilmektedir.
                         </p>
                       </div>
-                      <span className="text-sm font-black font-mono text-[#E58F49] bg-white border border-zinc-200 px-4 py-2 rounded-xl shrink-0">
+                      <span className="text-sm font-black font-mono text-[#FF6600] bg-white border border-zinc-200 px-4 py-2 rounded-xl shrink-0">
                         85 Saat
                       </span>
                     </div>
@@ -691,7 +691,7 @@ export default function CatalogView({
                 <div className="bg-white border border-zinc-200/60 rounded-3xl p-5 shadow-xs sticky top-20 space-y-6">
                   
                   <div className="flex items-center gap-2 border-b border-zinc-100 pb-3 text-zinc-800 font-bold text-sm">
-                    <SlidersHorizontal className="w-4 h-4 text-[#E58F49]" />
+                    <SlidersHorizontal className="w-4 h-4 text-[#FF6600]" />
                     Gelişmiş Filtre Sistemi
                   </div>
 
@@ -704,7 +704,7 @@ export default function CatalogView({
                         value={searchName}
                         onChange={(e) => setSearchName(e.target.value)}
                         placeholder="Örn: 'Python', 'Matematik', 'TOEFL'"
-                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2.5 text-xs text-zinc-800 font-semibold focus:outline-none focus:ring-1 focus:ring-[#E58F49]"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2.5 text-xs text-zinc-800 font-semibold focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                       />
                       <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-3.5" />
                       
@@ -725,7 +725,7 @@ export default function CatalogView({
                     <select
                       value={filterLocation}
                       onChange={(e) => setFilterLocation(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-800 focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                     >
                       <option value="Tümü">📍 Tüm Konumlar</option>
                       <option value="Online">💻 Online Ders</option>
@@ -753,7 +753,7 @@ export default function CatalogView({
                         onSelectCategory(e.target.value); // Keep sync with parent prop
                         setFilterSpecificLesson('Tümü'); // reset lesson when category changes
                       }}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:outline-none focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                     >
                       <option value="Tümü">Tüm Kategoriler</option>
                       <option value="Bilişim">💻 Bilişim &amp; Yazılım</option>
@@ -797,7 +797,7 @@ export default function CatalogView({
                           onClick={() => setFilterExperience(exp)}
                           className={`text-left text-xs px-3 py-2.5 rounded-xl border transition cursor-pointer ${
                             filterExperience === exp 
-                              ? 'border-[#E58F49] bg-amber-50/70 text-[#8C3F03] font-black' 
+                              ? 'border-[#FF6600] bg-amber-50/70 text-[#8C3F03] font-black' 
                               : 'border-zinc-200/60 text-zinc-600 font-bold hover:bg-zinc-50'
                           }`}
                         >
@@ -811,7 +811,7 @@ export default function CatalogView({
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <label className="text-[11px] font-black uppercase tracking-wider text-zinc-400">MAX SEANS FİYATI</label>
-                      <span className="text-xs font-bold text-[#E58F49] font-mono">₺{filterMaxPrice || '1500'}</span>
+                      <span className="text-xs font-bold text-[#FF6600] font-mono">₺{filterMaxPrice || '1500'}</span>
                     </div>
                     <input 
                       type="range"
@@ -820,7 +820,7 @@ export default function CatalogView({
                       step="50"
                       value={filterMaxPrice || '1500'}
                       onChange={(e) => setFilterMaxPrice(e.target.value)}
-                      className="w-full accent-[#E58F49] cursor-pointer"
+                      className="w-full accent-[#FF6600] cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] text-zinc-400 font-bold font-mono">
                       <span>₺400</span>
@@ -845,7 +845,7 @@ export default function CatalogView({
                             name="catalogEducationType"
                             checked={filterModel === opt.value}
                             onChange={() => setFilterModel(opt.value)}
-                            className="accent-[#E58F49]"
+                            className="accent-[#FF6600]"
                           />
                           <span>{opt.label}</span>
                         </label>
@@ -888,7 +888,7 @@ export default function CatalogView({
                 {/* Inline filter status indicator tags */}
                 <div className="flex flex-wrap gap-1.5">
                   {filterCategory !== 'Tümü' && (
-                    <span className="text-[9px] bg-[#E58F49]/10 text-[#8C3F03] font-bold px-2 py-1 rounded">Kategori: {filterCategory}</span>
+                    <span className="text-[9px] bg-[#FF6600]/10 text-[#8C3F03] font-bold px-2 py-1 rounded">Kategori: {filterCategory}</span>
                   )}
                   {filterLocation !== 'Tümü' && (
                     <span className="text-[9px] bg-blue-50 text-blue-700 font-bold px-2 py-1 rounded">Konum: {filterLocation}</span>
@@ -912,7 +912,7 @@ export default function CatalogView({
                   {displayedSubjects.map((subject, index) => (
                     <div 
                       key={`${subject.name}-${index}`}
-                      className="bg-white border border-zinc-200/70 rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:border-[#E58F49] transition duration-200 flex flex-col justify-between group"
+                      className="bg-white border border-zinc-200/70 rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:border-[#FF6600] transition duration-200 flex flex-col justify-between group"
                     >
                       {/* Class Poster Photo */}
                       <div className="relative aspect-video w-full overflow-hidden">
@@ -929,7 +929,7 @@ export default function CatalogView({
                       {/* Course Body Contents */}
                       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-4">
                         <div className="space-y-1.5 text-left">
-                          <h3 className="text-xs sm:text-sm font-black text-zinc-950 group-hover:text-[#E58F49] transition leading-snug line-clamp-2">
+                          <h3 className="text-xs sm:text-sm font-black text-zinc-950 group-hover:text-[#FF6600] transition leading-snug line-clamp-2">
                             {subject.name}
                           </h3>
 
@@ -943,7 +943,7 @@ export default function CatalogView({
                         */}
                         <div className="bg-zinc-50 border border-zinc-150 rounded-2xl p-3 text-center">
                           <p className="text-[10px] sm:text-[11px] text-zinc-600 leading-snug font-semibold text-center w-full">
-                            Bu dersi <strong className="text-[#E58F49] font-black font-mono">₺{subject.minPrice}-₺{subject.maxPrice}</strong> fiyat aralığında
+                            Bu dersi <strong className="text-[#FF6600] font-black font-mono">₺{subject.minPrice}-₺{subject.maxPrice}</strong> fiyat aralığında
                             <span className="block mt-1 font-bold">
                               <span className="text-red-600 font-extrabold text-xs sm:text-sm font-mono mr-0.5">{subject.teachersCount}</span> öğretmen ders vermektedir.
                             </span>
@@ -997,7 +997,7 @@ export default function CatalogView({
             </button>
 
             <div className="mb-6">
-              <span className="text-[10px] bg-[#E58F49]/10 text-[#8C3F03] px-2.5 py-1 rounded-full font-extrabold tracking-widest block w-fit mb-1">
+              <span className="text-[10px] bg-[#FF6600]/10 text-[#8C3F03] px-2.5 py-1 rounded-full font-extrabold tracking-widest block w-fit mb-1">
                 Eğitmen Ön Kayıt Portalı
               </span>
               <h3 className="text-xl sm:text-2xl font-black font-display text-rose-600">
@@ -1028,7 +1028,7 @@ export default function CatalogView({
                       placeholder="Örn: Ahmet Yılmaz"
                       value={newTeacher.name}
                       onChange={(e) => setNewTeacher({...newTeacher, name: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-xs font-medium"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-xs font-medium"
                     />
                   </div>
                   <div>
@@ -1040,7 +1040,7 @@ export default function CatalogView({
                       placeholder="Örn: Ankara Mamak, Konya Meram veya İstanbul Kartal"
                       value={newTeacher.preferredLocation}
                       onChange={(e) => setNewTeacher({...newTeacher, preferredLocation: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-xs font-medium"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-xs font-medium"
                     />
                   </div>
                 </div>
@@ -1053,7 +1053,7 @@ export default function CatalogView({
                     <select
                       value={newTeacher.category}
                       onChange={(e) => setNewTeacher({...newTeacher, category: e.target.value as any})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-[#222] font-bold text-xs bg-white"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-[#222] font-bold text-xs bg-white"
                     >
                       <option value="Bilişim">Bilişim &amp; Yazılım</option>
                       <option value="Dil">Dil &amp; Lisans</option>
@@ -1074,7 +1074,7 @@ export default function CatalogView({
                       placeholder="Örn: React, C#, CSS, İngilizce"
                       value={newTeacher.tags}
                       onChange={(e) => setNewTeacher({...newTeacher, tags: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-xs font-medium"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-xs font-medium"
                     />
                   </div>
                 </div>
@@ -1090,7 +1090,7 @@ export default function CatalogView({
                     placeholder="2018 yılından beri özel ders vermekteyim..."
                     value={newTeacher.bio}
                     onChange={(e) => setNewTeacher({...newTeacher, bio: e.target.value})}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-xs font-medium"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-xs font-medium"
                   />
                   <div className="text-[10px] text-zinc-400 text-right font-mono">{newTeacher.bio.length}/200 karakter</div>
                 </div>
@@ -1116,7 +1116,7 @@ export default function CatalogView({
                                 updated[idx].name = options[0] || '';
                                 setRegisteredSessions(updated);
                               }}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] text-xs font-semibold bg-white"
+                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold bg-white"
                             >
                               {Object.keys(LESSON_OPTIONS_MAP).map(cat => (
                                 <option key={cat} value={cat}>{cat}</option>
@@ -1136,7 +1136,7 @@ export default function CatalogView({
                                 updated[idx].name = e.target.value;
                                 setRegisteredSessions(updated);
                               }}
-                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] text-xs font-semibold text-zinc-800 bg-white"
+                              className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold text-zinc-800 bg-white"
                             >
                               <option value="">Ders Seçiniz *</option>
                               {lessonsForCategory.map(lesson => (
@@ -1160,7 +1160,7 @@ export default function CatalogView({
                                   updated[idx].price = e.target.value;
                                   setRegisteredSessions(updated);
                                 }}
-                                className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#E58F49] font-mono text-xs text-right font-bold"
+                                className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] font-mono text-xs text-right font-bold"
                               />
                             </div>
                             {registeredSessions.length > 1 && (
@@ -1194,7 +1194,7 @@ export default function CatalogView({
                             { category: firstCat, name: defaultLesson, price: '' }
                           ]);
                         }}
-                        className="text-[#E58F49] hover:text-[#b0672e] text-xs font-bold underline transition cursor-pointer"
+                        className="text-[#FF6600] hover:text-[#b0672e] text-xs font-bold underline transition cursor-pointer"
                       >
                         + Ders Ekle
                       </button>
@@ -1210,7 +1210,7 @@ export default function CatalogView({
                       type="checkbox" 
                       checked={newTeacher.canOnline}
                       onChange={(e) => setNewTeacher({...newTeacher, canOnline: e.target.checked})}
-                      className="rounded border-zinc-300 text-[#E58F49] focus:ring-[#E58F49]"
+                      className="rounded border-zinc-300 text-[#FF6600] focus:ring-[#FF6600]"
                     />
                     <span className="text-xs text-zinc-750 font-semibold">Online</span>
                   </label>
@@ -1219,7 +1219,7 @@ export default function CatalogView({
                       type="checkbox" 
                       checked={newTeacher.canFaceToFace}
                       onChange={(e) => setNewTeacher({...newTeacher, canFaceToFace: e.target.checked})}
-                      className="rounded border-zinc-300 text-[#E58F49] focus:ring-[#E58F49]"
+                      className="rounded border-zinc-300 text-[#FF6600] focus:ring-[#FF6600]"
                     />
                     <span className="text-xs text-zinc-750 font-semibold">Yüz Yüze</span>
                   </label>
@@ -1228,7 +1228,7 @@ export default function CatalogView({
                       type="checkbox" 
                       checked={newTeacher.canCorporate}
                       onChange={(e) => setNewTeacher({...newTeacher, canCorporate: e.target.checked})}
-                      className="rounded border-zinc-300 text-[#E58F49] focus:ring-[#E58F49]"
+                      className="rounded border-zinc-300 text-[#FF6600] focus:ring-[#FF6600]"
                     />
                     <span className="text-xs text-zinc-750 font-semibold">Kurumsal</span>
                   </label>
@@ -1237,7 +1237,7 @@ export default function CatalogView({
                 <div className="pt-4">
                   <button 
                     type="submit"
-                    className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white font-extrabold py-3.5 rounded-2xl transition text-center shadow-sm text-xs uppercase tracking-wider cursor-pointer font-display"
+                    className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold py-3.5 rounded-2xl transition text-center shadow-sm text-xs uppercase tracking-wider cursor-pointer font-display"
                   >
                     Başvurumu Admin Onayına Gönder
                   </button>

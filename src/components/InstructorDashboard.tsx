@@ -178,7 +178,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
         {/* UPPER TITLE HEADER WITH DECENT LOGOUT */}
         <div className="mb-8 border-b border-zinc-200 pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="text-center sm:text-left">
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">EĞİTMEN PANELİ SAAS</span>
+            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">EĞİTMEN PANELİ SAAS</span>
             <h1 className="text-3xl font-extrabold font-display text-zinc-950 mt-1">Eğitmen Yönetim Paneli</h1>
             <p className="text-xs text-zinc-500 mt-1">Ders açtığınız, komisyonsuz tahsil edilen bakiye durumunuzu yönettiğiniz ve müfredat programladığınız eğitmen portalı.</p>
           </div>
@@ -202,7 +202,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
           {/* Funds withdraw widget */}
           <div className="bg-[#1A1815] text-white p-6 rounded-3xl border border-zinc-800 shadow-md flex flex-col justify-between">
             <div>
-              <span className="text-[9px] uppercase tracking-widest font-black text-[#E58F49] block text-left">HAZIR BAKİYE / KAZANÇLAR</span>
+              <span className="text-[9px] uppercase tracking-widest font-black text-[#FF6600] block text-left">HAZIR BAKİYE / KAZANÇLAR</span>
               <div className="flex items-baseline gap-1.5 mt-2">
                 <span className="text-3xl font-black font-mono text-white">₺{balance.toLocaleString('tr-TR')}</span>
                 <span className="text-xs text-zinc-400">Net Gelir</span>
@@ -214,7 +214,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
               {withdrawnStatus === 'idle' && (
                 <button 
                   onClick={handleWithdraw}
-                  className="w-full bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3 rounded-xl transition shadow-xs hover:scale-102 cursor-pointer"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition shadow-xs hover:scale-102 cursor-pointer"
                 >
                   Kazancı Banka Hesabıma Çek (Withdraw)
                 </button>
@@ -251,7 +251,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
           <div className="bg-white border border-zinc-200/60 p-6 rounded-3xl shadow-xs flex flex-col justify-between text-left">
             <div>
               <span className="text-[9px] uppercase tracking-widest font-black text-zinc-400 block">GENEL PUAN ORTALAMASI</span>
-              <span className="text-3xl font-black font-mono text-[#E58F49] mt-1 block">★ 4.92 / 5.0</span>
+              <span className="text-3xl font-black font-mono text-[#FF6600] mt-1 block">★ 4.92 / 5.0</span>
               <p className="text-[10px] text-zinc-550 mt-1.5">Platformdaki 1.500+ doğrulanmış eğitmen arasında %3'lük en başarılı elit eğitmen dilimindesiniz.</p>
             </div>
             <div className="mt-4 pt-3.5 border-t border-zinc-100 flex justify-between text-[11px] text-zinc-500 font-semibold font-mono">
@@ -273,14 +273,14 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-100 pb-4 mb-4">
                 <div>
                   <h3 className="text-base font-black text-zinc-950 flex items-center gap-1.5">
-                    <BookOpen className="w-5 h-5 text-[#E58F49]" /> Verdiğim Dersler
+                    <BookOpen className="w-5 h-5 text-[#FF6600]" /> Verdiğim Dersler
                   </h3>
                   <p className="text-xs text-zinc-500 mt-0.5">Sistemde onaylı bulunan ve yayına aldığınız uzmanlık programları.</p>
                 </div>
                 
                 <button
                   onClick={() => setShowAddCourseForm(!showAddCourseForm)}
-                  className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-black px-4 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
+                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-black px-4 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
                 >
                   {showAddCourseForm ? 'Vazgeç' : '+ Ders Ekle'}
                 </button>
@@ -300,7 +300,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.title}
                         onChange={(e) => setNewCourseInput({...newCourseInput, title: e.target.value})}
                         placeholder="Örn: Autocad İle Tasarım"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800 font-bold"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800 font-bold"
                       />
                     </div>
                     <div>
@@ -311,7 +311,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.sessionType}
                         onChange={(e) => setNewCourseInput({...newCourseInput, sessionType: e.target.value})}
                         placeholder="Örn: 8 Canlı & Özel Birebir"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800 font-bold"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800 font-bold"
                       />
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                       value={newCourseInput.description}
                       onChange={(e) => setNewCourseInput({...newCourseInput, description: e.target.value})}
                       placeholder="Bu ders kapsamında bilgisayar destekli teknik tasarım modellemelerinin püf noktalarını öğreneceksiniz..."
-                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800"
+                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800"
                     />
                   </div>
 
@@ -337,7 +337,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.whyTake}
                         onChange={(e) => setNewCourseInput({...newCourseInput, whyTake: e.target.value})}
                         placeholder="Sektördeki tüm kurumsal ofislerin aradığı 2D tasarım standartlarına doğrudan egemen olmak için."
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800"
                       />
                     </div>
                     <div>
@@ -348,7 +348,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.careerAreas}
                         onChange={(e) => setNewCourseInput({...newCourseInput, careerAreas: e.target.value})}
                         placeholder="İç Mimari Tasarımcı, Konsept Geliştirme Uzmanı, Yapı Analiz Lideri"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800"
                       />
                     </div>
                   </div>
@@ -362,7 +362,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.requirements}
                         onChange={(e) => setNewCourseInput({...newCourseInput, requirements: e.target.value})}
                         placeholder="Örn: Temel Windows veya macOS deneyimi"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800 font-bold"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800 font-bold"
                       />
                     </div>
                     <div>
@@ -373,7 +373,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                         value={newCourseInput.price}
                         onChange={(e) => setNewCourseInput({...newCourseInput, price: e.target.value})}
                         placeholder="Örn: ₺825"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none text-zinc-800 font-bold"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none text-zinc-800 font-bold"
                       />
                     </div>
                   </div>
@@ -413,7 +413,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                                 <button
                                   type="button"
                                   onClick={() => toggleExpandCourse(c.id)}
-                                  className="inline-flex items-center gap-1 bg-amber-50 hover:bg-[#E58F49]/20 border border-amber-200 text-[#8C3F03] font-black font-mono text-[11px] px-2.5 py-1 rounded-lg transition scale-102 cursor-pointer"
+                                  className="inline-flex items-center gap-1 bg-amber-50 hover:bg-[#FF6600]/20 border border-amber-200 text-[#8C3F03] font-black font-mono text-[11px] px-2.5 py-1 rounded-lg transition scale-102 cursor-pointer"
                                   title="Son 10 Öğrenciyi Göster"
                                 >
                                   <span>{c.participantsCount}(+)</span>
@@ -429,9 +429,9 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                             {isExpanded && (
                               <tr className="bg-zinc-50/70">
                                 <td colSpan={3} className="p-4 border-t border-b border-zinc-200">
-                                  <div className="space-y-2 border-l-2 border-[#E58F49] pl-3.5">
+                                  <div className="space-y-2 border-l-2 border-[#FF6600] pl-3.5">
                                     <div className="flex items-center justify-between">
-                                      <span className="text-[10px] font-black text-[#E58F49] uppercase tracking-wider inline-flex items-center gap-1">
+                                      <span className="text-[10px] font-black text-[#FF6600] uppercase tracking-wider inline-flex items-center gap-1">
                                         <UserCheck className="w-3.5 h-3.5" /> Son Katılım Sağlayan 10 Öğrenci (Güncel Sınıf)
                                       </span>
                                       <span className="text-[10px] text-zinc-400 font-semibold">Tarih Aralığı: 2026 Güz</span>
@@ -452,7 +452,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                                             <tr key={idx} className="hover:bg-zinc-50">
                                               <td className="py-1.5 px-2.5 font-bold text-zinc-900">{st.name}</td>
                                               <td className="py-1.5 px-2.5 font-mono text-zinc-400">{st.email}</td>
-                                              <td className="py-1.5 px-2.5 text-center text-[#E58F49] font-black font-mono">{st.progress}</td>
+                                              <td className="py-1.5 px-2.5 text-center text-[#FF6600] font-black font-mono">{st.progress}</td>
                                               <td className="py-1.5 px-2.5 text-right font-bold text-zinc-800">{st.testScore}</td>
                                             </tr>
                                           ))}
@@ -476,7 +476,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
             <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 shadow-xs">
               <div className="flex justify-between items-center border-b border-zinc-100 pb-3 mb-5">
                 <h3 className="text-base font-black text-zinc-950 flex items-center gap-1.5">
-                  <Plus className="w-5 h-5 text-[#E58F49]" /> İnteraktif Müfredat Oluşturucu
+                  <Plus className="w-5 h-5 text-[#FF6600]" /> İnteraktif Müfredat Oluşturucu
                 </h3>
                 <span className="text-[10px] bg-amber-50 text-[#8C3F03] border border-amber-200 font-bold px-2.5 py-0.5 rounded">Hızlı Planlayıcı</span>
               </div>
@@ -514,11 +514,11 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                   value={newLectureText}
                   onChange={(e) => setNewLectureText(e.target.value)}
                   placeholder="Örn: Bölüm 4: Cloudflare D1 SQL Entegrasyon Testleri"
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#E58F49] focus:outline-none placeholder-zinc-400 text-zinc-850 font-bold"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-[#FF6600] focus:outline-none placeholder-zinc-400 text-zinc-850 font-bold"
                 />
                 <button 
                   type="submit"
-                  className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition duration-150 shrink-0 cursor-pointer"
+                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition duration-150 shrink-0 cursor-pointer"
                 >
                   Ekle
                 </button>
@@ -553,7 +553,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
                     <XAxis dataKey="name" tick={{ fill: '#3F3F46', fontSize: 10, fontWeight: 500 }} />
                     <YAxis tick={{ fill: '#3F3F46', fontSize: 10 }} />
                     <Tooltip />
-                    <Bar dataKey="tamamlayan" fill="#E58F49" radius={[4, 4, 0, 0]} name="Bitiren %" />
+                    <Bar dataKey="tamamlayan" fill="#FF6600" radius={[4, 4, 0, 0]} name="Bitiren %" />
                     <Bar dataKey="duraksayan_zorlanan" fill="#4F46E5" radius={[4, 4, 0, 0]} name="Zorlanan / Duraklayan %" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -566,7 +566,7 @@ export default function InstructorDashboard({ courses, onLogout }: InstructorDas
 
             {/* PLATFORM ALERTS GUIDELINES */}
             <div className="bg-amber-50/50 border border-amber-150 p-4 rounded-3xl text-xs space-y-2.5">
-              <span className="text-[10px] font-black uppercase text-[#E58F49] tracking-wider block">🛡️ SAAS Eğitmen Kılavuzu</span>
+              <span className="text-[10px] font-black uppercase text-[#FF6600] tracking-wider block">🛡️ SAAS Eğitmen Kılavuzu</span>
               <p className="text-zinc-800 font-medium leading-relaxed">
                 Her verdiğiniz ders için %0 komisyon politikası bakiye cüzdanınıza yansıtılır. Para çekme (Withdraw) butonuna basarak banka havalenizi hemen tetikleyebilirsiniz.
               </p>

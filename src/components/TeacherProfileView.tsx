@@ -115,7 +115,7 @@ export default function TeacherProfileView({
               {/* 1. Biyografi */}
               <div className="bg-white border border-zinc-200/60 rounded-3xl p-5 sm:p-6 shadow-xs space-y-3">
                 <h3 className="text-sm font-black text-zinc-950 border-b border-zinc-100 pb-2 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#E58F49]" />
+                  <Sparkles className="w-4 h-4 text-[#FF6600]" />
                   Eğitmen Hakkında Bilgi
                 </h3>
                 <p className="text-xs text-zinc-700 leading-relaxed font-semibold whitespace-pre-line">
@@ -126,7 +126,7 @@ export default function TeacherProfileView({
               {/* 2. Verdiği Dersler ve Ücretleri */}
               <div className="bg-white border border-zinc-200/60 rounded-3xl p-5 sm:p-6 shadow-xs space-y-4">
                 <h3 className="text-sm font-black text-zinc-950 border-b border-zinc-100 pb-2 flex items-center gap-1.5">
-                  <BookOpen className="w-4 h-4 text-[#E58F49]" />
+                  <BookOpen className="w-4 h-4 text-[#FF6600]" />
                   📚 Verdiği dersler ve ücretleri:
                 </h3>
                 <p className="text-[11px] text-zinc-500 -mt-2">
@@ -139,7 +139,7 @@ export default function TeacherProfileView({
                       className="bg-zinc-50 border border-zinc-250/50 p-4 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition"
                     >
                       <div className="text-left space-y-1">
-                        <span className="font-extrabold text-sm text-[#E58F49] block leading-tight">
+                        <span className="font-extrabold text-sm text-[#FF6600] block leading-tight">
                           {sess.name}
                         </span>
                         <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ export default function TeacherProfileView({
 
                       <button
                         onClick={() => handleCourseLinkClick(sess.name, sess.courseId)}
-                        className="bg-[#E58F49] hover:bg-zinc-950 text-zinc-950 hover:text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition duration-150 shadow-xs whitespace-nowrap text-center active:scale-95 shrink-0"
+                        className="bg-[#FF6600] hover:bg-zinc-950 text-zinc-950 hover:text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition duration-150 shadow-xs whitespace-nowrap text-center active:scale-95 shrink-0"
                       >
                         Eğitim Al
                       </button>

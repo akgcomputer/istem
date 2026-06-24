@@ -206,7 +206,7 @@ export default function StudentDashboard({
         {/* TOP PANEL HEADER WITH LOGOUT */}
         <div className="mb-8 border-b border-zinc-200 pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="text-center sm:text-left">
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">ÖĞRENCİ PORTALI</span>
+            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">ÖĞRENCİ PORTALI</span>
             <h1 className="text-3xl font-extrabold font-display text-zinc-950 mt-1">Öğrenci Kontrol Paneli</h1>
             <p className="text-xs text-zinc-500 mt-1">Derslerinizin, başarılarınızın ve yetkinliklerinizin listelendiği yönetim alanındasınız.</p>
           </div>
@@ -230,7 +230,7 @@ export default function StudentDashboard({
           <div className="bg-white border border-zinc-200/60 p-4 sm:p-5 rounded-2xl shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider">Kayıtlı Kurslar</span>
-              <BookOpen className="w-5 h-5 text-[#E58F49]" />
+              <BookOpen className="w-5 h-5 text-[#FF6600]" />
             </div>
             <span className="text-xl sm:text-2xl font-black text-zinc-950 font-mono">3 Kurs</span>
             <span className="text-[10px] text-zinc-400 block mt-1">1 devam eden, 2 tamamlanan</span>
@@ -239,10 +239,10 @@ export default function StudentDashboard({
           <div className="bg-white border border-zinc-200/60 p-4 sm:p-5 rounded-2xl shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider">Kazanılan Rozetler</span>
-              <Award className="w-5 h-5 text-[#E58F49]" />
+              <Award className="w-5 h-5 text-[#FF6600]" />
             </div>
             <span className="text-xl sm:text-2xl font-black text-zinc-950 font-mono">4 Rozet</span>
-            <span className="text-[10px] text-[#E58F49] font-bold block mt-1 truncate">✓ Başlangıç • ANALİTİK Zeka</span>
+            <span className="text-[10px] text-[#FF6600] font-bold block mt-1 truncate">✓ Başlangıç • ANALİTİK Zeka</span>
           </div>
 
           <div className="bg-white border border-zinc-200/60 p-4 sm:p-5 rounded-2xl shadow-xs">
@@ -254,7 +254,7 @@ export default function StudentDashboard({
             <span className="text-[10px] text-zinc-400 block mt-1">İndirim bonus bakiye aktif</span>
           </div>
 
-          <div className="bg-white border border-[#E58F49]/30 p-4 sm:p-5 rounded-2xl shadow-xs">
+          <div className="bg-white border border-[#FF6600]/30 p-4 sm:p-5 rounded-2xl shadow-xs">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider">Mezuniyet QR</span>
               <ShieldCheck className="w-5 h-5 text-emerald-600" />
@@ -274,7 +274,7 @@ export default function StudentDashboard({
             {/* EDUCATION PROGRAMS (EĞİTİM PROGRAMLARIM) LIST SECTION */}
             <div className="bg-white border border-zinc-200/60 rounded-3xl p-4 sm:p-6 shadow-xs">
               <h3 className="text-base font-black text-zinc-950 mb-4 flex items-center gap-1.5 border-b border-zinc-100 pb-3">
-                <Clock className="w-5 h-5 text-[#E58F49]" /> Eğitim Programlarım
+                <Clock className="w-5 h-5 text-[#FF6600]" /> Eğitim Programlarım
               </h3>
 
               <div className="overflow-x-auto rounded-2xl border border-zinc-150">
@@ -332,7 +332,7 @@ export default function StudentDashboard({
                               <button
                                 type="button"
                                 onClick={() => setSelectedQrCourse(program)}
-                                className="bg-zinc-100 hover:bg-[#E58F49]/10 text-zinc-850 hover:text-[#E58F49] p-2 rounded-lg transition border border-zinc-200 flex items-center justify-center gap-1 cursor-pointer"
+                                className="bg-zinc-100 hover:bg-[#FF6600]/10 text-zinc-850 hover:text-[#FF6600] p-2 rounded-lg transition border border-zinc-200 flex items-center justify-center gap-1 cursor-pointer"
                                 title="QR Mezuniyet Belgesini Görüntüle"
                               >
                                 <QrCode className="w-3.5 h-3.5 text-emerald-600" />
@@ -355,7 +355,7 @@ export default function StudentDashboard({
                               className={`text-[10px] font-black py-1.5 px-3 rounded-lg transition-all cursor-pointer ${
                                 evaluatedIds.includes(program.id)
                                   ? 'bg-zinc-100 text-zinc-400 border border-zinc-200'
-                                  : 'bg-[#E58F49] hover:bg-[#D4803A] text-white shadow-3xs'
+                                  : 'bg-[#FF6600] hover:bg-[#CC5200] text-white shadow-3xs'
                               }`}
                             >
                               {evaluatedIds.includes(program.id) ? 'Değerlendirildi' : 'Değerlendir'}
@@ -374,7 +374,7 @@ export default function StudentDashboard({
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-100 pb-4 mb-4">
                 <div>
                   <h3 className="text-base font-black text-zinc-950 flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-[#E58F49]" /> Toplu Eğitim Talep Bölümü
+                    <Calendar className="w-5 h-5 text-[#FF6600]" /> Toplu Eğitim Talep Bölümü
                   </h3>
                   <p className="text-xs text-zinc-500 mt-1">Kendin ve Arkadaşlarına özel, kapalı sınıflı toplu eğitim paketleri talep edebilirsiniz.</p>
                   <p className="text-xs text-red-600 font-extrabold mt-1 animate-pulse">
@@ -383,7 +383,7 @@ export default function StudentDashboard({
                 </div>
                 <button
                   onClick={() => setShowBulkForm(!showBulkForm)}
-                  className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-black px-4 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
+                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-black px-4 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
                 >
                   {showBulkForm ? 'Kapat' : '+ Arkadaşlarım İçin Sınıf İste'}
                 </button>
@@ -404,7 +404,7 @@ export default function StudentDashboard({
                         value={bulkRequest.courseTitle}
                         onChange={(e) => setBulkRequest({...bulkRequest, courseTitle: e.target.value})}
                         placeholder="Örn: React Native ile Mobil Proje Geliştirme (Eğitim adını bilmiyorsanız tarif edin)"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800 placeholder-zinc-400"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800 placeholder-zinc-400"
                       />
                     </div>
 
@@ -418,7 +418,7 @@ export default function StudentDashboard({
                         value={bulkRequest.personCount}
                         onChange={(e) => setBulkRequest({...bulkRequest, personCount: parseInt(e.target.value) || 5})}
                         placeholder="Örn: 5 kişi"
-                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800"
+                        className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800"
                       />
                     </div>
 
@@ -437,7 +437,7 @@ export default function StudentDashboard({
                       onChange={(e) => setBulkRequest({...bulkRequest, reason: e.target.value})}
                       rows={3}
                       placeholder="Ortak bir mobil oyun üzerinde çalışıp bitirme projesi tasarlamak istiyoruz..."
-                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800 placeholder-zinc-400"
+                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800 placeholder-zinc-400"
                     />
                   </div>
 
@@ -464,7 +464,7 @@ export default function StudentDashboard({
                               onClick={() => toggleDaySelection(day.key)}
                               className={`px-3 py-2 text-xs font-black rounded-lg border transition select-none cursor-pointer ${
                                 isSelected
-                                  ? 'bg-[#E58F49] text-white border-[#E58F49] shadow-md scale-105 font-extrabold ring-2 ring-amber-300'
+                                  ? 'bg-[#FF6600] text-white border-[#FF6600] shadow-md scale-105 font-extrabold ring-2 ring-amber-300'
                                   : 'bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-150'
                               }`}
                               title={day.key}
@@ -491,7 +491,7 @@ export default function StudentDashboard({
                               bulkRequest.selectedHour === slot.key
                                 ? slot.red 
                                   ? 'bg-red-50 text-red-600 border-red-500 font-extrabold ring-1 ring-red-400' 
-                                  : 'bg-amber-50 text-amber-900 border-[#E58F49] font-extrabold ring-1 ring-amber-400'
+                                  : 'bg-amber-50 text-amber-900 border-[#FF6600] font-extrabold ring-1 ring-amber-400'
                                 : slot.red 
                                   ? 'bg-red-50/20 text-red-500 border-red-200 hover:bg-red-100/30' 
                                   : 'bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-100'
@@ -523,7 +523,7 @@ export default function StudentDashboard({
 
                     <button
                       type="submit"
-                      className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-black px-6 py-3 rounded-xl transition duration-150 self-end cursor-pointer shadow-sm"
+                      className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-black px-6 py-3 rounded-xl transition duration-150 self-end cursor-pointer shadow-sm"
                     >
                       Eğitim Talebi Oluştur
                     </button>
@@ -533,7 +533,7 @@ export default function StudentDashboard({
 
               {/* LISTING REQUESTS LIST BELOW FORM */}
               <div className="mt-6 pt-5 border-t border-zinc-150">
-                <span className="text-[10px] font-extrabold text-[#E58F49] tracking-wider block uppercase mb-3">Toplu Eğitim Talep Edilen Eğitimler</span>
+                <span className="text-[10px] font-extrabold text-[#FF6600] tracking-wider block uppercase mb-3">Toplu Eğitim Talep Edilen Eğitimler</span>
                 
                 <div className="overflow-x-auto rounded-xl border border-zinc-200">
                   <table className="w-full text-left text-xs text-zinc-700 bg-white">
@@ -565,7 +565,7 @@ export default function StudentDashboard({
             {/* DYNAMIC FORM: SHARE SUCCESS STORY ("FARK" implementation) */}
             <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 shadow-xs text-left">
               <h3 className="text-base font-black text-zinc-950 mb-3 flex items-center gap-1.5 border-b border-zinc-100 pb-3">
-                <ClipboardList className="w-5 h-5 text-[#E58F49]" /> Başarı Hikayeni Paylaş, Burs/Kupon Kazanın!
+                <ClipboardList className="w-5 h-5 text-[#FF6600]" /> Başarı Hikayeni Paylaş, Burs/Kupon Kazanın!
               </h3>
               
               <p className="text-xs text-zinc-500 mb-5 leading-relaxed">
@@ -589,7 +589,7 @@ export default function StudentDashboard({
                         value={successStory.title}
                         onChange={(e) => setSuccessStory(prev => ({ ...prev, title: e.target.value }))}
                         placeholder="Örn: Frontend Developer"
-                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800"
                       />
                     </div>
                     <div>
@@ -600,7 +600,7 @@ export default function StudentDashboard({
                         value={successStory.company}
                         onChange={(e) => setSuccessStory(prev => ({ ...prev, company: e.target.value }))}
                         placeholder="Örn: Trendyol Teknoloji"
-                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800"
                       />
                     </div>
                   </div>
@@ -613,13 +613,13 @@ export default function StudentDashboard({
                       onChange={(e) => setSuccessStory(prev => ({ ...prev, body: e.target.value }))}
                       rows={3}
                       placeholder="Buradaki eğitim bitirme projem sayesinde mülakatlardaki teknik canlı kod klon testini doğrudan geçtim..."
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
+                    className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition duration-150 flex items-center gap-1.5 cursor-pointer shadow-3xs"
                   >
                     Gönder ve Kuponu Al <Send className="w-3.5 h-3.5" />
                   </button>
@@ -634,8 +634,8 @@ export default function StudentDashboard({
             
             <div className="bg-white border border-zinc-200/60 rounded-3xl p-5 shadow-xs flex flex-col h-full text-left">
               <div className="border-b border-zinc-100 pb-3 mb-4">
-                <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider text-[#E58F49] mb-1.5">
-                  <Sparkles className="w-3 h-3 text-[#E58F49] animate-pulse" /> Keşfetmeye Değer Katgösterenler
+                <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider text-[#FF6600] mb-1.5">
+                  <Sparkles className="w-3 h-3 text-[#FF6600] animate-pulse" /> Keşfetmeye Değer Katgösterenler
                 </span>
                 
                 <h3 className="text-base font-black font-display tracking-tight text-zinc-950">
@@ -652,14 +652,14 @@ export default function StudentDashboard({
                 {popularCourses.map((pc, index) => (
                   <div 
                     key={pc.id}
-                    className="p-3 bg-zinc-50 rounded-2xl border border-zinc-150 hover:border-[#E58F49]/40 hover:bg-amber-50/20 transition group flex flex-col justify-between"
+                    className="p-3 bg-zinc-50 rounded-2xl border border-zinc-150 hover:border-[#FF6600]/40 hover:bg-amber-50/20 transition group flex flex-col justify-between"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="text-[9px] font-black text-[#E58F49] bg-[#E58F49]/10 px-1.5 py-0.5 rounded">
+                        <span className="text-[9px] font-black text-[#FF6600] bg-[#FF6600]/10 px-1.5 py-0.5 rounded">
                           {index + 1}. {pc.category}
                         </span>
-                        <h4 className="text-[11.5px] font-black text-zinc-950 mt-1 lines-clamp-2 leading-snug group-hover:text-[#E58F49] transition">
+                        <h4 className="text-[11.5px] font-black text-zinc-950 mt-1 lines-clamp-2 leading-snug group-hover:text-[#FF6600] transition">
                           {pc.title}
                         </h4>
                         <span className="text-[10px] text-zinc-400 block mt-0.5">Eğitmen: <strong className="text-zinc-650">{pc.instructor}</strong></span>
@@ -667,7 +667,7 @@ export default function StudentDashboard({
                       
                       <div className="text-right shrink-0">
                         <span className="text-[11px] font-black text-emerald-800 block font-mono">{pc.price}</span>
-                        <span className="text-[9px] text-[#E58F49] font-bold block mt-0.5">★ {pc.rating}</span>
+                        <span className="text-[9px] text-[#FF6600] font-bold block mt-0.5">★ {pc.rating}</span>
                       </div>
                     </div>
 
@@ -676,7 +676,7 @@ export default function StudentDashboard({
                       <button 
                         type="button" 
                         onClick={() => alert(`"${pc.title}" eğitim detayları ve kayıt ekranına yönlendiriliyorsunuz...`)}
-                        className="text-[#E58F49] hover:text-[#D4803A] font-extrabold inline-flex items-center gap-0.5 cursor-pointer"
+                        className="text-[#FF6600] hover:text-[#CC5200] font-extrabold inline-flex items-center gap-0.5 cursor-pointer"
                       >
                         İncele <ArrowRight className="w-3.5 h-3.5" />
                       </button>
@@ -721,7 +721,7 @@ export default function StudentDashboard({
                       key={rating}
                       className={`flex flex-col items-center justify-center p-1.5 rounded-lg border text-[11px] font-bold cursor-pointer transition select-none ${
                         evalRating === rating
-                          ? 'border-[#E58F49] bg-amber-50/40 text-amber-900 font-extrabold font-black'
+                          ? 'border-[#FF6600] bg-amber-50/40 text-amber-900 font-extrabold font-black'
                           : 'border-zinc-150 bg-zinc-50 text-zinc-600 hover:bg-zinc-100'
                       }`}
                     >
@@ -733,7 +733,7 @@ export default function StudentDashboard({
                         onChange={() => setEvalRating(rating)}
                         className="sr-only"
                       />
-                      <Star className={`w-3.5 h-3.5 mb-1 ${evalRating >= rating ? 'text-[#E58F49] fill-[#E58F49]' : 'text-zinc-300'}`} />
+                      <Star className={`w-3.5 h-3.5 mb-1 ${evalRating >= rating ? 'text-[#FF6600] fill-[#FF6600]' : 'text-zinc-300'}`} />
                       <span>{rating}</span>
                     </label>
                   ))}
@@ -753,7 +753,7 @@ export default function StudentDashboard({
                   value={evalComment}
                   onChange={(e) => setEvalComment(e.target.value)}
                   placeholder="Ders anlatımı ve materyal yararlılığı ile ilgili görüşlerinizi ekleyin..."
-                  className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-bold text-zinc-800 placeholder-zinc-400"
+                  className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-bold text-zinc-800 placeholder-zinc-400"
                 />
               </div>
 
@@ -767,7 +767,7 @@ export default function StudentDashboard({
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-2.5 rounded-xl transition pointer-events-auto cursor-pointer"
+                  className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-2.5 rounded-xl transition pointer-events-auto cursor-pointer"
                 >
                   Gönder
                 </button>
@@ -820,7 +820,7 @@ export default function StudentDashboard({
             <div className="bg-white border border-zinc-150 p-4 rounded-xl flex items-center justify-center gap-4 mb-4">
               <QrCode className="w-16 h-16 text-zinc-850 shrink-0" />
               <div className="text-left font-semibold">
-                <span className="text-[10px] text-[#E58F49] font-black block">KAREKOD GÜVENLİK ALGORİTMASI</span>
+                <span className="text-[10px] text-[#FF6600] font-black block">KAREKOD GÜVENLİK ALGORİTMASI</span>
                 <p className="text-[10.5px] text-zinc-500 leading-relaxed">
                   Bu karekod, şirketler veya İK uzmanları tarafından sorgulandığında öğrencinin bitirme ödevlerini ve eğitmen not detayını gösterir.
                 </p>
@@ -838,7 +838,7 @@ export default function StudentDashboard({
               <button
                 type="button"
                 onClick={() => handleDownloadCertificatePdf(selectedQrCourse.title)}
-                className="flex-1 bg-[#E58F49] hover:bg-[#D4803A] text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <FileDown className="w-4 h-4" />
                 Sertifikayı PDF İndir

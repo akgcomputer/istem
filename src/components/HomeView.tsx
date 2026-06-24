@@ -218,20 +218,20 @@ export default function HomeView({
       {/* Dynamic HERO SECTION */}
       {showHeroBannerSetting && (
         <section className="relative overflow-hidden bg-gradient-to-b from-[#F2ECE0]/50 to-[#FAF9F5] pt-14 pb-20 border-b border-zinc-200/60">
-          <div className="absolute inset-0 bg-[radial-gradient(#E58F49_1px,transparent_1px)] [background-size:16px_16px] opacity-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(#FF6600_1px,transparent_1px)] [background-size:16px_16px] opacity-10" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             
             {/* Tagline */}
             <span className="inline-flex items-center gap-1.5 bg-amber-100/70 border border-amber-200/60 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#8C3F03] mb-6 animate-fade-in animate-pulse">
-              <Sparkles className="w-4 h-4 text-[#E58F49] shrink-0" />
+              <Sparkles className="w-4 h-4 text-[#FF6600] shrink-0" />
               Eğitmen Komisyonu Yok. Sınırsız Sektörel Yetkinlik Burada.
             </span>
 
             {/* Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-display text-zinc-950 max-w-4xl mx-auto leading-[1.12] mb-6">
               Eğitmen Komisyonu Yok. <br/>
-              <span className="text-[#E58F49] underline decoration-wavy decoration-amber-300 underline-offset-6 font-display">Sınırsız Sektörel Yetkinlik</span> Burada.
+              <span className="text-[#FF6600] underline decoration-wavy decoration-amber-300 underline-offset-6 font-display">Sınırsız Sektörel Yetkinlik</span> Burada.
             </h1>
 
             <p className="text-base sm:text-lg text-zinc-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
@@ -241,7 +241,7 @@ export default function HomeView({
             {/* Interactive Guided Search Bar ("FARK" implementation) */}
             {showSearchBarsSetting && (
               <div className="max-w-2xl mx-auto mb-12">
-                <div className="bg-white p-2 rounded-2xl border border-zinc-200/80 shadow-md focus-within:ring-2 focus-within:ring-[#E58F49] flex items-center gap-2 transition duration-200">
+                <div className="bg-white p-2 rounded-2xl border border-zinc-200/80 shadow-md focus-within:ring-2 focus-within:ring-[#FF6600] flex items-center gap-2 transition duration-200">
                   <div className="pl-3 text-zinc-400">
                     <Search className="w-5 h-5" />
                   </div>
@@ -263,7 +263,7 @@ export default function HomeView({
                   )}
                   <button 
                     onClick={() => onNavigateTo('katalog')}
-                    className="bg-[#E58F49] hover:bg-[#D4803A] text-white px-5 py-3 rounded-xl text-xs font-bold transition duration-150 shrink-0 shadow-sm"
+                    className="bg-[#FF6600] hover:bg-[#CC5200] text-white px-5 py-3 rounded-xl text-xs font-bold transition duration-150 shrink-0 shadow-sm"
                   >
                     Keşfet
                   </button>
@@ -275,7 +275,7 @@ export default function HomeView({
                     
                     {isDeveloperRelated ? (
                       <div>
-                        <h4 className="text-xs font-black uppercase tracking-widest text-[#E58F49] mb-2 flex items-center gap-1">
+                        <h4 className="text-xs font-black uppercase tracking-widest text-[#FF6600] mb-2 flex items-center gap-1">
                           <Code2 className="w-4 h-4" /> Yazılım Sektörü Rehberi (En İstenen 5 Yetkinlik)
                         </h4>
                         <p className="text-xs text-zinc-500 mb-3 leading-relaxed">
@@ -302,7 +302,7 @@ export default function HomeView({
                     ) : isAiRelated ? (
                       <div>
                         <h4 className="text-xs font-black uppercase tracking-widest text-amber-800 mb-2 flex items-center gap-1">
-                          <BrainCircuit className="w-4 h-4 text-[#E58F49]" /> Yapay Zeka Sektörü Rehberi (En Popüler Araçlar)
+                          <BrainCircuit className="w-4 h-4 text-[#FF6600]" /> Yapay Zeka Sektörü Rehberi (En Popüler Araçlar)
                         </h4>
                         <p className="text-xs text-zinc-500 mb-2">
                           RAG mimarileri ve Prompt mühendisliği şu anda şirketlerin en çok bütçe ayırdığı alanlardandır:
@@ -324,7 +324,7 @@ export default function HomeView({
                             <button 
                               key={keyword}
                               onClick={() => setSearchQuery(keyword)}
-                              className="text-xs bg-zinc-100 hover:bg-[#E58F49] hover:text-white text-zinc-700 px-3 py-1.5 rounded-xl transition duration-150 border border-zinc-200/50"
+                              className="text-xs bg-zinc-100 hover:bg-[#FF6600] hover:text-white text-zinc-700 px-3 py-1.5 rounded-xl transition duration-150 border border-zinc-200/50"
                             >
                               {keyword}
                             </button>
@@ -341,7 +341,7 @@ export default function HomeView({
             {/* Social Proof Success Counters */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto border-t border-zinc-200/70 pt-8">
               <div className="p-3 bg-white/40 border border-zinc-200/50 rounded-2xl">
-                <span className="text-3xl font-extrabold text-[#E58F49] font-mono block">1,500+</span>
+                <span className="text-3xl font-extrabold text-[#FF6600] font-mono block">1,500+</span>
                 <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Doğrulanmış Eğitmen</span>
               </div>
               <div className="p-3 bg-white/40 border border-zinc-200/50 rounded-2xl">
@@ -353,7 +353,7 @@ export default function HomeView({
                 <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Platform Komisyonu</span>
               </div>
               <div className="p-3 bg-white/40 border border-zinc-200/50 rounded-2xl">
-                <span className="text-3xl font-extrabold text-[#E58F49] font-mono block">%92</span>
+                <span className="text-3xl font-extrabold text-[#FF6600] font-mono block">%92</span>
                 <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Kurs Tamamlama</span>
               </div>
             </div>

@@ -129,7 +129,7 @@ export default function SpecialCoursesCatalogView() {
         {/* HEADER SECTION */}
         <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">
+            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">
               LGS, YKS, GÜZEL SANATLAR VE SÜRÜCÜ KURSLARI
             </span>
             <h1 id="special-courses-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
@@ -156,7 +156,7 @@ export default function SpecialCoursesCatalogView() {
           {showFilters && (
             <div className="lg:col-span-3 bg-white border border-zinc-200/60 rounded-3xl p-5 shadow-xs space-y-6">
               <h3 className="text-sm font-black text-zinc-855 border-b border-zinc-100 pb-3 flex items-center gap-1.5">
-                <Trophy className="w-4 h-4 text-[#E58F49]" /> Kurs kategorileri
+                <Trophy className="w-4 h-4 text-[#FF6600]" /> Kurs kategorileri
               </h3>
 
               {/* Keyword Search */}
@@ -168,7 +168,7 @@ export default function SpecialCoursesCatalogView() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="LGS, Sürücü, Ataşehir vb..."
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2 text-xs text-zinc-850 focus:outline-none focus:ring-1 focus:ring-[#E58F49] font-semibold"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-9 pr-3 py-2 text-xs text-zinc-850 focus:outline-none focus:ring-1 focus:ring-[#FF6600] font-semibold"
                   />
                   <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-3.5" />
                 </div>
@@ -231,7 +231,7 @@ export default function SpecialCoursesCatalogView() {
                   className="flex items-center gap-1.5 px-3 py-2 bg-zinc-100/80 hover:bg-zinc-200 hover:scale-[1.02] active:scale-98 text-zinc-950 text-xs font-extrabold rounded-xl transition duration-150 border border-zinc-200 cursor-pointer"
                   title={showFilters ? "Filtreleri Gizle" : "Filtreleri Göster"}
                 >
-                  {showFilters ? <EyeOff className="w-3.5 h-3.5 text-zinc-650" /> : <SlidersHorizontal className="w-3.5 h-3.5 text-[#E58F49]" />}
+                  {showFilters ? <EyeOff className="w-3.5 h-3.5 text-zinc-650" /> : <SlidersHorizontal className="w-3.5 h-3.5 text-[#FF6600]" />}
                   <span>{showFilters ? "Filtreleri Gizle" : "Filtreleri Göster"}</span>
                 </button>
                 <span className="text-xs font-extrabold text-zinc-500">
@@ -250,7 +250,7 @@ export default function SpecialCoursesCatalogView() {
                 {filteredCourses.map((course) => (
                   <div 
                     key={course.id}
-                    className="bg-white border border-zinc-250/60 rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:border-[#E58F49] transition duration-200 flex flex-col justify-between group"
+                    className="bg-white border border-zinc-250/60 rounded-3xl overflow-hidden shadow-xs hover:shadow-md hover:border-[#FF6600] transition duration-200 flex flex-col justify-between group"
                   >
                     
                     {/* Image Cover */}
@@ -269,7 +269,7 @@ export default function SpecialCoursesCatalogView() {
                       
                       <div>
                         {/* Title (Larger text layout) */}
-                        <h3 className="text-base sm:text-[17px] font-black text-zinc-950 group-hover:text-[#E58F49] transition leading-snug mb-1 line-clamp-2">
+                        <h3 className="text-base sm:text-[17px] font-black text-zinc-950 group-hover:text-[#FF6600] transition leading-snug mb-1 line-clamp-2">
                           {course.name}
                         </h3>
 
@@ -281,7 +281,7 @@ export default function SpecialCoursesCatalogView() {
                             <span>🖼️ 12</span>
                           </div>
                           <div className="flex items-center gap-1 text-zinc-650 font-semibold">
-                            <MapPin className="w-3.5 h-3.5 text-[#E58F49] shrink-0" />
+                            <MapPin className="w-3.5 h-3.5 text-[#FF6600] shrink-0" />
                             <span>{course.location}</span>
                           </div>
                         </div>
@@ -306,7 +306,7 @@ export default function SpecialCoursesCatalogView() {
                             <span>💰</span>
                             <span className="text-zinc-550 font-bold">Aylık Ort. Ücret</span>
                             <span className="text-zinc-400 font-normal">:</span>
-                            <span className="text-[#E58F49] font-black">{course.priceRange || '₺12.500'}</span>
+                            <span className="text-[#FF6600] font-black">{course.priceRange || '₺12.500'}</span>
                           </div>
 
                           <div className="grid grid-cols-[20px_130px_8px_1fr] items-center gap-x-1 font-bold">
@@ -407,7 +407,7 @@ export default function SpecialCoursesCatalogView() {
                       placeholder="Örn: Sarıyer Başarı LGS-YKS Şubesi"
                       value={newCourse.name}
                       onChange={(e) => setNewCourse({...newCourse, name: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                   <div>
@@ -418,7 +418,7 @@ export default function SpecialCoursesCatalogView() {
                       placeholder="Örn: Şişli, İstanbul"
                       value={newCourse.location}
                       onChange={(e) => setNewCourse({...newCourse, location: e.target.value})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49]"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600]"
                     />
                   </div>
                 </div>
@@ -449,7 +449,7 @@ export default function SpecialCoursesCatalogView() {
                     <select
                       value={newCourse.type}
                       onChange={(e) => setNewCourse({...newCourse, type: e.target.value as any})}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#E58F49] text-zinc-700 font-bold"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-[#FF6600] text-zinc-700 font-bold"
                     >
                       <option value="LGS">📚 LGS Liselere Hazırlık</option>
                       <option value="YKS">🎓 YKS Üniversiteye Hazırlık</option>
@@ -567,7 +567,7 @@ export default function SpecialCoursesCatalogView() {
                 </div>
                 <div className="bg-white border border-zinc-200 p-3 rounded-2xl text-center">
                   <span className="text-[10px] text-zinc-400 font-bold block uppercase font-mono">Ort. Ücret</span>
-                  <span className="text-sm font-black text-[#E58F49] mt-1 block font-mono">{selectedCourse.priceRange}</span>
+                  <span className="text-sm font-black text-[#FF6600] mt-1 block font-mono">{selectedCourse.priceRange}</span>
                 </div>
                 <div className="bg-white border border-zinc-200 p-3 rounded-2xl text-center">
                   <span className="text-[10px] text-zinc-400 font-bold block uppercase font-mono">Haftalık Saat</span>
@@ -577,7 +577,7 @@ export default function SpecialCoursesCatalogView() {
 
               {/* Sınıflar / Seviyeler */}
               <div className="bg-white border border-zinc-200 rounded-2xl p-4 space-y-2">
-                <h4 className="text-xs font-black uppercase tracking-wider text-[#E58F49]">🎯 Mevcut Hazırlık Sınıfları &amp; Seviyeler</h4>
+                <h4 className="text-xs font-black uppercase tracking-wider text-[#FF6600]">🎯 Mevcut Hazırlık Sınıfları &amp; Seviyeler</h4>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {selectedCourse.classes.map((cls, index) => (
                     <span key={index} className="bg-zinc-100/90 border border-zinc-200 text-zinc-850 px-2.5 py-1 text-xs rounded-xl font-bold">
