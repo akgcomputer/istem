@@ -180,7 +180,7 @@ export default function TeachersCatalogView({
   // Filters State
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [sortOption, setSortOption] = useState<string>('populer'); // populer, ucuz, pahali
+  const [sortOption, setSortOption] = useState<string>('rastgele'); // rastgele, populer, ucuz, pahali
   const [selectedExperience, setSelectedExperience] = useState<string>('Tümü'); // Tümü, Yeni, 1-5 Yıl, +5 Yıldan Fazla, +10 Yıldan Fazla
   const [maxPrice, setMaxPrice] = useState<number>(1500);
   const [selectedType, setSelectedType] = useState<string>('Tümü'); // Tümü, Kurumsal, Online, Yüz Yüze
@@ -252,6 +252,12 @@ export default function TeachersCatalogView({
     return true;
   });
 
+  const randomWeights = React.useMemo(() => {
+    const weights: Record<string, number> = {};
+    teachersList.forEach(t => weights[t.id] = Math.random());
+    return weights;
+  }, [teachersList]);
+
   // Sort logic based on first session or rating
   const sortedTeachers = [...filteredTeachers].sort((a, b) => {
     if (sortOption === 'ucuz') {
@@ -264,8 +270,11 @@ export default function TeachersCatalogView({
       const maxB = Math.max(...b.sessions.map(s => s.price));
       return maxB - maxA;
     }
-    // Default popular based on ratings & comments
-    return b.rating * b.commentsCount - a.rating * a.commentsCount;
+    if (sortOption === 'populer') {
+      return b.rating * b.commentsCount - a.rating * a.commentsCount;
+    }
+    // Rastgele (default)
+    return (randomWeights[a.id] || 0) - (randomWeights[b.id] || 0);
   });
 
   // Reset pagination when criteria changes
@@ -626,6 +635,7 @@ export default function TeachersCatalogView({
                   onChange={(e) => setSortOption(e.target.value)}
                   className="bg-zinc-50 border border-zinc-200 rounded-lg px-2.5 py-1 text-xs font-bold focus:outline-none text-zinc-750"
                 >
+                  <option value="rastgele">Rastgele Önerilenler</option>
                   <option value="populer">En Popüler &amp; Değerlendirme</option>
                   <option value="ucuz">Fiyat (Düşükten Yükseğe)</option>
                   <option value="pahali">Fiyat (Yüksekten Düşüğe)</option>

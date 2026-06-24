@@ -112,7 +112,7 @@ export default function SchoolsCatalogView() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/schools')
+    fetch('/api/private_schools')
       .then(res => res.json())
       .then(data => {
         setSchools(Array.isArray(data) ? data : []);
@@ -124,7 +124,13 @@ export default function SchoolsCatalogView() {
       });
   }, []);
 
-  const filteredSchools = schools.filter(school => {
+  const randomWeights = React.useMemo(() => {
+    const weights: Record<string, number> = {};
+    schools.forEach(s => weights[s.id] = Math.random());
+    return weights;
+  }, [schools]);
+
+  const filteredSchools = [...schools].sort((a, b) => (randomWeights[a.id] || 0) - (randomWeights[b.id] || 0)).filter(school => {
     // 1. DERS ADI VEYA YETKİNLİK SORGULA / Keyword Search
     if (searchName.trim()) {
       const q = searchName.toLowerCase();

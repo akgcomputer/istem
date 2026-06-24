@@ -305,8 +305,15 @@ export default function CatalogView({
     setFilterCategory(selectedCategory);
   }
 
+  // Random sort
+  const randomWeights = React.useMemo(() => {
+    const weights: Record<string, number> = {};
+    subjects.forEach((s, idx) => weights[idx] = Math.random());
+    return weights;
+  }, [subjects]);
+
   // Filter application logic
-  const filteredSubjects = subjects.filter(sub => {
+  const filteredSubjects = [...subjects].sort((a, b) => (randomWeights[subjects.indexOf(a)] || 0) - (randomWeights[subjects.indexOf(b)] || 0)).filter(sub => {
     // 1. Search by Lesson Name
     if (searchName && !sub.name.toLowerCase().includes(searchName.toLowerCase())) return false;
 

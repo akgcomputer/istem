@@ -54,8 +54,15 @@ export default function SpecialCoursesCatalogView() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<string>('Tümü'); // Tümü, LGS, YKS, Yetenek Sınavları, Özel Eğitim Kurumları, Sürücü Kursu
 
+  // Random sort weights
+  const randomWeights = React.useMemo(() => {
+    const weights: Record<string, number> = {};
+    courses.forEach(c => weights[c.id] = Math.random());
+    return weights;
+  }, [courses]);
+
   // Filtration logic
-  const filteredCourses = courses.filter(course => {
+  const filteredCourses = [...courses].sort((a, b) => (randomWeights[a.id] || 0) - (randomWeights[b.id] || 0)).filter(course => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchName = course.name.toLowerCase().includes(q);
