@@ -792,17 +792,14 @@ export default function CatalogView({
                       }}
                       className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                     >
-                      <option value="Tümü">🏫 Tüm Sınav & Kurs Türleri</option>
-                      <option value="LGS">📚 LGS Liselere Hazırlık</option>
-                      <option value="YKS">🎓 YKS Üniversiteye Hazırlık</option>
-                      <option value="Yetenek Sınavları">🎨 Özel Yetenek & Konservatuar</option>
-                      <option value="Özel Eğitim Kurumları">🎯 Takviye Etüt Eğitimleri</option>
-                      <option value="Sürücü Kursu">🚗 Motorlu Taşıt Sürücü Kursu</option>
-                      <option value="Yabancı Dil">🌐 Yabancı Dil Kursları</option>
-                      <option value="Sanat">🎭 Sanat ve Müzik Kursları</option>
-                      <option value="Spor">🏋️ Spor ve Fitness Kursları</option>
-                      <option value="Üretim">🧵 El Sanatları ve Üretim</option>
-                      <option value="Mesleki">📜 Mesleki Sertifika Kursları</option>
+                      <option value="Tümü">🏫 Tüm Kategoriler</option>
+                      <option value="Bilişim">💻 Bilişim & Yazılım</option>
+                      <option value="Dil">🌐 Yabancı Dil</option>
+                      <option value="İlköğretim">🎒 İlköğretim Takviye</option>
+                      <option value="Lise/Sınav">🎓 Lise & Sınav Hazırlık</option>
+                      <option value="Spor">🏋️ Spor & Fiziksel Gelişim</option>
+                      <option value="Sanat">🎭 Sanat & Yetenek</option>
+                      <option value="Kişisel">🌟 Kişisel Gelişim</option>
                     </select>
                   </div>
 

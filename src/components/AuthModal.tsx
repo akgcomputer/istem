@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { X, Eye, EyeOff, User, Phone, Lock, Calendar, Briefcase, Building, Sparkles, Check } from 'lucide-react';
+import { X, Eye, EyeOff, User, Phone, Lock, Calendar, Briefcase, Building, Sparkles, Check, ArrowRight } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
