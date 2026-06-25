@@ -126,6 +126,7 @@ const formatCategory = (cat: string) => {
 };
 
 export default function CatalogView({ 
+  courses,
   selectedCategory, 
   onSelectCategory, 
   isLoggedIn,
