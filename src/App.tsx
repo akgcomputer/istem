@@ -6,6 +6,9 @@ import {
 // Removed static mock imports. Data is now fetched from Cloudflare APIs.
 import { Course, Certificate } from './types';
 
+import { CATEGORIES, COURSES, MOCK_EMPLOYEES, MOCK_CERTIFICATES } from './data';
+import { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } from './data/catalogData';
+
 // Importing our modular clean views
 import HomeView from './components/HomeView';
 import AuthModal from './components/AuthModal';
@@ -29,12 +32,12 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Data States
-  const [categories, setCategories] = useState<any[]>([]);
-  const [courses, setCourses] = useState<any[]>([]);
-  const [specialCourses, setSpecialCourses] = useState<any[]>([]);
-  const [teachers, setTeachers] = useState<any[]>([]);
-  const [employees, setEmployees] = useState<any[]>([]);
-  const [certificates, setCertificates] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>(CATEGORIES);
+  const [courses, setCourses] = useState<any[]>(COURSES);
+  const [specialCourses, setSpecialCourses] = useState<any[]>(MOCK_SPECIAL_COURSES);
+  const [teachers, setTeachers] = useState<any[]>(MOCK_TEACHERS);
+  const [employees, setEmployees] = useState<any[]>(MOCK_EMPLOYEES);
+  const [certificates, setCertificates] = useState<any[]>(MOCK_CERTIFICATES);
   const [isLoading, setIsLoading] = useState(true);
 
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -47,28 +50,12 @@ export default function App() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [catRes, couRes, tRes, specCouRes, empRes, certRes] = await Promise.all([
-          fetch('/api/categories').catch(() => ({ json: () => [] })),
-          fetch('/api/courses').catch(() => ({ json: () => [] })),
-          fetch('/api/teachers').catch(() => ({ json: () => [] })),
-          fetch('/api/special_courses').catch(() => ({ json: () => [] })),
-          fetch('/api/employees').catch(() => ({ json: () => [] })),
-          fetch('/api/certificates').catch(() => ({ json: () => [] }))
-        ]);
-        
-        const catData = await (catRes as any).json();
-        const couData = await (couRes as any).json();
-        const tData = await (tRes as any).json();
-        const specCouData = await (specCouRes as any).json();
-        const empData = await (empRes as any).json();
-        const certData = await (certRes as any).json();
-
-        setCategories(Array.isArray(catData) ? catData : []);
-        setCourses(Array.isArray(couData) ? couData : []);
-        setTeachers(Array.isArray(tData) ? tData : []);
-        setSpecialCourses(Array.isArray(specCouData) ? specCouData : []);
-        setEmployees(Array.isArray(empData) ? empData : []);
-        setCertificates(Array.isArray(certData) ? certData : []);
+        setCategories(CATEGORIES);
+        setCourses(COURSES);
+        setTeachers(MOCK_TEACHERS);
+        setSpecialCourses(MOCK_SPECIAL_COURSES);
+        setEmployees(MOCK_EMPLOYEES);
+        setCertificates(MOCK_CERTIFICATES);
         
         const currentPath = window.location.pathname;
         if (currentPath.startsWith('/ders/')) {
@@ -175,7 +162,25 @@ export default function App() {
   
   const handleNavigate = (page: string, extraState?: any, path?: string) => {
     setActivePage(page);
-    window.history.pushState({ page, ...extraState }, '', path || '/');
+    let newPath = path;
+    if (!newPath) {
+      if (page === 'home') newPath = '/';
+      else if (page === 'katalog') newPath = '/dersler';
+      else if (page === 'detay') newPath = '/ders';
+      else if (page === 'video') newPath = '/video';
+      else if (page === 'ogrenci') newPath = '/ogrenci';
+      else if (page === 'egitmen') newPath = '/egitmen';
+      else if (page === 'kurumsal') newPath = '/kurumsal';
+      else if (page === 'teachers-catalog') newPath = '/ogretmenler';
+      else if (page === 'schools-catalog') newPath = '/okullar';
+      else if (page === 'special-courses-catalog') newPath = '/kurslar';
+      else if (page === 'teacher-profile') newPath = '/ogretmen';
+      else if (page === 'admin') newPath = '/admin';
+      else if (page === 'school-management') newPath = '/yonetim';
+      else newPath = '/';
+    }
+    window.history.pushState({ page, ...extraState }, '', newPath);
+    window.scrollTo(0, 0);
   };
   
   // Real enrollment state trackers

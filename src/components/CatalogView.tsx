@@ -135,35 +135,12 @@ export default function CatalogView({
   
   // Teachers state initialized with MOCK_TEACHERS so registered mentors accumulate here
   const [teachersList, setTeachersList] = useState<Teacher[]>(MOCK_TEACHERS);
-  const [coursesList, setCoursesList] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [coursesList, setCoursesList] = useState<any[]>(courses || []);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/teachers').then(res => res.json()),
-      fetch('/api/special_courses').then(res => res.json())
-    ]).then(([teachersData, coursesData]) => {
-      if (Array.isArray(teachersData)) {
-        const sanitizedTeachers = teachersData.map(t => ({
-          ...t,
-          name: t.name || 'İsimsiz Eğitmen',
-          bio: t.bio || '',
-          preferredLocation: t.preferredLocation || 'Merkez',
-          category: t.category || 'Diğer',
-          experienceLabel: t.experienceLabel || 'Uzman',
-          tags: Array.isArray(t.tags) ? t.tags : [],
-          sessions: Array.isArray(t.sessions) ? t.sessions : []
-        }));
-        setTeachersList(sanitizedTeachers);
-      }
-      
-      if (Array.isArray(coursesData)) {
-        setCoursesList(coursesData);
-      }
-    })
-    .catch(err => console.error("Error fetching data:", err))
-    .finally(() => setIsLoading(false));
-  }, []);
+    setCoursesList(courses || []);
+  }, [courses]);
 
 
   // Form simulation state for registration (Siz de Katılın Portal)
@@ -246,26 +223,57 @@ export default function CatalogView({
   };
 
   // Build the unified Subject dataset using dynamic coursesList
-  const subjects: Subject[] = coursesList.map(c => {
-    const teachersWhoTeach = teachersList.filter(t => 
-      (t.sessions || []).some(s => (s.name || '').includes((c.title || c.name || "")))
-    );
+  const subjects: Subject[] = React.useMemo(() => {
+    const uniqueSessions = new Map<string, any>();
+    
+    teachersList.forEach(t => {
+      (t.sessions || []).forEach(s => {
+        if (!s.name) return;
+        const key = s.name.trim();
+        if (!uniqueSessions.has(key)) {
+          uniqueSessions.set(key, {
+            name: key,
+            category: s.category || t.category || 'Diğer',
+            teachersWhoTeach: []
+          });
+        }
+        uniqueSessions.get(key).teachersWhoTeach.push(t);
+      });
+    });
 
-    const prices = teachersWhoTeach.flatMap(t => 
-      (t.sessions || []).filter(s => (s.name || '').includes((c.title || c.name || ""))).map(s => s.price)
-    );
+    // Also include any from coursesList that might not have a teacher yet
+    coursesList.forEach(c => {
+      const key = (c.title || c.name || '').trim();
+      if (!key) return;
+      if (!uniqueSessions.has(key)) {
+        uniqueSessions.set(key, {
+          name: key,
+          category: c.type || c.category || 'Diğer',
+          teachersWhoTeach: [],
+          description: c.description || c.parentReviewText || 'Bu ders için henüz bir açıklama girilmemiş.',
+          image: c.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80'
+        });
+      }
+    });
 
-    return {
-      name: (c.title || c.name || ""),
-      category: formatCategory(c.type || c.category || 'Diğer'),
-      description: c.parentReviewText || c.description || 'Bu ders için henüz bir açıklama girilmemiş.',
-      image: c.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
-      minPrice: prices.length > 0 ? Math.min(...prices) : 0,
-      maxPrice: prices.length > 0 ? Math.max(...prices) : 0,
-      teachersCount: teachersWhoTeach.length,
-      teachersList: teachersWhoTeach
-    };
-  });
+    return Array.from(uniqueSessions.values()).map(data => {
+      const teachersWhoTeach = data.teachersWhoTeach;
+      const prices = teachersWhoTeach.flatMap((t: any) => 
+        (t.sessions || []).filter((s: any) => s.name === data.name).map((s: any) => s.price || 0)
+      );
+
+      return {
+        name: data.name,
+        category: formatCategory(data.category),
+        description: data.description || 'Bu ders için henüz bir açıklama girilmemiş.',
+        image: data.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+        minPrice: prices.length > 0 ? Math.min(...prices) : 0,
+        maxPrice: prices.length > 0 ? Math.max(...prices) : 0,
+        teachersCount: teachersWhoTeach.length,
+        teachersList: teachersWhoTeach
+      };
+    });
+  }, [coursesList, teachersList]);
 
   // Layout and Detail view states
   const [isFilterOpen, setIsFilterOpen] = useState(true);
@@ -318,7 +326,12 @@ export default function CatalogView({
     if (searchName && !sub.name.toLowerCase().includes(searchName.toLowerCase())) return false;
 
     // 2. Filter by Category
-    if (filterCategory !== 'Tümü' && sub.category !== filterCategory) return false;
+    if (filterCategory !== 'Tümü') {
+      const isMatch = sub.category === filterCategory || 
+                      sub.name.toLowerCase().includes(filterCategory.toLowerCase()) || 
+                      sub.teachersList.some((t: any) => (t.tags || []).some((tag: any) => tag.toLowerCase().includes(filterCategory.toLowerCase())) || t.category === filterCategory);
+      if (!isMatch) return false;
+    }
 
     // 3. Filter by Specific Lesson
     if (filterSpecificLesson !== 'Tümü' && sub.name !== filterSpecificLesson) return false;
@@ -749,7 +762,7 @@ export default function CatalogView({
 
                   {/* 3. KATEGORİ */}
                   <div className="space-y-2">
-                    <label className="text-[11px] font-black uppercase tracking-wider text-zinc-400 block">KATEGORİ</label>
+                    <label className="text-[11px] font-black uppercase tracking-wider text-zinc-400 block">KURS SEKTÖR TÜRÜ</label>
                     <select
                       value={filterCategory}
                       onChange={(e) => {
@@ -759,14 +772,17 @@ export default function CatalogView({
                       }}
                       className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-2.5 text-xs font-bold text-zinc-700 focus:outline-none focus:ring-1 focus:ring-[#FF6600]"
                     >
-                      <option value="Tümü">Tüm Kategoriler</option>
-                      <option value="Bilişim">💻 Bilişim &amp; Yazılım</option>
-                      <option value="Dil">🌐 Dil &amp; Lisans</option>
-                      <option value="İlköğretim">📚 İlköğretim Okutmanlığı</option>
-                      <option value="Lise/Sınav">🎯 Lise / LGS-YKS Hazırlık</option>
-                      <option value="Spor">⚽ Spor &amp; Fitness</option>
-                      <option value="Sanat">🎨 Sanat &amp; Tasarım</option>
-                      <option value="Kişisel">🌱 Kişisel Gelişim</option>
+                      <option value="Tümü">🏫 Tüm Sınav & Kurs Türleri</option>
+                      <option value="LGS">📚 LGS Liselere Hazırlık</option>
+                      <option value="YKS">🎓 YKS Üniversiteye Hazırlık</option>
+                      <option value="Yetenek Sınavları">🎨 Özel Yetenek & Konservatuar</option>
+                      <option value="Özel Eğitim Kurumları">🎯 Takviye Etüt Eğitimleri</option>
+                      <option value="Sürücü Kursu">🚗 Motorlu Taşıt Sürücü Kursu</option>
+                      <option value="Yabancı Dil">🌐 Yabancı Dil Kursları</option>
+                      <option value="Sanat">🎭 Sanat ve Müzik Kursları</option>
+                      <option value="Spor">🏋️ Spor ve Fitness Kursları</option>
+                      <option value="Üretim">🧵 El Sanatları ve Üretim</option>
+                      <option value="Mesleki">📜 Mesleki Sertifika Kursları</option>
                     </select>
                   </div>
 
