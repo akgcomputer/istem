@@ -783,7 +783,7 @@ export default function CatalogView({
                   {/* 3. KATEGORİ */}
                   <div className="space-y-2">
                     <label className="text-[11px] font-black uppercase tracking-wider text-zinc-400 block">KURS SEKTÖR TÜRÜ</label>
-                    <select
+                  <select
                       value={filterCategory}
                       onChange={(e) => {
                         setFilterCategory(e.target.value);
