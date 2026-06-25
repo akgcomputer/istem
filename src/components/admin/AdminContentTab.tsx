@@ -21,27 +21,32 @@ export default function AdminContentTab() {
     setLoading(true);
     const currentPage = resetPage ? 0 : page;
     try {
-      let endpointBase = activeSubTab === 'schools' ? 'private_schools' : activeSubTab === 'special_courses' ? 'special-courses' : activeSubTab;
+      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
+      const { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } = await import('../../data/catalogData');
+      const { COURSES } = await import('../../data');
       
-      const queryParams = new URLSearchParams({
-        all: 'true',
-        limit: LIMIT.toString(),
-        offset: (currentPage * LIMIT).toString()
-      });
-      if (currentSearch) queryParams.append('search', currentSearch);
+      let items: any[] = [];
+      if (activeSubTab === 'teachers') items = MOCK_TEACHERS;
+      else if (activeSubTab === 'courses') items = COURSES;
+      else if (activeSubTab === 'special_courses') items = MOCK_SPECIAL_COURSES;
+      else if (activeSubTab === 'schools') items = []; // No mock static export directly
+      else if (activeSubTab === 'challenges') items = [];
 
-      const res = await fetch(`/api/${endpointBase}?${queryParams.toString()}`);
-      const items = await res.json();
-      
-      const newItems = Array.isArray(items) ? items : [];
+      if (currentSearch) {
+        items = items.filter(item => 
+          (item.title || item.name || '').toLowerCase().includes(currentSearch.toLowerCase())
+        );
+      }
+
+      const paginatedItems = items.slice(currentPage * LIMIT, (currentPage + 1) * LIMIT);
       
       if (resetPage) {
-        setData(newItems);
+        setData(paginatedItems);
       } else {
-        setData(prev => [...prev, ...newItems]);
+        setData(prev => [...prev, ...paginatedItems]);
       }
       
-      setHasMore(newItems.length === LIMIT);
+      setHasMore(paginatedItems.length === LIMIT);
       setPage(currentPage + 1);
     } catch (e) {
       console.error(e);
@@ -61,13 +66,7 @@ export default function AdminContentTab() {
   const handleToggleStatus = async (item: any) => {
     const newStatus = item.isActive === undefined ? 0 : (item.isActive === 1 ? 0 : 1);
     try {
-      let endpointBase = activeSubTab === 'schools' ? 'private_schools' : activeSubTab === 'special_courses' ? 'special-courses' : activeSubTab;
-      await fetch(`/api/${endpointBase}/${item.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive: newStatus })
-      });
-      // Update locally
+      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
       setData(data.map(d => d.id === item.id ? { ...d, isActive: newStatus } : d));
     } catch (e) {
       console.error(e);
@@ -77,8 +76,7 @@ export default function AdminContentTab() {
   const handleDelete = async (id: string) => {
     if (!confirm('Emin misiniz? Bu işlem geri alınamaz!')) return;
     try {
-      let endpointBase = activeSubTab === 'schools' ? 'private_schools' : activeSubTab === 'special_courses' ? 'special-courses' : activeSubTab;
-      await fetch(`/api/${endpointBase}/${id}`, { method: 'DELETE' });
+      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
       setData(data.filter(d => d.id !== id));
     } catch (e) {
       console.error(e);
@@ -91,26 +89,18 @@ export default function AdminContentTab() {
   };
 
   const handleSaveForm = async (formData: any) => {
-    let endpointBase = activeSubTab === 'schools' ? 'private_schools' : activeSubTab === 'special_courses' ? 'special-courses' : activeSubTab;
-    
     try {
       const isEdit = !!modalData;
-      const url = isEdit ? `/api/${endpointBase}/${modalData.id}` : `/api/${endpointBase}`;
-      const method = isEdit ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
       
-      if (res.ok) {
-        setIsModalOpen(false);
-        fetchTabContent(true); // reload list
+      if (isEdit) {
+        setData(data.map(d => d.id === modalData.id ? { ...d, ...formData } : d));
       } else {
-        const errorData = await res.json();
-        alert('Kaydetme hatası: ' + (errorData.error || 'Bilinmeyen hata'));
+        const newItem = { id: `new-${Date.now()}`, ...formData };
+        setData([newItem, ...data]);
       }
+      
+      setIsModalOpen(false);
     } catch (e) {
       console.error(e);
       alert('Ağ hatası oluştu.');

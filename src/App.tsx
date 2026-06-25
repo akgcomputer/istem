@@ -61,10 +61,10 @@ export default function App() {
         const currentPath = window.location.pathname;
         if (currentPath.startsWith('/ders/')) {
           const id = currentPath.replace('/ders/', '').split('?')[0];
-          const found = (Array.isArray(couData) ? couData : []).find((c: any) => c.id === id);
+          const found = (Array.isArray(COURSES) ? COURSES : []).find((c: any) => c.id === id);
           if (found) setSelectedCourse(found);
-        } else if (Array.isArray(couData) && couData.length > 0) {
-          setSelectedCourse(couData[0]);
+        } else if (Array.isArray(COURSES) && COURSES.length > 0) {
+          setSelectedCourse(COURSES[0]);
         }
         
         if (currentPath.startsWith('/ogretmen/')) {
@@ -72,7 +72,7 @@ export default function App() {
           const getTeacherSlug = (name: string): string => {
             return name.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
           };
-          const foundT = (Array.isArray(tData) ? tData : []).find((t: any) => getTeacherSlug(t.name) === slug);
+          const foundT = (Array.isArray(MOCK_TEACHERS) ? MOCK_TEACHERS : []).find((t: any) => getTeacherSlug(t.name) === slug);
           if (foundT) setSelectedTeacherProfile(foundT);
         }
       } catch (error) {
