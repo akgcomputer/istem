@@ -69,7 +69,10 @@ export interface SpecialCourse {
   averageClassSize?: number;
 }
 
+import { GENERATED_TEACHERS } from './generated';
+
 export const MOCK_TEACHERS: Teacher[] = [
+  ...GENERATED_TEACHERS,
   {
     id: 'teacher-1',
     name: 'Mehmet Ali Öztürk',

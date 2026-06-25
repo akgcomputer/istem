@@ -45,7 +45,10 @@ export const CATEGORIES: Category[] = [
   }
 ];
 
+import { GENERATED_COURSES } from './data/generated';
+
 export const COURSES: Course[] = [
+  ...GENERATED_COURSES,
   {
     id: 'kurs-1',
     title: '12 Haftalık Full-Stack Next.js & Serverless Cohort',
