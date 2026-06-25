@@ -108,20 +108,20 @@ export default function App() {
         } else {
           handleNavigate('teachers-catalog', {}, '/ogretmenler');
         }
-      } else if (pathname === '/ogretmenler') {
+      } else if (pathname === '/ogretmenler' || pathname === '/ogretmenler/') {
         handleNavigate('teachers-catalog', {}, '/ogretmenler');
       } else if (pathname === '/admin') {
         handleNavigate('admin', {}, '/admin');
-      } else if (pathname === '/dersler') {
+      } else if (pathname === '/dersler' || pathname === '/dersler/') {
         setActivePage('katalog');
       } else if (pathname.startsWith('/ders/')) {
         const id = pathname.replace('/ders/', '').split('?')[0];
         // We might not have courses loaded yet if it's initial load, but we rely on the component using URL ID or handling it.
         // Actually since courses are state, we will just set active page to detay.
         setActivePage('detay');
-      } else if (pathname === '/okullar') {
+      } else if (pathname === '/okullar' || pathname === '/okullar/') {
         handleNavigate('schools-catalog', {}, '/okullar');
-      } else if (pathname === '/kurslar') {
+      } else if (pathname === '/kurslar' || pathname === '/kurslar/') {
         handleNavigate('special-courses-catalog', {}, '/kurslar');
       } else if (pathname === '/challenge') {
         setActivePage('challenges');
