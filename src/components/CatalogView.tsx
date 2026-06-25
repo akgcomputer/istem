@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useMemo } from 'react';
 import { 
   SlidersHorizontal, ChevronDown, Award, Target, Sparkles, Code2, 
   Search, BookOpen, Star, Clock, Laptop, Play, Plus, X, ShieldCheck,
@@ -131,7 +131,8 @@ export default function CatalogView({
   onSelectCategory, 
   isLoggedIn,
   onViewProfile,
-  initialSubjectName 
+  initialSubjectName,
+  onSelectCourse
 }: CatalogViewProps) {
   
   // Teachers state initialized with MOCK_TEACHERS so registered mentors accumulate here
@@ -224,7 +225,7 @@ export default function CatalogView({
   };
 
   // Build the unified Subject dataset using dynamic coursesList
-  const subjects: Subject[] = React.useMemo(() => {
+  const subjects: Subject[] = useMemo(() => {
     const uniqueSessions = new Map<string, any>();
     
     teachersList.forEach(t => {
@@ -315,7 +316,7 @@ export default function CatalogView({
   }
 
   // Random sort
-  const randomWeights = React.useMemo(() => {
+  const randomWeights = useMemo(() => {
     const weights: Record<string, number> = {};
     subjects.forEach((s, idx) => weights[idx] = Math.random());
     return weights;
