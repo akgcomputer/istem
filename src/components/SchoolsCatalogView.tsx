@@ -112,6 +112,12 @@ export default function SchoolsCatalogView() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (window.history.state?.openSchoolForm) {
+      setShowRegForm(true);
+      // Clean up the state so it doesn't reopen on refresh
+      window.history.replaceState({}, document.title);
+    }
+    
     fetch('/api/private_schools')
       .then(res => res.json())
       .then(data => {

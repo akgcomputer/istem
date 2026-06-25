@@ -130,6 +130,13 @@ export default function TeachersCatalogView({
       .finally(() => setIsLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (window.history.state?.openTeacherForm) {
+      setShowRegisterForm(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, []);
+
   // Hide/Show filters state & Pagination states
   const [showFilters, setShowFilters] = useState(true);
   const [visibleCount, setVisibleCount] = useState(6);

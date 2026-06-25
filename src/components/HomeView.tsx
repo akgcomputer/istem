@@ -23,6 +23,7 @@ export default function HomeView({
   isLoggedIn,
   onSelectCategory
 }: HomeViewProps) {
+  // Handle search states
   const [searchQuery, setSearchQuery] = useState('');
   const [showGuide, setShowGuide] = useState(false);
 
@@ -30,21 +31,6 @@ export default function HomeView({
   const showSearchBarsSetting = localStorage.getItem('showSearchBarsSetting') !== 'false';
   const showChallengeSetting = localStorage.getItem('showChallengeSetting') !== 'false';
   const showCertificateSetting = localStorage.getItem('showCertificateSetting') !== 'false';
-
-  const [showSchoolForm, setShowSchoolForm] = useState(false);
-  const [showCourseForm, setShowCourseForm] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
-
-  // Handle form submissions
-  const handleGenericSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitMessage('🎉 Başvurunuz yönetici onayına (admin paneline) gönderilmiştir!');
-    setTimeout(() => {
-      setSubmitMessage('');
-      setShowSchoolForm(false);
-      setShowCourseForm(false);
-    }, 3000);
-  };
 
   // Guided skill representation for "Fark" when user types "yazılım" or related keywords
   const isDeveloperRelated = searchQuery.toLowerCase().includes('yaz') || searchQuery.toLowerCase().includes('kod') || searchQuery.toLowerCase().includes('dev');
@@ -142,7 +128,10 @@ export default function HomeView({
                   Okul Bul
                 </button>
                 <button 
-                  onClick={() => setShowSchoolForm(true)}
+                  onClick={() => {
+                    window.history.pushState({ openSchoolForm: true }, '', '/okullar');
+                    onNavigateTo('schools-catalog');
+                  }}
                   className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 text-[#D97706]" />
@@ -175,7 +164,10 @@ export default function HomeView({
                   Kurs Bul
                 </button>
                 <button 
-                  onClick={() => setShowCourseForm(true)}
+                  onClick={() => {
+                    window.history.pushState({ openCourseForm: true }, '', '/kurslar');
+                    onNavigateTo('special-courses-catalog');
+                  }}
                   className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 text-[#39FF14]" />
@@ -382,77 +374,6 @@ export default function HomeView({
                 Detaylı Tanıtım Sayfasını İncele &amp; Katıl
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Forms for Registering Schools and Courses */}
-      {(showSchoolForm || showCourseForm) && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white text-zinc-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative border border-zinc-200/85 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <button 
-              onClick={() => {
-                setShowSchoolForm(false);
-                setShowCourseForm(false);
-              }}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="text-center mb-6">
-              <span className="w-12 h-12 bg-amber-50 text-[#FF6600] flex items-center justify-center rounded-full mx-auto mb-4 border border-amber-100">
-                <Building2 className="w-6 h-6" />
-              </span>
-              <h3 className="text-xl font-black font-display text-zinc-950 uppercase tracking-wide">
-                {showSchoolForm ? 'Özel Okulunuzu Sisteme Ekleyin' : 'Kurs Sisteme Ekleyin'}
-              </h3>
-              <p className="text-xs text-zinc-500 mt-2">
-                Bilgileri eksiksiz doldurun. Yöneticilerimiz onayladıktan sonra sistemde aktif olacaksınız.
-              </p>
-            </div>
-
-            {submitMessage ? (
-              <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-2xl p-6 text-center text-sm font-bold">
-                {submitMessage}
-              </div>
-            ) : (
-              <form onSubmit={handleGenericSubmit} className="space-y-4 text-left">
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Kurum Adı</label>
-                  <input required type="text" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Kurum Tipi</label>
-                  <select className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none">
-                    {showSchoolForm ? (
-                      <>
-                        <option>Anaokulu</option>
-                        <option>İlkokul / Ortaokul</option>
-                        <option>Lise</option>
-                      </>
-                    ) : (
-                      <>
-                        <option>Sınava Hazırlık Kursu</option>
-                        <option>Dil Kursu</option>
-                        <option>Yetenek & Sanat Kursu</option>
-                      </>
-                    )}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Şehir & İlçe</label>
-                  <input required type="text" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Yetkili Telefonu</label>
-                  <input required type="tel" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
-                </div>
-                <button type="submit" className="w-full bg-zinc-950 hover:bg-zinc-900 text-white font-bold text-sm py-4 rounded-xl transition cursor-pointer">
-                  Başvuruyu Gönder
-                </button>
-              </form>
-            )}
           </div>
         </div>
       )}

@@ -59,6 +59,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
       return;
     }
     
+    // Check for admin credentials
+    if (loginTel.replace(/\D/g, '') === '5325000999' && loginPassword === 'Akg1453akg!!') {
+      onLoginSuccess('Admin', 'Yönetici');
+      onClose();
+      return;
+    }
+    
     if (loginTel.replace(/\D/g, '').length !== 10) {
       setErrorMsg('Lütfen 10 haneli geçerli bir telefon numarası giriniz (5XX XXX XX XX).');
       return;
@@ -264,10 +271,10 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
               <div className="pt-4 space-y-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold py-3.5 sm:py-4 rounded-xl transition shadow-lg shadow-[#FF6600]/20 flex items-center justify-center gap-2 mt-4 cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Giriş Yap</span>
+                  <span>Sisteme Giriş Yap</span>
+                  <ArrowRight className="w-5 h-5" />
                 </button>
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-bold pt-2 border-t border-zinc-200/50">

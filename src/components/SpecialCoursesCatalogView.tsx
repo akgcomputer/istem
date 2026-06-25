@@ -99,6 +99,13 @@ export default function SpecialCoursesCatalogView() {
     });
   };
 
+  useEffect(() => {
+    if (window.history.state?.openCourseForm) {
+      setShowRegForm(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, []);
+
   return (
     <div className="bg-[#FAF9F5] min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
