@@ -24,6 +24,7 @@ import SpecialCoursesCatalogView from './components/SpecialCoursesCatalogView';
 import TeacherProfileView from './components/TeacherProfileView';
 import AdminDashboard from './components/AdminDashboard';
 import SchoolManagementView from './components/SchoolManagementView';
+import InstructorSelectionView from './components/InstructorSelectionView';
 
 export default function App() {
   // Global Navigation / Simulator Page states
@@ -408,11 +409,23 @@ export default function App() {
             onSelectCategory={setSelectedCategory}
             onSelectCourse={(course) => {
               setSelectedCourse(course);
-              handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
+              setActivePage('instructor-selection');
             }}
             onViewProfile={navigateToTeacherProfile}
             isLoggedIn={isLoggedIn}
             initialSubjectName={selectedCatalogSubject}
+          />
+        )}
+
+        {activePage === 'instructor-selection' && selectedCourse && (
+          <InstructorSelectionView
+            course={selectedCourse}
+            onSelectTeacher={(course, teacher) => {
+              // We could store the selected teacher in state if we want to show it in DetailView
+              // but for now, we just proceed to DetailView as requested "seçerek işleme devam etmeli"
+              handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
+            }}
+            onBack={() => setActivePage('katalog')}
           />
         )}
 
