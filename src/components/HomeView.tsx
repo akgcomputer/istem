@@ -31,6 +31,21 @@ export default function HomeView({
   const showChallengeSetting = localStorage.getItem('showChallengeSetting') !== 'false';
   const showCertificateSetting = localStorage.getItem('showCertificateSetting') !== 'false';
 
+  const [showSchoolForm, setShowSchoolForm] = useState(false);
+  const [showCourseForm, setShowCourseForm] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  // Handle form submissions
+  const handleGenericSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitMessage('🎉 Başvurunuz yönetici onayına (admin paneline) gönderilmiştir!');
+    setTimeout(() => {
+      setSubmitMessage('');
+      setShowSchoolForm(false);
+      setShowCourseForm(false);
+    }, 3000);
+  };
+
   // Guided skill representation for "Fark" when user types "yazılım" or related keywords
   const isDeveloperRelated = searchQuery.toLowerCase().includes('yaz') || searchQuery.toLowerCase().includes('kod') || searchQuery.toLowerCase().includes('dev');
   const isAiRelated = searchQuery.toLowerCase().includes('yap') || searchQuery.toLowerCase().includes('ai') || searchQuery.toLowerCase().includes('gem');
@@ -84,21 +99,22 @@ export default function HomeView({
               
               <div className="mt-6 flex flex-wrap gap-2">
                 <button 
-                  onClick={() => {
-                    onSelectCategory('Yazılım');
-                    onNavigateTo('katalog');
-                  }}
+                  onClick={() => onNavigateTo('teachers-catalog')}
                   className="bg-white hover:bg-zinc-100 text-[#E01A4F] font-black text-xs py-3 px-4 rounded-xl transition shadow-xs"
                 >
                   Öğretmen Ara
                 </button>
                 <button 
-                  onClick={() => onNavigateTo('egitmen')}
+                  onClick={() => {
+                    // Signal to open the form in TeachersCatalogView via history state
+                    window.history.pushState({ openTeacherForm: true }, '', '/ogretmenler');
+                    onNavigateTo('teachers-catalog');
+                  }}
                   className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5"
                 >
                   <Plus className="w-3.5 h-3.5 text-[#E01A4F]" />
                   <GraduationCap className="w-3.5 h-3.5 text-white" />
-                  Öğretmen Misin? Kaydol
+                  Öğretmen kaydı
                 </button>
               </div>
             </div>
@@ -120,17 +136,14 @@ export default function HomeView({
 
               <div className="mt-6 flex flex-wrap gap-2">
                 <button 
-                  onClick={() => {
-                    onSelectCategory('Genel');
-                    onNavigateTo('katalog');
-                  }}
+                  onClick={() => onNavigateTo('schools-catalog')}
                   className="bg-white hover:bg-zinc-100 text-[#D97706] font-black text-xs py-3 px-4 rounded-xl transition shadow-xs"
                 >
                   Okul Bul
                 </button>
                 <button 
-                  onClick={() => onNavigateTo('kurumsal')}
-                  className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5"
+                  onClick={() => setShowSchoolForm(true)}
+                  className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 text-[#D97706]" />
                   <Building2 className="w-3.5 h-3.5 text-white" />
@@ -156,17 +169,14 @@ export default function HomeView({
 
               <div className="mt-6 flex flex-wrap gap-2">
                 <button 
-                  onClick={() => {
-                    onSelectCategory('Tasarım');
-                    onNavigateTo('katalog');
-                  }}
+                  onClick={() => onNavigateTo('special-courses-catalog')}
                   className="bg-white hover:bg-zinc-100 text-zinc-900 font-black text-xs py-3 px-4 rounded-xl transition shadow-xs"
                 >
                   Kurs Bul
                 </button>
                 <button 
-                  onClick={() => onNavigateTo('kurumsal')}
-                  className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5"
+                  onClick={() => setShowCourseForm(true)}
+                  className="bg-zinc-950 hover:bg-zinc-900 text-white font-black text-xs py-3 px-4 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5 text-[#39FF14]" />
                   <Building2 className="w-3.5 h-3.5 text-white" />
@@ -179,41 +189,7 @@ export default function HomeView({
         </div>
       </div>
 
-      {/* 3. "Challenge'a Var Mısın?!" Çarpıcı Banner Alanı */}
-      {showChallengeSetting && (
-        <div className="bg-zinc-950 text-white border-b border-indigo-950/60 relative overflow-hidden group">
-          {/* Futuristic background grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-          
-          {/* Glowing visual backdrop */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10 text-center">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full text-xs font-bold text-emerald-400 mb-6 uppercase tracking-widest animate-pulse">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full shrink-0" />
-              🏆 Challenge Arena
-            </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4 font-display leading-[1.15] text-white">
-              Challenge'a <span className="bg-gradient-to-r from-pink-500 via-[#39FF14] to-cyan-400 bg-clip-text text-transparent italic">Var Mısın?!</span>
-            </h2>
-            
-            <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mb-8 font-semibold leading-relaxed">
-              ⚔️ Kapışma Zamanı; Yeteneğini kanıtla, liderlik tablosunda yüksel, sponsor firmaların özel ödüllerini kazan. Kapılar sana açılıyor.
-            </p>
-
-            <div className="flex justify-center items-center">
-              <button
-                onClick={() => onNavigateTo('challenges')}
-                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-black text-sm px-10 py-4.5 rounded-full transition duration-200 transform hover:scale-[1.02] shadow-xl shadow-red-600/20 flex items-center justify-center gap-2.5 cursor-pointer"
-              >
-                <Trophy className="w-5 h-5 text-white animate-bounce" />
-                Detaylı Tanıtım Sayfasını İncele &amp; Katıl
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Dynamic HERO SECTION */}
       {showHeroBannerSetting && (
@@ -261,19 +237,38 @@ export default function HomeView({
                       Sıfırla
                     </button>
                   )}
-                  <button 
-                    onClick={() => onNavigateTo('katalog')}
-                    className="bg-[#FF6600] hover:bg-[#CC5200] text-white px-5 py-3 rounded-xl text-xs font-bold transition duration-150 shrink-0 shadow-sm"
-                  >
-                    Keşfet
-                  </button>
                 </div>
 
-                {/* Smart guidance system (AI suggestions based on "yazılım" / "ai" / empty query triggers) */}
-                {showGuide && (
-                  <div className="mt-4 text-left bg-white border border-zinc-205 rounded-2xl p-5 shadow-lg max-w-2xl mx-auto transition-all animate-slide-up">
+                {/* Smart guidance system (AI suggestions and exact course matches) */}
+                {(showGuide || searchQuery.length > 0) && (
+                  <div className="mt-2 text-left bg-white border border-zinc-205 rounded-2xl p-5 shadow-lg max-w-2xl mx-auto transition-all animate-slide-up absolute w-full z-50">
                     
-                    {isDeveloperRelated ? (
+                    {searchQuery.length > 1 ? (
+                      <div>
+                        <h4 className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-2 border-b border-zinc-100 pb-2">
+                          Önerilen Sonuçlar
+                        </h4>
+                        <div className="flex flex-col gap-1 max-h-60 overflow-y-auto pr-2">
+                          {filteredCourses.slice(0, 8).map(c => (
+                            <button
+                              key={c.id}
+                              onClick={() => {
+                                setSearchQuery('');
+                                setShowGuide(false);
+                                onSelectCourse(c);
+                              }}
+                              className="text-left flex flex-col px-3 py-2 hover:bg-zinc-50 rounded-xl transition"
+                            >
+                              <span className="text-sm font-bold text-zinc-900">{c.title}</span>
+                              <span className="text-[10px] font-semibold text-[#FF6600] uppercase tracking-wider">{c.category}</span>
+                            </button>
+                          ))}
+                          {filteredCourses.length === 0 && (
+                            <span className="text-xs text-zinc-500 p-2">Sonuç bulunamadı. Lütfen başka bir şey arayın.</span>
+                          )}
+                        </div>
+                      </div>
+                    ) : isDeveloperRelated ? (
                       <div>
                         <h4 className="text-xs font-black uppercase tracking-widest text-[#FF6600] mb-2 flex items-center gap-1">
                           <Code2 className="w-4 h-4" /> Yazılım Sektörü Rehberi (En İstenen 5 Yetkinlik)
@@ -360,6 +355,106 @@ export default function HomeView({
 
           </div>
         </section>
+      )}
+
+      {/* 3. "Challenge'a Var Mısın?!" Çarpıcı Banner Alanı (Moved here) */}
+      {showChallengeSetting && (
+        <div className="bg-zinc-950 text-white border-b border-indigo-950/60 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full text-xs font-bold text-emerald-400 mb-6 uppercase tracking-widest animate-pulse">
+              <span className="w-2 h-2 bg-emerald-400 rounded-full shrink-0" />
+              🏆 Challenge Arena
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4 font-display leading-[1.15] text-white">
+              Challenge'a <span className="bg-gradient-to-r from-pink-500 via-[#39FF14] to-cyan-400 bg-clip-text text-transparent italic">Var Mısın?!</span>
+            </h2>
+            <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto mb-8 font-semibold leading-relaxed">
+              ⚔️ Kapışma Zamanı; Yeteneğini kanıtla, liderlik tablosunda yüksel, sponsor firmaların özel ödüllerini kazan. Kapılar sana açılıyor.
+            </p>
+            <div className="flex justify-center items-center">
+              <button
+                onClick={() => onNavigateTo('challenges')}
+                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-black text-sm px-10 py-4.5 rounded-full transition duration-200 transform hover:scale-[1.02] shadow-xl shadow-red-600/20 flex items-center justify-center gap-2.5 cursor-pointer"
+              >
+                <Trophy className="w-5 h-5 text-white animate-bounce" />
+                Detaylı Tanıtım Sayfasını İncele &amp; Katıl
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Forms for Registering Schools and Courses */}
+      {(showSchoolForm || showCourseForm) && (
+        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white text-zinc-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative border border-zinc-200/85 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button 
+              onClick={() => {
+                setShowSchoolForm(false);
+                setShowCourseForm(false);
+              }}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center mb-6">
+              <span className="w-12 h-12 bg-amber-50 text-[#FF6600] flex items-center justify-center rounded-full mx-auto mb-4 border border-amber-100">
+                <Building2 className="w-6 h-6" />
+              </span>
+              <h3 className="text-xl font-black font-display text-zinc-950 uppercase tracking-wide">
+                {showSchoolForm ? 'Özel Okulunuzu Sisteme Ekleyin' : 'Kurs Sisteme Ekleyin'}
+              </h3>
+              <p className="text-xs text-zinc-500 mt-2">
+                Bilgileri eksiksiz doldurun. Yöneticilerimiz onayladıktan sonra sistemde aktif olacaksınız.
+              </p>
+            </div>
+
+            {submitMessage ? (
+              <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-2xl p-6 text-center text-sm font-bold">
+                {submitMessage}
+              </div>
+            ) : (
+              <form onSubmit={handleGenericSubmit} className="space-y-4 text-left">
+                <div>
+                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Kurum Adı</label>
+                  <input required type="text" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Kurum Tipi</label>
+                  <select className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none">
+                    {showSchoolForm ? (
+                      <>
+                        <option>Anaokulu</option>
+                        <option>İlkokul / Ortaokul</option>
+                        <option>Lise</option>
+                      </>
+                    ) : (
+                      <>
+                        <option>Sınava Hazırlık Kursu</option>
+                        <option>Dil Kursu</option>
+                        <option>Yetenek & Sanat Kursu</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Şehir & İlçe</label>
+                  <input required type="text" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-zinc-700 uppercase tracking-widest block mb-1">Yetkili Telefonu</label>
+                  <input required type="tel" className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:border-[#FF6600] focus:outline-none" />
+                </div>
+                <button type="submit" className="w-full bg-zinc-950 hover:bg-zinc-900 text-white font-bold text-sm py-4 rounded-xl transition cursor-pointer">
+                  Başvuruyu Gönder
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
       )}
 
     </div>

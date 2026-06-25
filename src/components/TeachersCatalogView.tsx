@@ -137,6 +137,8 @@ export default function TeachersCatalogView({
   // Form simulation state for registration
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [schools, setSchools] = useState<string[]>(['']);
+  const [certificates, setCertificates] = useState<string[]>(['']);
   
   // Create Teacher State
   const [newTeacher, setNewTeacher] = useState({
@@ -346,6 +348,8 @@ export default function TeachersCatalogView({
       canFaceToFace: true
     });
     setRegisteredSessions([{ category: 'Bilişim', name: 'Python ile Sıfırdan İleri Seviye', price: '' }]);
+    setSchools(['']);
+    setCertificates(['']);
   };
 
   // Detailed Modal for Reviewing Teacher Profile
@@ -911,6 +915,12 @@ export default function TeachersCatalogView({
                   <div className="space-y-3">
                     {registeredSessions.map((session, idx) => {
                       const lessonsForCategory = LESSON_OPTIONS_MAP[session.category] || [];
+                      
+                      // Handle custom search logic
+                      const filteredLessons = session.name.length >= 2 
+                        ? lessonsForCategory.filter(l => l.toLowerCase().includes(session.name.toLowerCase()))
+                        : [];
+
                       return (
                         <div key={idx} className="flex flex-col sm:flex-row gap-2 items-start sm:items-center bg-white p-3 rounded-xl border border-zinc-200">
                           <div className="w-full sm:w-1/3">
@@ -920,8 +930,7 @@ export default function TeachersCatalogView({
                               onChange={(e) => {
                                 const updated = [...registeredSessions];
                                 updated[idx].category = e.target.value;
-                                const options = LESSON_OPTIONS_MAP[e.target.value] || [];
-                                updated[idx].name = options[0] || '';
+                                updated[idx].name = '';
                                 setRegisteredSessions(updated);
                               }}
                               className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold"
@@ -932,12 +941,14 @@ export default function TeachersCatalogView({
                             </select>
                           </div>
 
-                          <div className="w-full sm:w-5/12">
+                          <div className="w-full sm:w-5/12 relative">
                             <label className="text-[9px] text-zinc-400 block mb-0.5">
-                              Ders Seçiniz <span className="text-rose-500 font-bold">*</span>
+                              Ders Ara / Ekle <span className="text-rose-500 font-bold">*</span>
                             </label>
-                            <select
+                            <input
                               required
+                              type="text"
+                              placeholder="Örn: React, Gitar..."
                               value={session.name}
                               onChange={(e) => {
                                 const updated = [...registeredSessions];
@@ -945,12 +956,24 @@ export default function TeachersCatalogView({
                                 setRegisteredSessions(updated);
                               }}
                               className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#FF6600] text-xs font-semibold text-zinc-800"
-                            >
-                              <option value="">Ders Seçiniz *</option>
-                              {lessonsForCategory.map(lesson => (
-                                <option key={lesson} value={lesson}>{lesson}</option>
-                              ))}
-                            </select>
+                            />
+                            {session.name.length >= 2 && filteredLessons.length > 0 && !filteredLessons.includes(session.name) && (
+                              <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-10 max-h-32 overflow-y-auto">
+                                {filteredLessons.map(l => (
+                                  <div 
+                                    key={l} 
+                                    className="px-3 py-1.5 text-xs hover:bg-zinc-50 cursor-pointer border-b border-zinc-50 last:border-0"
+                                    onClick={() => {
+                                      const updated = [...registeredSessions];
+                                      updated[idx].name = l;
+                                      setRegisteredSessions(updated);
+                                    }}
+                                  >
+                                    {l}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
 
                           <div className="w-full sm:w-3/12 flex gap-1 items-end">
@@ -979,7 +1002,7 @@ export default function TeachersCatalogView({
                                   setRegisteredSessions(updated);
                                 }}
                                 className="text-red-550 text-red-500 hover:text-red-700 p-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 transition mb-0.5 shrink-0"
-                                title="Lersi Kaldır"
+                                title="Dersi Kaldır"
                               >
                                 ✕
                               </button>
@@ -1008,6 +1031,90 @@ export default function TeachersCatalogView({
                       </button>
                     </div>
                   )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Mezun Olunan Okullar */}
+                  <div className="bg-zinc-50 p-4 rounded-2xl border border-zinc-200 space-y-3">
+                    <span className="text-[10px] text-zinc-500 font-bold tracking-wider block">Mezun Olunan Okullar</span>
+                    <div className="space-y-2">
+                      {schools.map((school, idx) => (
+                        <div key={idx} className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Örn: Boğaziçi Üniversitesi - Bilgisayar Mühendisliği"
+                            value={school}
+                            onChange={(e) => {
+                              const updated = [...schools];
+                              updated[idx] = e.target.value;
+                              setSchools(updated);
+                            }}
+                            className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#FF6600] text-xs"
+                          />
+                          {schools.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = schools.filter((_, i) => i !== idx);
+                                setSchools(updated);
+                              }}
+                              className="text-red-500 hover:text-red-700 px-2 rounded-lg border border-zinc-200 bg-white"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSchools([...schools, ''])}
+                      className="text-[#FF6600] hover:text-[#b0672e] text-xs font-bold underline transition mt-1 block"
+                    >
+                      + Okul Ekle
+                    </button>
+                  </div>
+
+                  {/* Sertifikalar */}
+                  <div className="bg-zinc-50 p-4 rounded-2xl border border-zinc-200 space-y-3">
+                    <span className="text-[10px] text-zinc-500 font-bold tracking-wider block">Sertifikalar</span>
+                    <div className="space-y-2">
+                      {certificates.map((cert, idx) => (
+                        <div key={idx} className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Örn: TOEFL iBT 105, AWS Cloud Practitioner"
+                            value={cert}
+                            onChange={(e) => {
+                              const updated = [...certificates];
+                              updated[idx] = e.target.value;
+                              setCertificates(updated);
+                            }}
+                            className="w-full bg-white border border-zinc-200 rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#FF6600] text-xs"
+                          />
+                          {certificates.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = certificates.filter((_, i) => i !== idx);
+                                setCertificates(updated);
+                              }}
+                              className="text-red-500 hover:text-red-700 px-2 rounded-lg border border-zinc-200 bg-white"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setCertificates([...certificates, ''])}
+                      className="text-[#FF6600] hover:text-[#b0672e] text-xs font-bold underline transition mt-1 block"
+                    >
+                      + Sertifika Ekle
+                    </button>
+                  </div>
                 </div>
 
                 {/* Delivery format checklist */}

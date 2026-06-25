@@ -378,7 +378,11 @@ export default function CatalogView({
     }
 
     // If no matching teachers are left, exclude subject
-    if (matchingTeachers.length === 0) return false;
+    // But if there were no teachers to begin with, and no teacher-specific filters were applied, keep it.
+    const hasTeacherFilters = filterLocation !== 'Tümü' || filterExperience !== 'Tümü' || filterModel !== 'Tümü';
+    if (matchingTeachers.length === 0) {
+      if (sub.teachersCount > 0 || hasTeacherFilters) return false;
+    }
 
     return true;
   });
@@ -514,92 +518,106 @@ export default function CatalogView({
                   </div>
 
                   <div className="space-y-4">
-                    {selectedSubject.teachersList.map((teacher, idx) => {
-                      const educatorSession = teacher.sessions.find(s => s.name === selectedSubject.name);
-                      const displayPrice = educatorSession ? educatorSession.price : selectedSubject.minPrice;
-
-                      return (
-                        <div 
-                          key={teacher.id || idx}
-                          className="bg-zinc-50 hover:bg-zinc-100/50 border border-zinc-200/60 p-5 rounded-2xl transition duration-150 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+                    {selectedSubject.teachersList.length === 0 ? (
+                      <div className="bg-zinc-50 border border-dashed border-zinc-200 p-8 rounded-2xl text-center text-zinc-500">
+                        <div className="text-4xl mb-3">🎓</div>
+                        <h4 className="text-zinc-900 font-black text-sm mb-1">Bu ders için henüz eğitmen bulunmuyor.</h4>
+                        <p className="text-xs">Bu alanda uzmansanız, hemen kaydolun ve ilk eğitmen siz olun!</p>
+                        <button 
+                          onClick={() => setShowRegisterForm(true)}
+                          className="mt-4 bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"
                         >
-                          <div className="flex items-start gap-4">
-                            <img 
-                              src={teacher.avatar?.includes('ui-avatars.com') && !teacher.avatar.includes('size=') ? teacher.avatar + '&size=256' : teacher.avatar} 
-                              alt={teacher.name} 
-                              className="w-14 h-14 rounded-full object-cover border border-zinc-250 cursor-pointer hover:opacity-90 shrink-0"
-                              onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
-                            />
-                            
-                            <div className="space-y-1.5">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <button
-                                  onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
-                                  className="text-sm font-extrabold text-zinc-950 hover:text-[#FF6600] text-left transition"
-                                >
-                                  {teacher.name}
-                                </button>
-                                <span className="bg-zinc-200/70 text-zinc-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
-                                  {teacher.experienceLabel}
-                                </span>
-                              </div>
+                          Eğitmen Olarak Başvur
+                        </button>
+                      </div>
+                    ) : (
+                      selectedSubject.teachersList.map((teacher, idx) => {
+                        const educatorSession = teacher.sessions.find(s => s.name === selectedSubject.name);
+                        const displayPrice = educatorSession ? educatorSession.price : selectedSubject.minPrice;
 
-                              <div className="flex items-center gap-1.5 text-xs text-zinc-500">
-                                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400 shrink-0" />
-                                <span className="text-zinc-800 font-bold">{teacher.rating.toFixed(1)}</span>
-                                <span className="text-zinc-400">({teacher.commentsCount} Yorum)</span>
-                                <span className="text-zinc-300">|</span>
-                                <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-                                <span className="line-clamp-1">{teacher.preferredLocation}</span>
-                              </div>
-
-                              <p className="text-[11px] text-zinc-550 leading-relaxed max-w-lg line-clamp-2 font-medium">
-                                {teacher.bio}
-                              </p>
-
-                              {/* Delivery badges */}
-                              <div className="flex flex-wrap gap-1.5 pt-1">
-                                {teacher.canOnline && (
-                                  <span className="text-[9px] bg-blue-50 border border-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">Online</span>
-                                )}
-                                {teacher.canFaceToFace && (
-                                  <span className="text-[9px] bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Yüz Yüze</span>
-                                )}
-                                {teacher.canCorporate && (
-                                  <span className="text-[9px] bg-purple-50 border border-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">Kurumsal</span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex md:flex-col items-end justify-between md:justify-center w-full md:w-auto p-3 md:p-0 bg-white md:bg-transparent rounded-xl border md:border-0 border-zinc-200 leading-none shrink-0 gap-2">
-                            <div className="mb-1 md:mb-0">
-                              <span className="text-[9px] text-zinc-400 font-bold block text-left md:text-right uppercase">SEANS ÜCRETİ</span>
-                              <span className="text-lg font-black text-[#FF6600] font-mono whitespace-nowrap block mt-1">₺{displayPrice} <strong className="text-[10px] text-zinc-400 font-medium font-sans">/ Seans</strong></span>
-                            </div>
-
-                            <div className="flex items-center gap-1.5">
-                              <button 
+                        return (
+                          <div 
+                            key={teacher.id || idx}
+                            className="bg-zinc-50 hover:bg-zinc-100/50 border border-zinc-200/60 p-5 rounded-2xl transition duration-150 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+                          >
+                            <div className="flex items-start gap-4">
+                              <img 
+                                src={teacher.avatar?.includes('ui-avatars.com') && !teacher.avatar.includes('size=') ? teacher.avatar + '&size=256' : teacher.avatar} 
+                                alt={teacher.name} 
+                                className="w-14 h-14 rounded-full object-cover border border-zinc-250 cursor-pointer hover:opacity-90 shrink-0"
                                 onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
-                                className="bg-zinc-950 hover:bg-zinc-900 border border-zinc-850 text-white text-[11px] font-bold px-3 py-2 rounded-xl transition cursor-pointer"
-                              >
-                                Profili İncele
-                              </button>
+                              />
                               
-                              <button 
-                                onClick={() => { 
-                                  alert(`🎉 ${teacher.name} eşliğinde "${selectedSubject.name}" eğitim seansına kaydoluyorsunuz! Tebrikler!`);
-                                }}
-                                className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-[11px] font-black px-3 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
-                              >
-                                Eğitim Al
-                              </button>
-                            </div>
-                          </div>
+                              <div className="space-y-1.5">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <button
+                                    onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
+                                    className="text-sm font-extrabold text-zinc-950 hover:text-[#FF6600] text-left transition"
+                                  >
+                                    {teacher.name}
+                                  </button>
+                                  <span className="bg-zinc-200/70 text-zinc-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                    {teacher.experienceLabel}
+                                  </span>
+                                </div>
 
-                        </div>
-                      );
-                    })}
+                                <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400 shrink-0" />
+                                  <span className="text-zinc-800 font-bold">{teacher.rating.toFixed(1)}</span>
+                                  <span className="text-zinc-400">({teacher.commentsCount} Yorum)</span>
+                                  <span className="text-zinc-300">|</span>
+                                  <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                                  <span className="line-clamp-1">{teacher.preferredLocation}</span>
+                                </div>
+
+                                <p className="text-[11px] text-zinc-550 leading-relaxed max-w-lg line-clamp-2 font-medium">
+                                  {teacher.bio}
+                                </p>
+
+                                {/* Delivery badges */}
+                                <div className="flex flex-wrap gap-1.5 pt-1">
+                                  {teacher.canOnline && (
+                                    <span className="text-[9px] bg-blue-50 border border-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">Online</span>
+                                  )}
+                                  {teacher.canFaceToFace && (
+                                    <span className="text-[9px] bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Yüz Yüze</span>
+                                  )}
+                                  {teacher.canCorporate && (
+                                    <span className="text-[9px] bg-purple-50 border border-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">Kurumsal</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex md:flex-col items-end justify-between md:justify-center w-full md:w-auto p-3 md:p-0 bg-white md:bg-transparent rounded-xl border md:border-0 border-zinc-200 leading-none shrink-0 gap-2">
+                              <div className="mb-1 md:mb-0">
+                                <span className="text-[9px] text-zinc-400 font-bold block text-left md:text-right uppercase">SEANS ÜCRETİ</span>
+                                <span className="text-lg font-black text-[#FF6600] font-mono whitespace-nowrap block mt-1">₺{displayPrice} <strong className="text-[10px] text-zinc-400 font-medium font-sans">/ Seans</strong></span>
+                              </div>
+
+                              <div className="flex items-center gap-1.5">
+                                <button 
+                                  onClick={() => { if (onViewProfile) onViewProfile(teacher); }}
+                                  className="bg-zinc-950 hover:bg-zinc-900 border border-zinc-850 text-white text-[11px] font-bold px-3 py-2 rounded-xl transition cursor-pointer"
+                                >
+                                  Profili İncele
+                                </button>
+                                
+                                <button 
+                                  onClick={() => { 
+                                    alert(`🎉 ${teacher.name} eşliğinde "${selectedSubject.name}" eğitim seansına kaydoluyorsunuz! Tebrikler!`);
+                                  }}
+                                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-[11px] font-black px-3 py-2 rounded-xl transition cursor-pointer shadow-sm hover:scale-102 active:scale-98"
+                                >
+                                  Eğitim Al
+                                </button>
+                              </div>
+                            </div>
+
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
 
                   {/* WhatsApp'tan Bilgi Al & Bizi Arayın Action Buttons */}

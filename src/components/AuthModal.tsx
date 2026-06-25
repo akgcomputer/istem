@@ -130,8 +130,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
     { id: 'Kurumsal', label: 'Kurumsal Kullanıcıyım' },
     { id: 'Öğretmen', label: 'Öğretmenim' },
     { id: 'Okul Temsilcisi', label: 'Okul Temsilcisiyim' },
-    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' },
-    { id: 'Yönetici', label: 'Yönetici (Sistem Yöneticisi)' }
+    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' }
   ];
 
   const registerRoles = [
@@ -139,8 +138,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
     { id: 'Kurumsal', label: 'Kurumsal kullanıcıyım' },
     { id: 'Öğretmen', label: 'Öğretmenim' },
     { id: 'Okul Temsilcisi', label: 'Okul Temsilcisiyim' },
-    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' },
-    { id: 'Yönetici', label: 'Yönetici (Sistem Yöneticisi)' }
+    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' }
   ];
 
   return (

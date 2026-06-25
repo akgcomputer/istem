@@ -98,6 +98,12 @@ const INITIAL_TICKETS = [
 ];
 
 export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboardProps) {
+  // Admin Login State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminUsername, setAdminUsername] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   // Sidebar Tabs State
   const [activeTab, setActiveTab] = useState<string>('dashboard'); // matches requested menus 1 - 11
 
@@ -500,6 +506,90 @@ export default function AdminDashboard({ onNavigateTo, courses }: AdminDashboard
       return matchQuery && matchRole;
     });
   }, [users, searchUserQuery, userRoleFilter]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-[#FAF9F5] min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#FF6600]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-3xl" />
+        
+        <div className="bg-white text-zinc-900 rounded-3xl p-8 sm:p-10 max-w-md w-full relative border border-zinc-200 shadow-2xl z-10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-zinc-950 text-white rounded-2xl flex items-center justify-center font-black font-display text-xl mx-auto mb-4 shadow-lg shadow-zinc-900/20">
+              İST
+            </div>
+            <h2 className="text-2xl font-black font-display text-zinc-900">Sistem Yönetimi</h2>
+            <p className="text-xs text-zinc-500 mt-2 font-semibold">Lütfen yetkili yönetici bilgilerinizi giriniz.</p>
+          </div>
+
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (adminUsername === 'admin' && adminPassword === 'istem123') {
+              setIsAuthenticated(true);
+              setLoginError('');
+            } else {
+              setLoginError('Geçersiz kullanıcı adı veya şifre.');
+            }
+          }} className="space-y-4">
+            
+            {loginError && (
+              <div className="bg-red-50 text-red-600 text-xs font-bold p-3 rounded-xl border border-red-100 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {loginError}
+              </div>
+            )}
+
+            <div>
+              <label className="text-[10px] font-black tracking-widest text-zinc-400 uppercase block mb-1.5 ml-1">Kullanıcı Adı</label>
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <input 
+                  type="text"
+                  required
+                  value={adminUsername}
+                  onChange={(e) => setAdminUsername(e.target.value)}
+                  placeholder="admin"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-[#FF6600] focus:border-[#FF6600] text-sm font-semibold transition"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-black tracking-widest text-zinc-400 uppercase block mb-1.5 ml-1">Parola</label>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <input 
+                  type="password"
+                  required
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-[#FF6600] focus:border-[#FF6600] text-sm font-semibold transition"
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit"
+              className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white font-black py-3.5 rounded-xl transition shadow-lg shadow-[#FF6600]/20 flex items-center justify-center gap-2 mt-6"
+            >
+              <span>Sisteme Giriş Yap</span>
+              <Shield className="w-4 h-4" />
+            </button>
+
+            <button 
+              type="button"
+              onClick={() => onNavigateTo('home')}
+              className="w-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 font-bold py-3.5 rounded-xl transition mt-3 text-sm"
+            >
+              Ana Sayfaya Dön
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#FAF9F5] min-h-screen">
