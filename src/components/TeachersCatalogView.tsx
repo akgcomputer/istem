@@ -20,7 +20,7 @@ const TURKEY_CITIES = [
 const isLocationMatch = (teacherLocation: string, selected: string) => {
   if (selected === 'Tümü') return true;
   
-  const normTeacher = teacherLocation.toLowerCase()
+  const normTeacher = (teacherLocation || '').toLowerCase()
     .replace(/ı/g, 'i')
     .replace(/ğ/g, 'g')
     .replace(/ü/g, 'u')
@@ -209,10 +209,10 @@ export default function TeachersCatalogView({
     // 1. Text Search on bio, name, tags, or lessons
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      const matchName = teacher.name.toLowerCase().includes(q);
-      const matchBio = teacher.bio.toLowerCase().includes(q);
-      const matchTags = (teacher.tags || []).some(tag => tag.toLowerCase().includes(q));
-      const matchLectures = (teacher.sessions || []).some(s => s.name.toLowerCase().includes(q));
+      const matchName = (teacher.name || '').toLowerCase().includes(q);
+      const matchBio = (teacher.bio || '').toLowerCase().includes(q);
+      const matchTags = (teacher.tags || []).some(tag => (tag || '').toLowerCase().includes(q));
+      const matchLectures = (teacher.sessions || []).some(s => (s.name || '').toLowerCase().includes(q));
       if (!matchName && !matchBio && !matchTags && !matchLectures) return false;
     }
 
@@ -235,7 +235,7 @@ export default function TeachersCatalogView({
 
     // 6. Lesson check (Only valid if category selected)
     if (selectedCategory !== 'Tümü' && selectedLesson !== 'Tümü') {
-      const teachesLesson = (teacher.sessions || []).some(s => s.name.includes(selectedLesson) || teacher.tags.includes(selectedLesson));
+      const teachesLesson = (teacher.sessions || []).some(s => (s.name || '').includes(selectedLesson) || (teacher.tags || []).includes(selectedLesson));
       if (!teachesLesson) return false;
     }
 
@@ -1161,3 +1161,4 @@ export default function TeachersCatalogView({
     </div>
   );
 }
+

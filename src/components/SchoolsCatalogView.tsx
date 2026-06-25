@@ -134,9 +134,9 @@ export default function SchoolsCatalogView() {
     // 1. DERS ADI VEYA YETKİNLİK SORGULA / Keyword Search
     if (searchName.trim()) {
       const q = searchName.toLowerCase();
-      const matchName = school.name.toLowerCase().includes(q);
-      const matchLoc = school.location.toLowerCase().includes(q);
-      const matchLessons = school.lessons.some(l => l.toLowerCase().includes(q));
+      const matchName = (school.name || '').toLowerCase().includes(q);
+      const matchLoc = (school.location || '').toLowerCase().includes(q);
+      const matchLessons = (school.lessons || []).some(l => (l || '').toLowerCase().includes(q));
       if (!matchName && !matchLoc && !matchLessons) return false;
     }
 
@@ -1010,3 +1010,4 @@ export default function SchoolsCatalogView() {
     </div>
   );
 }
+

@@ -248,11 +248,11 @@ export default function CatalogView({
   // Build the unified Subject dataset using dynamic coursesList
   const subjects: Subject[] = coursesList.map(c => {
     const teachersWhoTeach = teachersList.filter(t => 
-      (t.sessions || []).some(s => s.name.includes((c.title || c.name || "")))
+      (t.sessions || []).some(s => (s.name || '').includes((c.title || c.name || "")))
     );
 
     const prices = teachersWhoTeach.flatMap(t => 
-      (t.sessions || []).filter(s => s.name.includes((c.title || c.name || ""))).map(s => s.price)
+      (t.sessions || []).filter(s => (s.name || '').includes((c.title || c.name || ""))).map(s => s.price)
     );
 
     return {
@@ -334,9 +334,13 @@ export default function CatalogView({
 
     // Filter by location
     if (filterLocation !== 'Tümü') {
+      const locationMatches = filterLocation === 'Tümü' || sub.teachersList.some(t => 
+        (t.preferredLocation || '').toLowerCase().includes((filterLocation || '').toLowerCase()) ||
+        (filterLocation || '').toLowerCase().includes((t.preferredLocation || '').toLowerCase())
+      );
       matchingTeachers = matchingTeachers.filter(t => 
-        t.preferredLocation.toLowerCase().includes(filterLocation.toLowerCase()) ||
-        filterLocation.toLowerCase().includes(t.preferredLocation.toLowerCase())
+        (t.preferredLocation || '').toLowerCase().includes(filterLocation.toLowerCase()) ||
+        filterLocation.toLowerCase().includes((t.preferredLocation || '').toLowerCase())
       );
     }
 

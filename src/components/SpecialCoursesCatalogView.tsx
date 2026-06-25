@@ -65,9 +65,9 @@ export default function SpecialCoursesCatalogView() {
   const filteredCourses = [...courses].sort((a, b) => (randomWeights[a.id] || 0) - (randomWeights[b.id] || 0)).filter(course => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      const matchName = course.name.toLowerCase().includes(q);
-      const matchLoc = course.location.toLowerCase().includes(q);
-      const matchClasses = course.classes.some(c => c.toLowerCase().includes(q));
+      const matchName = (course.name || '').toLowerCase().includes(q);
+      const matchLoc = (course.location || '').toLowerCase().includes(q);
+      const matchClasses = (course.classes || []).some(c => (c || '').toLowerCase().includes(q));
       if (!matchName && !matchLoc && !matchClasses) return false;
     }
 
@@ -620,5 +620,6 @@ export default function SpecialCoursesCatalogView() {
     </div>
   );
 }
+
 
 
