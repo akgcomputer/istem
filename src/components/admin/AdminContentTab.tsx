@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit, EyeOff, Eye, Trash2, X } from 'lucide-react';
 import { TeacherForm, CourseForm, SchoolForm, SpecialCourseForm, ChallengeForm } from './AdminForms';
 
+import { COURSES } from '../../data';
+import { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } from '../../data/catalogData';
+
 export default function AdminContentTab() {
   const [activeSubTab, setActiveSubTab] = useState('teachers');
   const [data, setData] = useState<any[]>([]);
@@ -22,8 +25,6 @@ export default function AdminContentTab() {
     const currentPage = resetPage ? 0 : page;
     try {
       // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
-      const { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } = await import('../../data/catalogData');
-      const { COURSES } = await import('../../data');
       
       let items: any[] = [];
       if (activeSubTab === 'teachers') items = MOCK_TEACHERS;
