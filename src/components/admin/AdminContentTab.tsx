@@ -17,23 +17,38 @@ export default function AdminContentTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<any>(null); // null means + Ekle, object means Düzenle
 
-  // Synchronous derived state instead of useEffect/setData
+  // Explicit state derivation
   let items: any[] = [];
-  if (activeSubTab === 'teachers') items = MOCK_TEACHERS;
-  else if (activeSubTab === 'courses') items = COURSES;
-  else if (activeSubTab === 'special_courses') items = MOCK_SPECIAL_COURSES;
-  else if (activeSubTab === 'schools') items = [];
-  else if (activeSubTab === 'challenges') items = [];
+  switch (activeSubTab) {
+    case 'teachers':
+      items = [...MOCK_TEACHERS];
+      break;
+    case 'courses':
+      items = [...COURSES];
+      break;
+    case 'special_courses':
+      items = [...MOCK_SPECIAL_COURSES];
+      break;
+    case 'schools':
+      items = [];
+      break;
+    case 'challenges':
+      items = [];
+      break;
+    default:
+      items = [];
+      break;
+  }
 
   if (searchQuery) {
-    items = items.filter(item => 
-      (item.title || item.name || '').toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    items = items.filter(item => {
+      const text = item.title || item.name || '';
+      return text.toLowerCase().includes(searchQuery.toLowerCase());
+    });
   }
 
   const paginatedItems = items.slice(0, page * LIMIT);
   const hasMore = paginatedItems.length < items.length;
-
 
   const handleToggleStatus = async (item: any) => {
     const newStatus = item.isActive === undefined ? 0 : (item.isActive === 1 ? 0 : 1);

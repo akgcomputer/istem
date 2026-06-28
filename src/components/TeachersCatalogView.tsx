@@ -170,7 +170,7 @@ export default function TeachersCatalogView({
   });
 
   const [registeredSessions, setRegisteredSessions] = useState<{ category: string; name: string; price: string }[]>([
-    { category: 'Bilişim', name: 'Python ile Sıfırdan İleri Seviye', price: '' }
+    { category: 'Bilişim', name: '', price: '' }
   ]);
 
   // Suggestion list items database
@@ -1026,10 +1026,9 @@ export default function TeachersCatalogView({
                         type="button"
                         onClick={() => {
                           const firstCat = Object.keys(LESSON_OPTIONS_MAP)[0];
-                          const defaultLesson = LESSON_OPTIONS_MAP[firstCat][0];
                           setRegisteredSessions([
                             ...registeredSessions,
-                            { category: firstCat, name: defaultLesson, price: '' }
+                            { category: firstCat, name: '', price: '' }
                           ]);
                         }}
                         className="text-[#FF6600] hover:text-[#b0672e] text-xs font-bold underline transition"

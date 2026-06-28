@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "start": "vite --port=3000 --host=0.0.0.0"
+    "start": "vite --port=3000 --host=0.0.0.0 --force"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
