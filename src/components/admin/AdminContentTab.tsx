@@ -7,80 +7,50 @@ import { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } from '../../data/catalogData';
 
 export default function AdminContentTab() {
   const [activeSubTab, setActiveSubTab] = useState('teachers');
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
   // Pagination states
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
   const LIMIT = 20;
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<any>(null); // null means + Ekle, object means Düzenle
 
-  const fetchTabContent = async (resetPage = false, currentSearch = searchQuery) => {
-    setLoading(true);
-    const currentPage = resetPage ? 0 : page;
-    try {
-      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
-      
-      let items: any[] = [];
-      if (activeSubTab === 'teachers') items = MOCK_TEACHERS;
-      else if (activeSubTab === 'courses') items = COURSES;
-      else if (activeSubTab === 'special_courses') items = MOCK_SPECIAL_COURSES;
-      else if (activeSubTab === 'schools') items = []; // No mock static export directly
-      else if (activeSubTab === 'challenges') items = [];
+  // Synchronous derived state instead of useEffect/setData
+  let items: any[] = [];
+  if (activeSubTab === 'teachers') items = MOCK_TEACHERS;
+  else if (activeSubTab === 'courses') items = COURSES;
+  else if (activeSubTab === 'special_courses') items = MOCK_SPECIAL_COURSES;
+  else if (activeSubTab === 'schools') items = [];
+  else if (activeSubTab === 'challenges') items = [];
 
-      if (currentSearch) {
-        items = items.filter(item => 
-          (item.title || item.name || '').toLowerCase().includes(currentSearch.toLowerCase())
-        );
-      }
+  if (searchQuery) {
+    items = items.filter(item => 
+      (item.title || item.name || '').toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
-      const paginatedItems = items.slice(currentPage * LIMIT, (currentPage + 1) * LIMIT);
-      
-      if (resetPage) {
-        setData(paginatedItems);
-      } else {
-        setData(prev => [...prev, ...paginatedItems]);
-      }
-      
-      setHasMore(paginatedItems.length === LIMIT);
-      setPage(currentPage + 1);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const paginatedItems = items.slice(0, page * LIMIT);
+  const hasMore = paginatedItems.length < items.length;
 
-  // Debounced search
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      fetchTabContent(true, searchQuery);
-    }, 400);
-    return () => clearTimeout(handler);
-  }, [searchQuery, activeSubTab]);
 
   const handleToggleStatus = async (item: any) => {
     const newStatus = item.isActive === undefined ? 0 : (item.isActive === 1 ? 0 : 1);
-    try {
-      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
-      setData(data.map(d => d.id === item.id ? { ...d, isActive: newStatus } : d));
-    } catch (e) {
-      console.error(e);
-    }
+    // In a real app this would mutate the backend. Since this is static, 
+    // it will reset on reload. We can mutate the object in memory for demo purposes.
+    item.isActive = newStatus;
+    // Force a re-render
+    setPage(p => p);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Emin misiniz? Bu işlem geri alınamaz!')) return;
-    try {
-      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
-      setData(data.filter(d => d.id !== id));
-    } catch (e) {
-      console.error(e);
+    // Static data mode: find the array and splice it
+    const index = items.findIndex((d: any) => d.id === id);
+    if (index > -1) {
+      items.splice(index, 1);
+      setPage(p => p);
     }
   };
 
@@ -92,16 +62,19 @@ export default function AdminContentTab() {
   const handleSaveForm = async (formData: any) => {
     try {
       const isEdit = !!modalData;
-      // D1/Cloudflare backend is not active in this environment, using static data logic for frontend demo
       
       if (isEdit) {
-        setData(data.map(d => d.id === modalData.id ? { ...d, ...formData } : d));
+        // Find and update in memory
+        Object.assign(modalData, formData);
       } else {
         const newItem = { id: `new-${Date.now()}`, ...formData };
-        setData([newItem, ...data]);
+        if (activeSubTab === 'teachers') MOCK_TEACHERS.unshift(newItem);
+        else if (activeSubTab === 'courses') COURSES.unshift(newItem);
+        else if (activeSubTab === 'special_courses') MOCK_SPECIAL_COURSES.unshift(newItem);
       }
       
       setIsModalOpen(false);
+      setPage(p => p);
     } catch (e) {
       console.error(e);
       alert('Ağ hatası oluştu.');
@@ -127,7 +100,7 @@ export default function AdminContentTab() {
         ].map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveSubTab(tab.id)}
+            onClick={() => { setActiveSubTab(tab.id); setPage(1); setSearchQuery(''); }}
             className={`px-4 py-2 text-xs font-bold rounded-t-lg transition whitespace-nowrap ${activeSubTab === tab.id ? 'bg-[#FF6600] text-white' : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'}`}
           >
             {tab.label}
@@ -142,7 +115,7 @@ export default function AdminContentTab() {
             type="text" 
             placeholder="İsim veya başlık ile tüm kayıtlarda ara..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
             className="w-full bg-[#FAF9F5] border border-zinc-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#FF6600] font-medium"
           />
         </div>
@@ -164,7 +137,7 @@ export default function AdminContentTab() {
             </tr>
           </thead>
           <tbody>
-            {data.map(item => (
+            {paginatedItems.map(item => (
               <tr key={item.id} className={`border-b border-zinc-100 transition hover:bg-zinc-50/50 ${item.isActive === 0 ? 'opacity-60' : ''}`}>
                 <td className="py-3 px-4">
                   <div className="font-bold text-sm text-zinc-900">{item.title || item.name || 'İsimsiz İçerik'}</div>
@@ -202,10 +175,10 @@ export default function AdminContentTab() {
                 </td>
               </tr>
             ))}
-            {data.length === 0 && !loading && (
+            {paginatedItems.length === 0 && (
               <tr>
                 <td colSpan={3} className="py-8 text-center text-zinc-400 text-xs font-medium">
-                  Kayıt bulunamadı. Lütfen internet bağlantınızı veya API durumunu kontrol edin.
+                  Kayıt bulunamadı.
                 </td>
               </tr>
             )}
@@ -213,16 +186,12 @@ export default function AdminContentTab() {
         </table>
       </div>
 
-      {hasMore && !loading && (
+      {hasMore && (
         <div className="flex justify-center pt-4">
-          <button onClick={() => fetchTabContent()} className="bg-zinc-100 text-zinc-600 px-6 py-2 rounded-full text-xs font-bold hover:bg-zinc-200 transition">
+          <button onClick={() => setPage(p => p + 1)} className="bg-zinc-100 text-zinc-600 px-6 py-2 rounded-full text-xs font-bold hover:bg-zinc-200 transition">
             Daha Fazla Yükle
           </button>
         </div>
-      )}
-      
-      {loading && (
-        <div className="text-center py-4 text-xs text-zinc-500 font-bold">Yükleniyor...</div>
       )}
 
       {/* MODAL */}
