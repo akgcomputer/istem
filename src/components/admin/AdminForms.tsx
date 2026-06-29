@@ -1,4 +1,41 @@
 import React, { useState } from 'react';
+import { Bold, Italic, List, Link as LinkIcon, Image as ImageIcon, UploadCloud } from 'lucide-react';
+
+const RichTextEditorMock = ({ name, value, onChange, placeholder }: any) => (
+  <div className="border border-zinc-300 rounded-lg overflow-hidden bg-white">
+    <div className="bg-zinc-50 border-b border-zinc-200 p-2 flex gap-2">
+      <button type="button" className="p-1.5 text-zinc-500 hover:bg-zinc-200 rounded"><Bold className="w-4 h-4" /></button>
+      <button type="button" className="p-1.5 text-zinc-500 hover:bg-zinc-200 rounded"><Italic className="w-4 h-4" /></button>
+      <button type="button" className="p-1.5 text-zinc-500 hover:bg-zinc-200 rounded"><List className="w-4 h-4" /></button>
+      <div className="w-px bg-zinc-300 mx-1"></div>
+      <button type="button" className="p-1.5 text-zinc-500 hover:bg-zinc-200 rounded"><LinkIcon className="w-4 h-4" /></button>
+      <button type="button" className="p-1.5 text-zinc-500 hover:bg-zinc-200 rounded"><ImageIcon className="w-4 h-4" /></button>
+    </div>
+    <textarea name={name} value={value} onChange={onChange} required rows={4} className="w-full p-3 focus:outline-none resize-none text-sm" placeholder={placeholder} />
+  </div>
+);
+
+const ImageUploadMock = ({ name, value, onChange }: any) => (
+  <div className="border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:bg-zinc-50 transition cursor-pointer flex flex-col items-center gap-2 group relative overflow-hidden">
+    {value ? (
+      <>
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <span className="text-white font-bold text-sm bg-black/50 px-3 py-1.5 rounded-lg">Görseli Değiştir</span>
+        </div>
+        <img src={value} alt="Preview" className="h-32 object-contain" />
+      </>
+    ) : (
+      <>
+        <div className="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center mb-1">
+          <UploadCloud className="w-6 h-6" />
+        </div>
+        <div className="text-sm font-bold text-zinc-700">Tıklayın veya Sürükleyip Bırakın</div>
+        <div className="text-xs text-zinc-400">SVG, PNG, JPG veya GIF (max. 800x400px)</div>
+      </>
+    )}
+    <input type="text" name={name} value={value} onChange={onChange} className="absolute opacity-0 w-0 h-0" placeholder="https://..." />
+  </div>
+);
 
 export function TeacherForm({ initialData = null, onSubmit, onCancel }: any) {
   const [formData, setFormData] = useState({
@@ -71,12 +108,13 @@ export function TeacherForm({ initialData = null, onSubmit, onCancel }: any) {
         <input name="tags" value={Array.isArray(formData.tags) ? formData.tags.join(', ') : formData.tags} onChange={handleChange} required className="w-full p-2 border border-zinc-300 rounded" placeholder="Örn: React, C#, CSS" />
       </div>
       <div>
-        <label className="block text-zinc-700 font-bold mb-1">Kendi Tanıtım Biyografiniz *</label>
-        <textarea name="bio" value={formData.bio} onChange={handleChange} required maxLength={200} rows={3} className="w-full p-2 border border-zinc-300 rounded" placeholder="2018 yılından beri..." />
+        <label className="block text-zinc-700 font-bold mb-1.5">Kendi Tanıtım Biyografiniz *</label>
+        <RichTextEditorMock name="bio" value={formData.bio} onChange={handleChange} placeholder="Öğretmenlik deneyimlerinizi ve uzmanlık alanlarınızı anlatın..." />
       </div>
       <div>
-        <label className="block text-zinc-700 font-bold mb-1">Görsel URL (İsteğe Bağlı)</label>
-        <input name="image" value={formData.image} onChange={handleChange} className="w-full p-2 border border-zinc-300 rounded" placeholder="https://..." />
+        <label className="block text-zinc-700 font-bold mb-1.5">Profil Görseli / Kapak Fotoğrafı</label>
+        <ImageUploadMock name="image" value={formData.image} onChange={handleChange} />
+        <div className="mt-2 text-[10px] text-zinc-400">Mevcut görseli değiştirmek için harici bir resim linki yapıştırabilirsiniz (Mocking).</div>
       </div>
 
       <div className="border-t border-zinc-200 pt-4 mt-4">
