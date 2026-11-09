@@ -1,12 +1,12 @@
-name = "istanbul-egitim-merkezi"
+name = "istem"
 compatibility_date = "2024-03-20"
 pages_build_output_dir = "dist"
 
-# D1 Database Binding
-[[d1_databases]]
-binding = "DB"
-database_name = "istanbul-egitim-db"
-database_id = "4838af92-cbdd-4545-bd41-d63db336b877"
+# D1 Database Binding (istanbul-egitim-db kaldırıldığı için devre dışı bırakıldı)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "istanbul-egitim-db"
+# database_id = "4838af92-cbdd-4545-bd41-d63db336b877"
 
 # R2 Bucket Binding
 [[r2_buckets]]
