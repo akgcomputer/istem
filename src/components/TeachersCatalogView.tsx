@@ -385,26 +385,25 @@ export default function TeachersCatalogView({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* UPPER BANNER ROW */}
-        <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#E11A4F]/5 rounded-full blur-2xl pointer-events-none" />
+        <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs relative overflow-hidden">
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">
-              TÜRKİYE'NİN İLK KİŞİSELLEŞTİRİLMİŞ BAĞIMSIZ ÖĞRETMEN EKOSİSTEMİ
+            <span className="text-[11px] tracking-wider font-extrabold text-primary uppercase block">
+              İSTANBUL EĞİTİM MERKEZİ (İSTEM) • %0 KOMİSYONLU ÖZEL DERS PAZARYERİ
             </span>
-            <h1 id="teachers-catalog-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
-              Öğretmenler Kataloğu
+            <h1 id="teachers-catalog-title" className="text-2xl sm:text-4xl font-extrabold font-display text-on-surface mt-1 leading-tight">
+              670+ Onaylı Özel Ders Öğretmeni
             </h1>
-            <p className="text-xs text-zinc-550 mt-1.5 max-w-2xl">
-              Komisyon kesilmeden doğrudan anlaştığınız, lisanslı ve canlı değerlendirilmiş uzman eğitmen havuzu. Şeffaf saatlik seans ücretleri ve tescilli mezuniyet referansları.
+            <p className="text-xs sm:text-sm text-on-surface-variant mt-1.5 max-w-2xl">
+              Aracı komisyonu ödemeden doğrudan iletişime geçtiğiniz, diploması ve referansları İstanbul Eğitim Merkezi (İSTEM) tarafından doğrulanmış uzman eğitmen havuzu.
             </p>
           </div>
 
           <button 
             onClick={() => setShowRegisterForm(true)}
-            className="w-full sm:w-auto shrink-0 bg-zinc-950 hover:bg-zinc-900 text-[#39FF14] hover:scale-[1.02] active:scale-98 text-xs font-black px-5 py-3.5 rounded-2xl transition shadow-md flex items-center justify-center gap-2 border border-zinc-850"
+            className="w-full sm:w-auto shrink-0 bg-primary-container hover:bg-primary text-white text-xs font-display font-bold px-6 py-4 rounded-2xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Plus className="w-4 h-4 text-[#39FF14]" />
-            + Siz de Öğretmen Olun!
+            <Plus className="w-4 h-4" />
+            <span>+ Eğitmen Olarak Katıl (%0 Komisyon)</span>
           </button>
         </div>
 

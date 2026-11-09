@@ -286,25 +286,25 @@ export default function SchoolsCatalogView() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* BANNER ROW */}
-        <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
+        <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#FF6600] uppercase block">
-              GÜVENİLİR RESMİ ÖZEL OKULLAR VE LİSELER
+            <span className="text-[11px] tracking-wider font-extrabold text-primary uppercase block">
+              İSTANBUL EĞİTİM MERKEZİ (İSTEM) • AKREDİTE KREŞ, KOLEJ VE OKUL VİTRİNİ
             </span>
-            <h1 id="schools-catalog-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
-              Özel Okul Ara
+            <h1 id="schools-catalog-title" className="text-2xl sm:text-4xl font-extrabold font-display text-on-surface mt-1 leading-tight">
+              Okul, Kreş ve Kolej Karşılaştır
             </h1>
-            <p className="text-xs text-zinc-550 mt-1 max-w-2xl">
-              Özel kolejlerin, Anadolu liselerinin ve yabancı dilde eğitim veren prestijli okulların ders saatlerini, öğretmen sayılarını ve akredite veli yorumlarını inceleyip doğrudan irtibat kurun.
+            <p className="text-xs sm:text-sm text-on-surface-variant mt-1.5 max-w-2xl">
+              Anaokulu, kreş, ilköğretim ve lise düzeyindeki eğitim kurumlarının şeffaf ücretlerini, atölye olanaklarını ve veli değerlendirmelerini giriş yapmadan inceleyin. Kurum sahipleri için <strong>Stok Pratik</strong> ön muhasebe ve taksit entegrasyonu dahildir.
             </p>
           </div>
 
           <button 
             onClick={() => setShowRegForm(true)}
-            className="w-full sm:w-auto bg-zinc-950 hover:bg-zinc-900 hover:scale-[1.02] active:scale-98 text-white text-xs font-black px-6 py-4 rounded-2xl transition shadow-md flex items-center justify-center gap-2 border border-zinc-850"
+            className="w-full sm:w-auto bg-primary-container hover:bg-primary text-white text-xs font-display font-bold px-6 py-4 rounded-2xl transition shadow-md flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
-            <Plus className="text-[#39FF14] w-4 h-4" />
-            + Okulunu Pazaryerine Kaydet
+            <Plus className="w-4 h-4" />
+            <span>+ Okul / Kreş Kaydet (Stok Pratik ERP)</span>
           </button>
         </div>
 

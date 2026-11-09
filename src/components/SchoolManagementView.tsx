@@ -588,29 +588,57 @@ export default function SchoolManagementView({ initialType = 'okul', onLogout }:
   };
 
   return (
-    <div className="bg-[#FAF9F5] min-h-screen pt-4 pb-16">
+    <div className="bg-surface min-h-screen pt-6 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Banner notification */}
         {successMessage && (
-          <div className="fixed bottom-6 right-6 bg-zinc-950 text-white border border-[#FF6600] py-3.5 px-6 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 animate-slide-up font-bold text-xs">
-            <CheckCircle className="w-5 h-5 text-[#39FF14]" />
+          <div className="fixed bottom-6 right-6 bg-primary-container text-white border border-tertiary-fixed py-3.5 px-6 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 animate-slide-up font-bold text-xs">
+            <CheckCircle className="w-5 h-5 text-tertiary-fixed" />
             <span>{successMessage}</span>
           </div>
         )}
 
-        {/* Dynamic header row section with toggle tabs */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-zinc-200 pb-6 mb-8 gap-4">
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1.5 bg-amber-100/70 border border-amber-200/50 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#8C3F03] mb-3">
-              <School className="w-4 h-4 text-[#FF6600] shrink-0" />
-              Giriş Türü: {school.type === 'okul' ? 'Okul / Kolej Yetkilisi' : 'Özel Kurs Yönetimi'}
+        {/* Kurum Sahipleri İçin Stok Pratik ERP & İSTEM Bilgi Bandı */}
+        <div className="bg-primary-container text-white rounded-3xl p-5 sm:p-6 mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-md">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-[10px] font-black uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full text-tertiary-fixed">
+                İSTANBUL EĞİTİM MERKEZİ (İSTEM) KURUMSAL YÖNETİM
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest bg-secondary text-white px-3 py-1 rounded-full">
+                İŞLETMELERE ÖZEL STOK PRATİK ENTEGRASYONU AKTİF
+              </span>
             </div>
-            <h1 className="text-3xl font-black text-zinc-950 tracking-tight font-display">
-              {school.type === 'okul' ? 'Okul Yönetim Paneli' : 'Kurs Yönetim Paneli'}
+            <h2 className="text-base sm:text-lg font-extrabold font-display">
+              Okul, Kreş ve Kurs Sahipleri İçin Stok Pratik Muhasebe &amp; Kurum Yönetimi
+            </h2>
+            <p className="text-xs text-on-primary-container mt-0.5">
+              Kurumunuzun vitrin profilini aşağıdan yönetebilir; öğrenci taksitleri, yemekhane/kantin stokları, personel bordroları ve GİB e-Fatura süreçlerinizi doğrudan <strong>Stok Pratik</strong> altyapısıyla senkronize takip edebilirsiniz.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="bg-white/10 border border-white/15 rounded-2xl px-4 py-2.5 text-left">
+              <span className="text-[10px] text-on-primary-container font-bold block">Stok Pratik Durumu</span>
+              <span className="text-xs font-black text-tertiary-fixed flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5" /> e-Fatura &amp; Aidat Senkronize
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Dynamic header row section with toggle tabs */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-outline-variant/40 pb-6 mb-8 gap-4">
+          <div className="text-left">
+            <div className="inline-flex items-center gap-1.5 bg-secondary-fixed px-3.5 py-1.5 rounded-full text-xs font-bold text-on-secondary-fixed mb-3">
+              <School className="w-4 h-4 text-secondary shrink-0" />
+              Giriş Türü: {school.type === 'okul' ? 'Okul / Kreş / Kolej Yetkilisi' : 'Özel Kurs & Akademi Yönetimi'}
+            </div>
+            <h1 className="text-3xl font-black text-on-surface tracking-tight font-display">
+              {school.type === 'okul' ? 'İSTEM Okul & Kreş Yönetim Paneli' : 'İSTEM Kurs Yönetim Paneli'}
             </h1>
-            <p className="text-xs text-zinc-500 font-semibold mt-1">
-              Kurumunuzun resmi bilgilerini güncelleyin, şubelerinize özel atölyeleri, çalışma saatlerini, görselleri ve iletişim yetkililerini belirleyin.
+            <p className="text-xs text-on-surface-variant font-semibold mt-1">
+              İstanbul Eğitim Merkezi (İSTEM) üzerindeki resmi kurum bilgilerinizi güncelleyin, şubelerinize özel atölyeleri ve çalışma saatlerini belirleyin.
             </p>
           </div>
 

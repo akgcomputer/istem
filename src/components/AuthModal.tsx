@@ -1,26 +1,69 @@
-import React, { useState, FormEvent } from 'react';
-import { X, Eye, EyeOff, User, Phone, Lock, Calendar, Briefcase, Building, Sparkles, Check, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  X, Eye, EyeOff, Phone, Lock, Building2, User, ShieldCheck,
+  Rocket, ArrowRight, Check, Sparkles, GraduationCap, Info
+} from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: (userName: string, role: string) => void;
-  initialMode?: 'login' | 'register';
+  onLoginSuccess: (userName: string, role: string, institutionCode?: string) => void;
+  initialMode?: 'login' | 'register' | 'kurum' | 'talep';
+  initialTargetName?: string;
 }
 
-export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode = 'login' }: AuthModalProps) {
-  const [mode, setMode] = useState<'login' | 'register' | 'forgot'>(initialMode);
-  
-  // Login State
+export default function AuthModal({
+  isOpen,
+  onClose,
+  onLoginSuccess,
+  initialMode = 'kurum',
+  initialTargetName = 'Özel Zerdali Orman & Ekoloji Anaokulu'
+}: AuthModalProps) {
+  const [activeTab, setActiveTab] = useState<'kurum' | 'bireysel' | 'talep'>(
+    initialMode === 'register' ? 'talep' : initialMode === 'login' ? 'bireysel' : initialMode
+  );
+
+  // Institution (Kurum Kodu) Login State
+  const [institutionCode, setInstitutionCode] = useState('zerdalikres');
+  const [instUsername, setInstUsername] = useState('fatihsari');
+  const [instPassword, setInstPassword] = useState('141346');
+  const [showInstPwd, setShowInstPwd] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [instRoleType, setInstRoleType] = useState<'Veli Portalı' | 'Okul Temsilcisi'>('Veli Portalı');
+
+  // Individual (Bireysel / Yönetici / Öğretmen) Login State
   const [loginTel, setLoginTel] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [loginRole, setLoginRole] = useState('Bireysel');
 
-  // Forgot Password State
-  const [forgotTel, setForgotTel] = useState('');
+  // Lead / Pre-registration (Ön Kayıt & Teklif) State
+  const [targetEntity, setTargetEntity] = useState(initialTargetName);
+  const [leadName, setLeadName] = useState('');
+  const [leadPhone, setLeadPhone] = useState('');
+  const [leadNote, setLeadNote] = useState('');
 
-  // Phone input validator to only allow numbers, format to 5XX XXX XX XX, and limit to 10 digits
+  const [message, setMessage] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (initialTargetName) {
+      setTargetEntity(initialTargetName);
+    }
+  }, [initialTargetName]);
+
+  React.useEffect(() => {
+    if (initialMode === 'register' || initialMode === 'talep') {
+      setActiveTab('talep');
+    } else if (initialMode === 'login') {
+      setActiveTab('bireysel');
+    } else {
+      setActiveTab('kurum');
+    }
+  }, [initialMode, isOpen]);
+
+  if (!isOpen) return null;
+
   const handlePhoneChange = (inputVal: string, setter: (val: string) => void) => {
     const cleaned = inputVal.replace(/\D/g, '').slice(0, 10);
     let formatted = cleaned;
@@ -34,152 +77,154 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
     setter(formatted);
   };
 
-  // Register State
-  const [regName, setRegName] = useState('');
-  const [regTel, setRegTel] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [regPasswordConfirm, setRegPasswordConfirm] = useState('');
-  const [showRegPassword, setShowRegPassword] = useState(false);
-  const [regBirthYear, setRegBirthYear] = useState('');
-  const [regProfession, setRegProfession] = useState('');
-  const [regWorkplace, setRegWorkplace] = useState('');
-  const [regRole, setRegRole] = useState('Bireysel');
-  const [regCorpName, setRegCorpName] = useState('');
-  
-  // Custom toast notification style
-  const [message, setMessage] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const handleInstitutionSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!institutionCode.trim() || !instUsername.trim() || !instPassword.trim()) {
+      setErrorMsg('Lütfen Kurum Kodu, Kullanıcı Adı ve Şifre alanlarını doldurun.');
+      return;
+    }
+    setErrorMsg(null);
+    setMessage(`🚀 ${institutionCode.toUpperCase()} kurum portalına bağlanılıyor...`);
+    setTimeout(() => {
+      onLoginSuccess(instUsername, instRoleType, institutionCode.trim().toLowerCase());
+      onClose();
+      setMessage(null);
+    }, 900);
+  };
 
-  if (!isOpen) return null;
-
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleIndividualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!loginTel || !loginPassword) {
       setErrorMsg('Lütfen telefon numaranızı ve şifrenizi giriniz.');
       return;
     }
-    
-    // Check for admin credentials
+
+    // Admin check
     if (loginTel.replace(/\D/g, '') === '5325000999' && loginPassword === 'Akg1453akg!!') {
       onLoginSuccess('Admin', 'Yönetici');
       onClose();
       return;
     }
-    
+
     if (loginTel.replace(/\D/g, '').length !== 10) {
       setErrorMsg('Lütfen 10 haneli geçerli bir telefon numarası giriniz (5XX XXX XX XX).');
       return;
     }
-    
+
     setErrorMsg(null);
-    setMessage(`🔓 Başarıyla ${loginRole} olarak giriş yapıldı! Hoş geldiniz.`);
+    setMessage(`🔓 Başarıyla ${loginRole} olarak giriş yapıldı!`);
     setTimeout(() => {
       onLoginSuccess(loginTel, loginRole);
       onClose();
       setMessage(null);
-    }, 1500);
+    }, 1000);
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleLeadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!regName || !regTel || !regPassword || !regPasswordConfirm || !regBirthYear || !regProfession) {
-      setErrorMsg('Lütfen zorunlu (*) alanların tamamını doldurunuz.');
+    if (!leadName.trim() || !leadPhone.trim()) {
+      setErrorMsg('Lütfen adınızı ve iletişim numaranızı giriniz.');
       return;
     }
-
-    if (regTel.replace(/\D/g, '').length !== 10) {
-      setErrorMsg('Lütfen 10 haneli geçerli bir telefon numarası giriniz (5XX XXX XX XX).');
-      return;
-    }
-
-    if (regPassword !== regPasswordConfirm) {
-      setErrorMsg('Şifreniz ve şifre tekrarınız uyuşmuyor.');
-      return;
-    }
-
-    if (regRole === 'Kurumsal' && !regCorpName) {
-      setErrorMsg('Lütfen kurum adını giriniz.');
-      return;
-    }
-
     setErrorMsg(null);
-    setMessage('✨ Üyeliğiniz başarıyla oluşturuldu! Giriş yapılıyor...');
-    
+    setMessage(`🎉 Ön kayıt ve bilgi talebiniz "${targetEntity}" yetkililerine (%0 komisyon güvencesiyle) iletildi!`);
     setTimeout(() => {
-      onLoginSuccess(regName, regRole);
       onClose();
       setMessage(null);
-    }, 1500);
-  };
-
-  const handleForgotSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!forgotTel) {
-      setErrorMsg('Lütfen telefon numaranızı giriniz.');
-      return;
-    }
-
-    if (forgotTel.replace(/\D/g, '').length !== 10) {
-      setErrorMsg('Lütfen 10 haneli geçerli bir telefon numarası giriniz (5XX XXX XX XX).');
-      return;
-    }
-
-    setErrorMsg(null);
-    setMessage('📲 Şifre sıfırlama kodu SMS olarak telefonunuza gönderildi.');
-    setTimeout(() => {
-      setMode('login');
-      setMessage(null);
-    }, 3000);
+      setLeadName('');
+      setLeadPhone('');
+      setLeadNote('');
+    }, 1800);
   };
 
   const roles = [
-    { id: 'Bireysel', label: 'Bireysel Kullanıcıyım' },
-    { id: 'Kurumsal', label: 'Kurumsal Kullanıcıyım' },
-    { id: 'Öğretmen', label: 'Öğretmenim' },
-    { id: 'Okul Temsilcisi', label: 'Okul Temsilcisiyim' },
-    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' }
-  ];
-
-  const registerRoles = [
-    { id: 'Bireysel', label: 'Bireysel kullanıcıyım' },
-    { id: 'Kurumsal', label: 'Kurumsal kullanıcıyım' },
-    { id: 'Öğretmen', label: 'Öğretmenim' },
-    { id: 'Okul Temsilcisi', label: 'Okul Temsilcisiyim' },
-    { id: 'Kurs Temsilcisi', label: 'Kurs Temsilcisiyim' }
+    { id: 'Veli Portalı', label: 'Veli / Öğrenci Portalım' },
+    { id: 'Bireysel', label: 'Bireysel Kursiyer' },
+    { id: 'Öğretmen', label: 'Özel Ders Eğitmeni' },
+    { id: 'Okul Temsilcisi', label: 'Okul / Kreş Yöneticisi' },
+    { id: 'Kurs Temsilcisi', label: 'Kurs Merkezi Yöneticisi' },
+    { id: 'Kurumsal', label: 'Şirket İK (B2B)' }
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/70 backdrop-blur-xs select-none">
-      <div className="bg-[#FAF9F5] border border-zinc-200 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative flex flex-col max-h-[92vh] animate-fade-in">
-        
-        {/* Brand Header */}
-        <div className="bg-zinc-950 px-6 py-5 shrink-0 flex items-center justify-between text-white">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#FF6600] text-white rounded-lg flex items-center justify-center font-black text-xs font-display">
-              İST
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[#0f172a]/60 backdrop-blur-xs select-none">
+      <div className="bg-surface-container-lowest w-full max-w-lg rounded-t-[28px] sm:rounded-3xl shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden border border-outline-variant/30 animate-fade-in">
+        {/* Top Mobile Drag Handle */}
+        <div className="w-full flex justify-center pt-3 pb-1 sm:hidden">
+          <div className="w-10 h-1 rounded-full bg-surface-dim" />
+        </div>
+
+        {/* Modal Header */}
+        <div className="px-6 pt-4 pb-3 flex items-start justify-between border-b border-outline-variant/20">
+          <div className="pr-4">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed text-[11px] font-bold mb-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-primary-container" />
+              <span>İstanbul Eğitim Merkezi (İSTEM) Güvenli Erişim</span>
             </div>
-            <div>
-              <span className="text-[14px] font-black uppercase tracking-widest font-display">
-                <span className="text-[#FF6600]">İST</span>EM
-              </span>
-              <span className="text-[9px] text-zinc-400 font-bold block leading-none font-mono">EĞİTİM PAZARYERİ</span>
-            </div>
+            <h2 className="font-display font-extrabold text-xl text-on-surface leading-tight">
+              İSTEM Portalı&apos;na Bağlanın
+            </h2>
+            <p className="text-xs text-on-surface-variant mt-0.5">
+              Kayıtlı olduğunuz kreş, okul, veli bilgilendirme sistemi veya özel öğretmen paneline anında geçiş yapın.
+            </p>
           </div>
-          <button 
+          <button
+            type="button"
             onClick={onClose}
-            className="text-zinc-400 hover:text-white rounded-full p-1.5 hover:bg-zinc-800 transition cursor-pointer"
+            aria-label="Kapat"
+            className="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition shrink-0 cursor-pointer"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Scroll Container */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-4">
-          
-          {/* Custom Notification/Toast */}
+        {/* Segmented Tab Switcher */}
+        <div className="px-6 pt-3">
+          <div className="p-1 rounded-2xl bg-surface-container-low flex gap-1 border border-outline-variant/20">
+            <button
+              type="button"
+              onClick={() => { setActiveTab('kurum'); setErrorMsg(null); }}
+              className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-display font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'kurum'
+                  ? 'bg-primary-container text-white shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <Building2 className="w-3.5 h-3.5" />
+              <span>Okul / Kreş Girişi</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('bireysel'); setErrorMsg(null); }}
+              className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-display font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'bireysel'
+                  ? 'bg-secondary text-white shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              <span>Bireysel / Eğitmen</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab('talep'); setErrorMsg(null); }}
+              className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-display font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === 'talep'
+                  ? 'bg-tertiary text-white shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Hızlı Ön Kayıt</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Body */}
+        <div className="p-6 overflow-y-auto space-y-4">
           {message && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl p-3.5 flex items-center gap-2.5 animate-bounce">
-              <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl p-3.5 flex items-center gap-2">
+              <Check className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>{message}</span>
             </div>
           )}
@@ -190,395 +235,299 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialMode
             </div>
           )}
 
-          {mode === 'login' && (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
-              <div className="space-y-1">
-                <h3 className="text-sm sm:text-[15px] font-black font-display text-zinc-900 leading-tight">Giriş Yap (Hesabınıza güvenli bir şekilde erişin)</h3>
+          {/* TAB 1: KURUM KODU İLE OKUL / KREŞ / VELİ GİRİŞİ */}
+          {activeTab === 'kurum' && (
+            <form onSubmit={handleInstitutionSubmit} className="space-y-3.5">
+              {/* Kurum Kodu Input */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-on-surface flex items-center gap-1">
+                    <span>Kurum Kodu (ID)</span>
+                    <Info className="w-3.5 h-3.5 text-outline" />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('talep')}
+                    className="text-[11px] font-bold text-primary hover:underline cursor-pointer"
+                  >
+                    Kodumu Bilmiyorum
+                  </button>
+                </div>
+                <div className="relative flex items-center">
+                  <GraduationCap className="w-4 h-4 text-outline absolute left-3.5 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={institutionCode}
+                    onChange={e => setInstitutionCode(e.target.value)}
+                    placeholder="Örn: zerdalikres veya kuzeykoleji"
+                    className="w-full h-11 pl-10 pr-4 bg-surface-container-low rounded-xl text-sm font-bold text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary-container"
+                  />
+                </div>
+                {/* Quick Demo Institution Codes */}
+                <div className="flex items-center gap-1.5 pt-1 overflow-x-auto no-scrollbar">
+                  <span className="text-[11px] font-bold text-outline shrink-0">Hızlı Kodlar:</span>
+                  {[
+                    { code: 'zerdalikres', label: 'zerdalikres (Kreş)' },
+                    { code: 'kuzeykoleji', label: 'kuzeykoleji (Lise)' },
+                    { code: 'mavibulut', label: 'mavibulut (Anaokulu)' }
+                  ].map(item => (
+                    <button
+                      key={item.code}
+                      type="button"
+                      onClick={() => setInstitutionCode(item.code)}
+                      className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition cursor-pointer shrink-0 ${
+                        institutionCode === item.code
+                          ? 'bg-primary-fixed text-on-primary-fixed ring-1 ring-primary-container/40'
+                          : 'bg-surface-container text-on-surface hover:bg-primary-fixed/60'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Tel No */}
+              {/* Kullanıcı Adı veya Cep Telefonu */}
               <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Telefon No</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Phone className="w-4 h-4" />
-                  </span>
+                <label className="text-xs font-bold text-on-surface block">
+                  Kullanıcı Adı veya Cep Telefonu
+                </label>
+                <div className="relative flex items-center">
+                  <User className="w-4 h-4 text-outline absolute left-3.5 pointer-events-none" />
                   <input
-                    type="tel"
-                    required
-                    maxLength={13}
-                    placeholder="5XX XXX XX XX"
-                    value={loginTel}
-                    onChange={(e) => handlePhoneChange(e.target.value, setLoginTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
+                    type="text"
+                    value={instUsername}
+                    onChange={e => setInstUsername(e.target.value)}
+                    placeholder="fatihsari veya 5XX XXX XX XX"
+                    className="w-full h-11 pl-10 pr-4 bg-surface-container-low rounded-xl text-sm font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary-container"
                   />
                 </div>
               </div>
 
-              {/* Password */}
+              {/* Şifre */}
               <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Şifre</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Lock className="w-4 h-4" />
-                  </span>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-on-surface">Şifre</label>
+                  <span className="text-[11px] text-secondary font-semibold">Demo Şifre: 141346</span>
+                </div>
+                <div className="relative flex items-center">
+                  <Lock className="w-4 h-4 text-outline absolute left-3.5 pointer-events-none" />
+                  <input
+                    type={showInstPwd ? 'text' : 'password'}
+                    value={instPassword}
+                    onChange={e => setInstPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-11 pl-10 pr-10 bg-surface-container-low rounded-xl text-sm font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary-container"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowInstPwd(!showInstPwd)}
+                    className="absolute right-3 text-outline hover:text-on-surface p-1 cursor-pointer"
+                  >
+                    {showInstPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Giriş Türü (Veli vs Okul İdaresi) */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setInstRoleType('Veli Portalı')}
+                  className={`py-2 px-3 rounded-xl text-xs font-bold border text-center transition cursor-pointer ${
+                    instRoleType === 'Veli Portalı'
+                      ? 'border-primary-container bg-primary-fixed/40 text-on-primary-fixed'
+                      : 'border-outline-variant/30 bg-white text-on-surface-variant'
+                  }`}
+                >
+                  👨‍👩‍👧 Veli / Öğrenci Ekranı
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setInstRoleType('Okul Temsilcisi')}
+                  className={`py-2 px-3 rounded-xl text-xs font-bold border text-center transition cursor-pointer ${
+                    instRoleType === 'Okul Temsilcisi'
+                      ? 'border-primary-container bg-primary-fixed/40 text-on-primary-fixed'
+                      : 'border-outline-variant/30 bg-white text-on-surface-variant'
+                  }`}
+                >
+                  🏛️ Kurum İdare &amp; Muhasebe
+                </button>
+              </div>
+
+              {/* Remember Me */}
+              <div className="flex items-center justify-between pt-1">
+                <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-on-surface">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={e => setRememberMe(e.target.checked)}
+                    className="accent-[#FF6600] w-4 h-4 rounded"
+                  />
+                  <span>Beni Bu Cihazda Hatırla</span>
+                </label>
+                <span className="text-[11px] font-bold text-tertiary">✓ Biyometrik Hazır</span>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full h-12 rounded-2xl bg-primary-container hover:bg-primary text-white font-display font-bold text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+              >
+                <Rocket className="w-4 h-4" />
+                <span>Kurum Paneline Bağlan</span>
+              </button>
+
+              <div className="text-center text-[11px] text-outline flex items-center justify-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-tertiary" />
+                <span>256-Bit SSL Uçtan Uca Şifreli İstanbul Eğitim Merkezi Portalı</span>
+              </div>
+            </form>
+          )}
+
+          {/* TAB 2: BİREYSEL / EĞİTMEN / YÖNETİCİ GİRİŞİ */}
+          {activeTab === 'bireysel' && (
+            <form onSubmit={handleIndividualSubmit} className="space-y-3.5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-on-surface block">Cep Telefonu Numaranız</label>
+                <div className="relative flex items-center">
+                  <Phone className="w-4 h-4 text-outline absolute left-3.5 pointer-events-none" />
+                  <input
+                    type="tel"
+                    maxLength={13}
+                    value={loginTel}
+                    onChange={e => handlePhoneChange(e.target.value, setLoginTel)}
+                    placeholder="5XX XXX XX XX"
+                    className="w-full h-11 pl-10 pr-4 bg-surface-container-low rounded-xl text-sm font-mono font-bold text-on-surface border border-outline-variant/30 focus:outline-none focus:border-secondary"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-on-surface block">Şifreniz</label>
+                <div className="relative flex items-center">
+                  <Lock className="w-4 h-4 text-outline absolute left-3.5 pointer-events-none" />
                   <input
                     type={showLoginPassword ? 'text' : 'password'}
-                    required
-                    placeholder="***"
                     value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-10 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
+                    onChange={e => setLoginPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-11 pl-10 pr-10 bg-surface-container-low rounded-xl text-sm font-bold text-on-surface border border-outline-variant/30 focus:outline-none focus:border-secondary"
                   />
                   <button
                     type="button"
                     onClick={() => setShowLoginPassword(!showLoginPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-650 cursor-pointer"
+                    className="absolute right-3 text-outline hover:text-on-surface p-1 cursor-pointer"
                   >
                     {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              {/* Roles radio controls */}
-              <div className="space-y-2 pt-1 border-t border-zinc-100">
-                <span className="text-xs font-extrabold text-zinc-750 block">Giriş yapılacak rol:</span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {roles.map((r) => (
-                    <label 
-                      key={r.id} 
-                      className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition select-none ${
-                        loginRole === r.id 
-                          ? 'border-[#FF6600] bg-amber-50/40 text-zinc-900 shadow-3xs' 
-                          : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50'
+              <div className="space-y-1.5">
+                <span className="text-xs font-bold text-on-surface block">Giriş Yapılacak Profil:</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {roles.map(r => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => setLoginRole(r.id)}
+                      className={`p-2.5 rounded-xl border text-xs font-bold text-left transition cursor-pointer ${
+                        loginRole === r.id
+                          ? 'border-secondary bg-secondary-fixed/40 text-on-secondary-fixed'
+                          : 'border-outline-variant/30 bg-white text-on-surface-variant'
                       }`}
                     >
-                      <input
-                        type="radio"
-                        name="loginRole"
-                        value={r.id}
-                        checked={loginRole === r.id}
-                        onChange={() => setLoginRole(r.id)}
-                        className="text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold">{r.label}</span>
-                    </label>
+                      {r.label}
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Submit & Swap link */}
-              <div className="pt-4 space-y-4">
-                <button
-                  type="submit"
-                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white font-extrabold py-3.5 sm:py-4 rounded-xl transition shadow-lg shadow-[#FF6600]/20 flex items-center justify-center gap-2 mt-4 cursor-pointer"
-                >
-                  <span>Sisteme Giriş Yap</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-bold pt-2 border-t border-zinc-200/50">
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('register')}
-                    className="text-amber-700 hover:text-amber-800 underline cursor-pointer"
-                  >
-                    Üye değilseniz tıklayın
-                  </button>
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('forgot')}
-                    className="text-zinc-500 hover:text-zinc-750 underline cursor-pointer"
-                  >
-                    Şifremi unuttum
-                  </button>
-                </div>
-              </div>
+              <button
+                type="submit"
+                className="w-full h-12 rounded-2xl bg-secondary hover:opacity-95 text-white font-display font-bold text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+              >
+                <span>Giriş Yap</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </form>
           )}
 
-          {mode === 'register' && (
-            <form onSubmit={handleRegisterSubmit} className="space-y-4">
+          {/* TAB 3: HIZLI ÖN KAYIT & RANDEVU / DERS TALEBİ */}
+          {activeTab === 'talep' && (
+            <form onSubmit={handleLeadSubmit} className="space-y-3.5">
+              <div className="p-3 rounded-2xl bg-tertiary-fixed/30 text-xs text-on-tertiary-fixed-variant font-medium">
+                Şifre veya üyelik gerekmeden doğrudan okuldan randevu/fiyat teklifi alabilir veya özel ders eğitmenine mesaj bırakabilirsiniz.
+              </div>
+
               <div className="space-y-1">
-                <h3 className="text-sm sm:text-[15px] font-black font-display text-zinc-900 leading-tight">Üye Kayıt (İSTEM ekosistemine katılın)</h3>
+                <label className="text-xs font-bold text-on-surface block">İlgilendiğiniz Okul, Kreş veya Eğitmen</label>
+                <input
+                  type="text"
+                  value={targetEntity}
+                  onChange={e => setTargetEntity(e.target.value)}
+                  className="w-full h-10 px-3.5 rounded-xl bg-surface-container-low text-sm font-bold text-on-surface border border-outline-variant/30"
+                />
               </div>
 
-              {/* Required fields notice */}
-              <div className="text-[10px] text-zinc-500 font-extrabold italic bg-zinc-100 p-2.5 rounded-lg border border-zinc-200">
-                ⚠️ * Yıldız ile işaretliler doldurulması zorunludur.
-              </div>
-
-              {/* Adı Soyadı * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Adı Soyadı *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <User className="w-4 h-4" />
-                  </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-on-surface block">Adınız Soyadınız *</label>
                   <input
                     type="text"
                     required
-                    placeholder="Ör. Ali Ekin"
-                    value={regName}
-                    onChange={(e) => setRegName(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
+                    value={leadName}
+                    onChange={e => setLeadName(e.target.value)}
+                    placeholder="Örn: Ahmet Yılmaz"
+                    className="w-full h-10 px-3.5 rounded-xl bg-surface-container-low text-sm text-on-surface border border-outline-variant/30"
                   />
                 </div>
-              </div>
-
-              {/* Telefon No * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Telefon No *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Phone className="w-4 h-4" />
-                  </span>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-on-surface block">Telefon Numaranız *</label>
                   <input
                     type="tel"
                     required
-                    maxLength={13}
-                    placeholder="5XX XXX XX XX"
-                    value={regTel}
-                    onChange={(e) => handlePhoneChange(e.target.value, setRegTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
+                    value={leadPhone}
+                    onChange={e => setLeadPhone(e.target.value)}
+                    placeholder="05XX XXX XX XX"
+                    className="w-full h-10 px-3.5 rounded-xl bg-surface-container-low text-sm text-on-surface border border-outline-variant/30"
                   />
                 </div>
               </div>
 
-              {/* Şifre * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Şifre *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Lock className="w-4 h-4" />
-                  </span>
-                  <input
-                    type={showRegPassword ? 'text' : 'password'}
-                    required
-                    placeholder="***"
-                    value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Şifre Tekrar * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Şifre Tekrar *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Lock className="w-4 h-4" />
-                  </span>
-                  <input
-                    type={showRegPassword ? 'text' : 'password'}
-                    required
-                    placeholder="***"
-                    value={regPasswordConfirm}
-                    onChange={(e) => setRegPasswordConfirm(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 placeholder-zinc-100 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Doğum Yılı * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Doğum Yılı *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Calendar className="w-4 h-4" />
-                  </span>
-                  <input
-                    type="number"
-                    required
-                    min="1940"
-                    max="2026"
-                    placeholder="Örn. 1995"
-                    value={regBirthYear}
-                    onChange={(e) => setRegBirthYear(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Mesleğiniz * */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Mesleğiniz *</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Briefcase className="w-4 h-4" />
-                  </span>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Örn. Öğrenci, Psikolog, Hemşire gibi.."
-                    value={regProfession}
-                    onChange={(e) => setRegProfession(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Çalıştığım Kurum */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Çalıştığım Kurum</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Building className="w-4 h-4" />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Örn. İşletme adı, Çalışmıyorum, Öğrenciyim gibi"
-                    value={regWorkplace}
-                    onChange={(e) => setRegWorkplace(e.target.value)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              {/* Register Role choices */}
-              <div className="space-y-2 pt-1 border-t border-zinc-100">
-                <span className="text-xs font-extrabold text-zinc-750 block">Üyelik tipi:</span>
-                <div className="grid grid-cols-1 gap-2">
-                  {registerRoles.map((r) => (
-                    <div key={r.id} className="space-y-2">
-                      <label 
-                        className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition select-none ${
-                          regRole === r.id 
-                            ? 'border-[#FF6600] bg-amber-50/40 text-zinc-900 shadow-3xs' 
-                            : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="regRole"
-                          value={r.id}
-                          checked={regRole === r.id}
-                          onChange={() => setRegRole(r.id)}
-                          className="text-[#FF6600] focus:ring-[#FF6600] w-4 h-4 cursor-pointer"
-                        />
-                        <span className="text-xs font-bold">{r.label}</span>
-                      </label>
-
-                      {/* Special role output instructions */}
-                      {regRole === r.id && r.id === 'Kurumsal' && (
-                        <div className="pl-4 pr-1 py-1.5 space-y-1.5 animate-slide-down">
-                          <label className="text-xs font-extrabold text-red-700 block">Kurum Adı Giriniz *</label>
-                          <input
-                            type="text"
-                            required
-                            placeholder="Kurumsal Şirket / Okul / Kurs Adı"
-                            value={regCorpName}
-                            onChange={(e) => setRegCorpName(e.target.value)}
-                            className="w-full bg-white border border-red-200 rounded-xl px-3 py-2 text-xs text-zinc-900 focus:border-red-500 outline-hidden font-bold"
-                          />
-                        </div>
-                      )}
-
-                      {regRole === r.id && r.id === 'Öğretmen' && (
-                        <p className="text-[10.5px] text-zinc-500 font-extrabold italic bg-zinc-100 p-2.5 rounded-lg border border-zinc-200 pl-4 animate-slide-down">
-                          💡 Giriş yaptıktan sonra profilinizi tamamlamayı unutmayın
-                        </p>
-                      )}
-
-                      {regRole === r.id && r.id === 'Okul Temsilcisi' && (
-                        <p className="text-[10.5px] text-zinc-500 font-extrabold italic bg-zinc-100 p-2.5 rounded-lg border border-zinc-200 pl-4 animate-slide-down">
-                          💡 Giriş yaptıktan sonra profilinizi tamamlamayı unutmayın
-                        </p>
-                      )}
-
-                      {regRole === r.id && r.id === 'Kurs Temsilcisi' && (
-                        <p className="text-[10.5px] text-zinc-500 font-extrabold italic bg-zinc-100 p-2.5 rounded-lg border border-zinc-200 pl-4 animate-slide-down">
-                          💡 Giriş yaptıktan sonra profilinizi tamamlamayı unutmayın
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Submit / back */}
-              <div className="pt-4 space-y-4">
-                <button
-                  type="submit"
-                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition duration-150 shadow-md cursor-pointer"
-                >
-                  Kaydol
-                </button>
-
-                <div className="text-center pt-2">
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('login')}
-                    className="text-xs font-bold text-zinc-500 hover:text-zinc-850 underline cursor-pointer"
-                  >
-                    Zaten üye misiniz? Giriş Yapın
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
-
-          {mode === 'forgot' && (
-            <form onSubmit={handleForgotSubmit} className="space-y-4">
               <div className="space-y-1">
-                <h3 className="text-lg font-black font-display text-zinc-900">Şifremi Unuttum</h3>
-                <p className="text-xs text-zinc-500">Şifre sıfırlama talimatı almak için telefon numaranızı girin</p>
+                <label className="text-xs font-bold text-on-surface block">Notunuz (Çocuğunuzun Yaşı / Sınıfı)</label>
+                <textarea
+                  rows={2}
+                  value={leadNote}
+                  onChange={e => setLeadNote(e.target.value)}
+                  placeholder="Örn: 4 yaş kreş tam gün fiyat bilgisi ve tanıtım randevusu rica ediyorum."
+                  className="w-full p-3 rounded-xl bg-surface-container-low text-xs text-on-surface border border-outline-variant/30 resize-none"
+                />
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-extrabold text-zinc-700 block">Kayıtlı Telefon No</label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                    <Phone className="w-4 h-4" />
-                  </span>
-                  <input
-                    type="tel"
-                    required
-                    maxLength={13}
-                    placeholder="5XX XXX XX XX"
-                    value={forgotTel}
-                    onChange={(e) => handlePhoneChange(e.target.value, setForgotTel)}
-                    className="w-full bg-white border border-zinc-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-900 font-mono focus:border-[#FF6600] outline-hidden shadow-2xs font-bold"
-                  />
-                </div>
-              </div>
-
-              <div className="pt-4 space-y-4">
-                <button
-                  type="submit"
-                  className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-extrabold py-3 rounded-xl transition shadow-md cursor-pointer"
-                >
-                  Sıfırlama Kodu Gönder
-                </button>
-
-                <div className="text-center pt-2">
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('login')}
-                    className="text-xs font-bold text-zinc-500 hover:text-zinc-850 underline cursor-pointer"
-                  >
-                    Geri Dön
-                  </button>
-                </div>
-              </div>
+              <button
+                type="submit"
+                className="w-full h-11 rounded-2xl bg-tertiary hover:opacity-95 text-white font-display font-bold text-sm flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+              >
+                <span>Ücretsiz Ön Başvuru &amp; Randevu Gönder</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </form>
           )}
 
+          {/* Dismiss link for open discovery */}
+          <div className="pt-2 border-t border-outline-variant/20 text-center">
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-xs font-bold text-on-surface-variant hover:text-primary transition cursor-pointer"
+            >
+              Şifre girmeden açık pazaryerini gezmeye devam et ➔
+            </button>
+          </div>
         </div>
-
-        {/* Modal footer back to closure */}
-        <div className="bg-zinc-100 border-t border-zinc-200 px-6 py-4 flex items-center justify-end shrink-0">
-          <button 
-            onClick={onClose}
-            className="bg-zinc-200 hover:bg-zinc-300 text-zinc-700 text-xs font-black px-4 py-2 rounded-xl transition cursor-pointer"
-          >
-            Kapat
-          </button>
-        </div>
-
       </div>
     </div>
   );
 }
-

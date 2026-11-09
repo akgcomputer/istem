@@ -1,15 +1,15 @@
 import { useState, FormEvent, useEffect } from 'react';
-import { 
-  Sparkles, Award, User, Users, GraduationCap, Building2, 
-  HelpCircle, ShieldCheck, CheckCircle2, ChevronRight, X, Search, Menu 
+import {
+  Sparkles, Award, User, Users, GraduationCap, Building2,
+  HelpCircle, ShieldCheck, CheckCircle2, ChevronRight, X, Search, Menu,
+  Compass, BookOpen, QrCode, Phone
 } from 'lucide-react';
-// Removed static mock imports. Data is now fetched from Cloudflare APIs.
 import { Course, Certificate } from './types';
 
 import { CATEGORIES, COURSES, MOCK_EMPLOYEES, MOCK_CERTIFICATES } from './data';
 import { MOCK_TEACHERS, MOCK_SPECIAL_COURSES } from './data/catalogData';
 
-// Importing our modular clean views
+// Importing modular clean views
 import HomeView from './components/HomeView';
 import AuthModal from './components/AuthModal';
 import CatalogView from './components/CatalogView';
@@ -25,13 +25,12 @@ import TeacherProfileView from './components/TeacherProfileView';
 import AdminDashboard from './components/AdminDashboard';
 import SchoolManagementView from './components/SchoolManagementView';
 import InstructorSelectionView from './components/InstructorSelectionView';
+import ParentPortalView from './components/ParentPortalView';
 
 export default function App() {
-  // Global Navigation / Simulator Page states
-  // Supporting exact 8 requested sections
-  const [activePage, setActivePage] = useState<string>('home'); // home, katalog, detay, video, ogrenci, egitmen, kurumsal
+  const [activePage, setActivePage] = useState<string>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   // Data States
   const [categories, setCategories] = useState<any[]>(CATEGORIES);
   const [courses, setCourses] = useState<any[]>(COURSES);
@@ -45,6 +44,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
   const [selectedTeacherProfile, setSelectedTeacherProfile] = useState<any>(null);
   const [selectedCatalogSubject, setSelectedCatalogSubject] = useState<string | null>(null);
+  const [activeInstitutionCode, setActiveInstitutionCode] = useState<string>('zerdalikres');
 
   // Fetch Data on mount
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function App() {
         setSpecialCourses(MOCK_SPECIAL_COURSES);
         setEmployees(MOCK_EMPLOYEES);
         setCertificates(MOCK_CERTIFICATES);
-        
+
         const currentPath = window.location.pathname;
         if (currentPath.startsWith('/ders/')) {
           const id = currentPath.replace('/ders/', '').split('?')[0];
@@ -66,17 +66,29 @@ export default function App() {
         } else if (Array.isArray(COURSES) && COURSES.length > 0) {
           setSelectedCourse(COURSES[0]);
         }
-        
+
         if (currentPath.startsWith('/ogretmen/')) {
           const slug = currentPath.replace('/ogretmen/', '').split('?')[0];
           const getTeacherSlug = (name: string): string => {
-            return name.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+            return name
+              .toLowerCase()
+              .replace(/ğ/g, 'g')
+              .replace(/ü/g, 'u')
+              .replace(/ş/g, 's')
+              .replace(/ı/g, 'i')
+              .replace(/ö/g, 'o')
+              .replace(/ç/g, 'c')
+              .replace(/[^a-z0-9\s-]/g, '')
+              .trim()
+              .replace(/\s+/g, '-');
           };
-          const foundT = (Array.isArray(MOCK_TEACHERS) ? MOCK_TEACHERS : []).find((t: any) => getTeacherSlug(t.name) === slug);
+          const foundT = (Array.isArray(MOCK_TEACHERS) ? MOCK_TEACHERS : []).find(
+            (t: any) => getTeacherSlug(t.name) === slug
+          );
           if (foundT) setSelectedTeacherProfile(foundT);
         }
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error('Error fetching data', error);
       } finally {
         setIsLoading(false);
       }
@@ -91,7 +103,8 @@ export default function App() {
       if (pathname.startsWith('/ogretmen/')) {
         const slug = pathname.replace('/ogretmen/', '').split('?')[0];
         const getTeacherSlug = (name: string): string => {
-          return name.toLowerCase()
+          return name
+            .toLowerCase()
             .replace(/ğ/g, 'g')
             .replace(/ü/g, 'u')
             .replace(/ş/g, 's')
@@ -113,12 +126,11 @@ export default function App() {
         handleNavigate('teachers-catalog', {}, '/ogretmenler');
       } else if (pathname === '/admin') {
         handleNavigate('admin', {}, '/admin');
+      } else if (pathname === '/portal' || pathname === '/veli-portal') {
+        setActivePage('veli-portal');
       } else if (pathname === '/dersler' || pathname === '/dersler/') {
         setActivePage('katalog');
       } else if (pathname.startsWith('/ders/')) {
-        const id = pathname.replace('/ders/', '').split('?')[0];
-        // We might not have courses loaded yet if it's initial load, but we rely on the component using URL ID or handling it.
-        // Actually since courses are state, we will just set active page to detay.
         setActivePage('detay');
       } else if (pathname === '/okullar' || pathname === '/okullar/') {
         handleNavigate('schools-catalog', {}, '/okullar');
@@ -139,7 +151,8 @@ export default function App() {
   const navigateToTeacherProfile = (teacher: any) => {
     setSelectedTeacherProfile(teacher);
     const getTeacherSlug = (name: string): string => {
-      return name.toLowerCase()
+      return name
+        .toLowerCase()
         .replace(/ğ/g, 'g')
         .replace(/ü/g, 'u')
         .replace(/ş/g, 's')
@@ -160,7 +173,7 @@ export default function App() {
     handleNavigate('teachers-catalog', {}, '/ogretmenler');
     setSelectedTeacherProfile(null);
   };
-  
+
   const handleNavigate = (page: string, extraState?: any, path?: string) => {
     setActivePage(page);
     let newPath = path;
@@ -177,29 +190,36 @@ export default function App() {
       else if (page === 'special-courses-catalog') newPath = '/kurslar';
       else if (page === 'teacher-profile') newPath = '/ogretmen';
       else if (page === 'admin') newPath = '/admin';
-      else if (page === 'school-management') newPath = '/yonetim';
+      else if (page === 'school-mgmt') newPath = '/yonetim';
+      else if (page === 'veli-portal') newPath = '/portal';
       else newPath = '/';
     }
     window.history.pushState({ page, ...extraState }, '', newPath);
     window.scrollTo(0, 0);
   };
-  
-  // Real enrollment state trackers
-  const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>(['kurs-1']); // default enrolled in Next.js
-  
-  // Certificate Verifications search States (Section 8)
+
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>(['kurs-1']);
+
+  // Certificate Verifications search States
   const [searchCertId, setSearchCertId] = useState('');
   const [searchedCertificate, setSearchedCertificate] = useState<Certificate | null>(null);
   const [showCertModal, setShowCertModal] = useState(false);
   const [certSearchError, setCertSearchError] = useState(false);
 
-  // Simulation Login state
+  // Auth & Modal States
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<string>('');
   const [loggedInRole, setLoggedInRole] = useState<string>('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalInitialMode, setAuthModalInitialMode] = useState<'login' | 'register'>('login');
+  const [authModalInitialMode, setAuthModalInitialMode] = useState<'login' | 'register' | 'kurum' | 'talep'>('kurum');
+  const [authModalTargetName, setAuthModalTargetName] = useState<string>('Özel Zerdali Orman & Ekoloji Anaokulu');
   const [popupModal, setPopupModal] = useState<{ title: string; content: string } | null>(null);
+
+  const openAuthModalWithMode = (mode: 'login' | 'register' | 'kurum' | 'talep', targetName?: string) => {
+    setAuthModalInitialMode(mode);
+    if (targetName) setAuthModalTargetName(targetName);
+    setIsAuthModalOpen(true);
+  };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -212,19 +232,17 @@ export default function App() {
     if (!enrolledCourseIds.includes(courseId)) {
       setEnrolledCourseIds([...enrolledCourseIds, courseId]);
     }
-    // Instantly navigate to study room
     const targetCourse = courses.find(c => c.id === courseId) || (courses.length > 0 ? courses[0] : null);
     if (targetCourse) setSelectedCourse(targetCourse);
     handleNavigate('video');
   };
 
-  // Global search lookup for certificate (Section 8 footer)
   const handleVerifyCertificate = (e: FormEvent) => {
     e.preventDefault();
     if (!searchCertId.trim()) return;
 
-    const found = certificates.find(c => 
-      c.verificationId.toLowerCase() === searchCertId.trim().toLowerCase()
+    const found = certificates.find(
+      c => c.verificationId.toLowerCase() === searchCertId.trim().toLowerCase()
     );
 
     if (found) {
@@ -238,146 +256,217 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#FAF9F5] min-h-screen text-zinc-900 font-sans antialiased flex flex-col justify-between">
-      
-      {/* CORE FRAMEWORK NAVBAR */}
-      <header className="sticky top-0 z-35 bg-white/95 backdrop-blur-md border-b border-zinc-200/60 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          
-          {/* Logo on the left */}
-          <button 
+    <div className="bg-surface min-h-screen text-on-surface font-sans antialiased flex flex-col justify-between pb-16 md:pb-0">
+      {/* TOP ANNOUNCEMENT RIBBON */}
+      <div className="bg-primary-fixed text-on-primary-fixed-variant border-b border-outline-variant/25">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex items-center justify-between text-[11px] font-bold">
+          <div className="flex items-center gap-2 truncate">
+            <span className="flex h-2 w-2 rounded-full bg-primary-container animate-pulse shrink-0" />
+            <span className="truncate">
+              🎓 <strong>İstanbul Eğitim Merkezi (İSTEM)</strong> — Beşikten Kariyere Okul, Kreş, Kurs ve %0 Komisyonlu Özel Ders Ekosistemi
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-5 shrink-0">
+            <button
+              type="button"
+              onClick={() => handleNavigate('veli-portal', {}, '/portal')}
+              className="hover:text-primary transition cursor-pointer"
+            >
+              Veli &amp; Günlük Karne Portalı
+            </button>
+            <a href="tel:08503004783" className="hover:text-primary transition flex items-center gap-1">
+              <Phone className="w-3 h-3" />
+              <span>0850 300 İSTEM</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* MAIN STICKY HEADER */}
+      <header className="sticky top-0 z-40 bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-3">
+          {/* Brand Logo: İSTEM + İstanbul Eğitim Merkezi */}
+          <button
+            type="button"
             onClick={() => { handleNavigate('home'); setIsMobileMenuOpen(false); }}
-            className="flex items-center gap-2.5 group animate-fade-in"
+            className="flex items-center gap-2.5 group text-left cursor-pointer shrink-0"
           >
-            <div className="w-9 h-9 bg-zinc-950 text-white rounded-xl flex items-center justify-center font-black font-display text-xs group-hover:bg-[#FF6600] transition duration-200">
+            <div className="w-10 h-10 bg-primary-container text-white rounded-xl flex items-center justify-center font-black font-display text-sm shadow-xs group-hover:bg-primary transition">
               İST
             </div>
-            <div className="text-left">
-              <span className="text-xs font-black uppercase tracking-widest block font-display leading-tight">
-                <span className="text-[#FF6600]">İST</span>
-                <span className="text-zinc-900 group-hover:text-amber-600 transition">EM</span>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-base font-black uppercase tracking-tight font-display leading-none text-on-surface">
+                  <span className="text-primary-container">İST</span>EM
+                </span>
+                <span className="px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed text-[9px] font-extrabold uppercase">
+                  Eğitim
+                </span>
+              </div>
+              <span className="text-[10px] text-on-surface-variant font-bold block leading-tight mt-0.5">
+                İstanbul Eğitim Merkezi
               </span>
-              <span className="text-[10px] text-zinc-400 font-bold block leading-none font-mono">EĞİTİM PAZARYERİ</span>
             </div>
           </button>
 
-          {/* Quick link buttons */}
-          <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-zinc-655 font-semibold">
-            <button 
-              onClick={navigateToTeachersCatalog} 
-              className={`hover:text-[#FF6600] transition ${activePage === 'teachers-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-5 text-xs font-display font-bold">
+            <button
+              type="button"
+              onClick={() => handleNavigate('schools-catalog', {}, '/okullar')}
+              className={`hover:text-primary-container transition cursor-pointer ${
+                activePage === 'schools-catalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+              }`}
             >
-              Öğretmenler
+              Okul &amp; Kreş Bul
             </button>
-            <button 
-              onClick={() => { handleNavigate('katalog', {}, '/dersler'); setSelectedCategory('Tümü'); }} 
-              className={`hover:text-[#FF6600] transition ${activePage === 'katalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
+            <button
+              type="button"
+              onClick={navigateToTeachersCatalog}
+              className={`hover:text-primary-container transition flex items-center gap-1.5 cursor-pointer ${
+                activePage === 'teachers-catalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+              }`}
             >
-              Dersler
+              <span>Özel Ders &amp; Öğretmenler</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold">
+                %0 Komisyon
+              </span>
             </button>
-            <button 
-              onClick={() => handleNavigate('schools-catalog', {}, '/okullar')} 
-              className={`hover:text-[#FF6600] transition ${activePage === 'schools-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
+            <button
+              type="button"
+              onClick={() => { handleNavigate('katalog', {}, '/dersler'); setSelectedCategory('Tümü'); }}
+              className={`hover:text-primary-container transition cursor-pointer ${
+                activePage === 'katalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+              }`}
             >
-              Özel Okul Ara
+              Dersler &amp; Akademi
             </button>
-            <button 
-              onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')} 
-              className={`hover:text-[#FF6600] transition ${activePage === 'special-courses-catalog' ? 'text-[#FF6600] font-black' : 'text-zinc-650'}`}
+            <button
+              type="button"
+              onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')}
+              className={`hover:text-primary-container transition cursor-pointer ${
+                activePage === 'special-courses-catalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+              }`}
             >
-              Kurs ara
+              Kurs Merkezleri
             </button>
-            <button 
-              onClick={() => handleNavigate('challenges', {}, '/challenge')} 
-              className={`hover:text-[#FF6B35] transition ${activePage === 'challenges' ? 'text-[#FF6B35] font-black' : 'text-zinc-650'} flex items-center gap-1 bg-[#1A1825]/5 px-2.5 py-1 rounded-full text-[11px]`}
+            <button
+              type="button"
+              onClick={() => handleNavigate('challenges', {}, '/challenge')}
+              className={`hover:text-primary-container transition flex items-center gap-1 cursor-pointer ${
+                activePage === 'challenges' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+              }`}
             >
-              🏆 İSTEM Challenge
+              <span>🏆 Challenge Arena</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('veli-portal', {}, '/portal')}
+              className={`hover:text-secondary transition flex items-center gap-1 cursor-pointer ${
+                activePage === 'veli-portal' ? 'text-secondary font-extrabold' : 'text-on-surface-variant'
+              }`}
+            >
+              <span>👨‍👩‍👧 Okul &amp; Veli Portalı</span>
             </button>
           </nav>
 
-          {/* Profile controls on the right */}
-          <div className="flex items-center gap-3">
+          {/* Right Action Controls (No Forced Login Wall) */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                window.history.pushState({ openSchoolForm: true }, '', '/okullar');
+                handleNavigate('schools-catalog', {}, '/okullar');
+              }}
+              className="hidden sm:inline-flex items-center gap-1 px-3.5 py-2 rounded-full border border-secondary text-secondary hover:bg-secondary hover:text-white text-xs font-display font-bold transition cursor-pointer"
+            >
+              <span>+ Eğitmen / Okul Ekle</span>
+            </button>
+
             {isLoggedIn ? (
               <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => { setActivePage('ogrenci'); setIsMobileMenuOpen(false); }}
-                  className="bg-zinc-100 hover:bg-[#FF6600]/10 text-zinc-800 text-xs font-bold px-3.5 py-2 rounded-xl transition"
+                <button
+                  type="button"
+                  onClick={() => handleNavigate('veli-portal', {}, '/portal')}
+                  className="bg-primary-container text-white text-xs font-display font-bold px-4 py-2 rounded-full shadow-xs hover:bg-primary transition cursor-pointer"
                 >
-                  Kurslarım Panelim
+                  🏫 Portalım ({loggedInUser})
                 </button>
-                <img 
-                  onClick={() => { setActivePage('ogrenci'); setIsMobileMenuOpen(false); }} 
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" 
-                  alt="Avatar" 
-                  className="w-8.5 h-8.5 rounded-full object-cover border-2 border-[#FF6600] cursor-pointer hover:opacity-90 hover:scale-[1.05] transition"
-                />
               </div>
             ) : (
-              <div className="flex gap-2">
-                <button 
-                  onClick={() => { setAuthModalInitialMode('login'); setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }} 
-                  className="bg-zinc-100 text-zinc-800 text-xs font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl hover:bg-zinc-200 transition cursor-pointer"
-                >
-                  Giriş Yap
-                </button>
-                <button 
-                  onClick={() => { setAuthModalInitialMode('register'); setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }} 
-                  className="bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl transition shadow-xs cursor-pointer"
-                >
-                  Kayıt Ol
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => openAuthModalWithMode('kurum')}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-primary-container hover:bg-primary text-white text-xs font-display font-bold shadow-sm transition cursor-pointer"
+              >
+                <Building2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Kurum / Veli Portalı Girişi</span>
+                <span className="sm:hidden">Portal Girişi</span>
+              </button>
             )}
 
             {/* Mobile Hamburger toggle */}
-            <button 
+            <button
+              type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-zinc-50 hover:bg-zinc-100 text-zinc-700 transition"
+              className="lg:hidden p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface transition cursor-pointer"
               aria-label="Menüyü Aç/Kapat"
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5 text-red-500" /> : <Menu className="w-5 h-5 text-zinc-700" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5 text-error" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
-
         </div>
 
         {/* Mobile Dropdown Menu Drawer */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-t border-zinc-200/80 shadow-lg px-4 py-4 space-y-2 animate-fade-in relative z-40">
-            <button 
-              onClick={() => { handleNavigate('teachers-catalog', {}, '/ogretmenler'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'teachers-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
-            >
-              <span>Öğretmenler</span>
-              <ChevronRight className="w-4 h-4 opacity-40 text-rose-500" />
-            </button>
-            <button 
-              onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'katalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
-            >
-              <span>Dersler</span>
-              <ChevronRight className="w-4 h-4 opacity-40" />
-            </button>
-            <button 
+          <div className="lg:hidden bg-surface-container-lowest border-t border-outline-variant/30 shadow-lg px-4 py-4 space-y-2 relative z-40">
+            <button
+              type="button"
               onClick={() => { handleNavigate('schools-catalog', {}, '/okullar'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'schools-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between text-on-surface hover:bg-surface-container-low"
             >
-              <span>Özel Okul Ara</span>
-              <ChevronRight className="w-4 h-4 opacity-40" />
+              <span>🏫 Okul &amp; Kreş Vitrinleri</span>
+              <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
-            <button 
+            <button
+              type="button"
+              onClick={() => { handleNavigate('teachers-catalog', {}, '/ogretmenler'); setIsMobileMenuOpen(false); }}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between text-on-surface hover:bg-surface-container-low"
+            >
+              <span>🧑‍🏫 Özel Ders Öğretmenleri (%0 Komisyon)</span>
+              <ChevronRight className="w-4 h-4 opacity-50" />
+            </button>
+            <button
+              type="button"
+              onClick={() => { handleNavigate('veli-portal', {}, '/portal'); setIsMobileMenuOpen(false); }}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between bg-primary-fixed/40 text-on-primary-fixed"
+            >
+              <span>👶 Veli Günlük Karne &amp; Kurum Zili Portalı</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => { handleNavigate('katalog', {}, '/dersler'); setSelectedCategory('Tümü'); setIsMobileMenuOpen(false); }}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between text-on-surface hover:bg-surface-container-low"
+            >
+              <span>📚 Tüm Dersler &amp; Akademi (420+)</span>
+              <ChevronRight className="w-4 h-4 opacity-50" />
+            </button>
+            <button
+              type="button"
               onClick={() => { handleNavigate('special-courses-catalog', {}, '/kurslar'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'special-courses-catalog' ? 'bg-[#FF6600]/10 text-[#FF6600]' : 'text-zinc-600 hover:bg-zinc-50'}`}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between text-on-surface hover:bg-surface-container-low"
             >
-              <span>Kurs ara</span>
-              <ChevronRight className="w-4 h-4 opacity-40" />
+              <span>🎯 Kurs Merkezleri (LGS / YKS / Dil)</span>
+              <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
-            <button 
-              onClick={() => { setActivePage('challenges'); setIsMobileMenuOpen(false); }}
-              className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between transition ${activePage === 'challenges' ? 'bg-red-50 text-red-700' : 'text-zinc-600 hover:bg-zinc-50'} border border-red-100 bg-red-500/5`}
+            <button
+              type="button"
+              onClick={() => { handleNavigate('challenges', {}, '/challenge'); setIsMobileMenuOpen(false); }}
+              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-between text-on-surface hover:bg-surface-container-low"
             >
-              <span className="flex items-center gap-1.5 font-black text-red-655 text-zinc-900">🏆 Challenge Arena</span>
-              <ChevronRight className="w-4 h-4 text-red-500" />
+              <span>🏆 İSTEM Challenge Arena</span>
+              <ChevronRight className="w-4 h-4 opacity-50" />
             </button>
           </div>
         )}
@@ -386,28 +475,37 @@ export default function App() {
       {/* RENDER ACTIVE DYNAMIC ROUTED VIEW */}
       <main className="flex-1">
         {activePage === 'home' && (
-          <HomeView 
+          <HomeView
             courses={courses}
             categories={categories}
-            onSelectCourse={(course) => {
+            onSelectCourse={course => {
               setSelectedCourse(course);
               handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
-            onNavigateTo={(page) => handleNavigate(page)}
+            onNavigateTo={page => handleNavigate(page)}
             isLoggedIn={isLoggedIn}
-            onSelectCategory={(cat) => {
+            onSelectCategory={cat => {
               setSelectedCategory(cat);
               handleNavigate('katalog', {}, '/dersler');
             }}
+            onOpenAuthModal={openAuthModalWithMode}
+          />
+        )}
+
+        {activePage === 'veli-portal' && (
+          <ParentPortalView
+            initialInstitutionCode={activeInstitutionCode}
+            onNavigateTo={page => handleNavigate(page)}
+            onLogout={handleLogout}
           />
         )}
 
         {activePage === 'katalog' && (
-          <CatalogView 
+          <CatalogView
             courses={courses}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
-            onSelectCourse={(course) => {
+            onSelectCourse={course => {
               setSelectedCourse(course);
               setActivePage('instructor-selection');
             }}
@@ -420,9 +518,7 @@ export default function App() {
         {activePage === 'instructor-selection' && selectedCourse && (
           <InstructorSelectionView
             course={selectedCourse}
-            onSelectTeacher={(course, teacher) => {
-              // We could store the selected teacher in state if we want to show it in DetailView
-              // but for now, we just proceed to DetailView as requested "seçerek işleme devam etmeli"
+            onSelectTeacher={course => {
               handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
             onBack={() => setActivePage('katalog')}
@@ -430,85 +526,73 @@ export default function App() {
         )}
 
         {activePage === 'detay' && selectedCourse && (
-          <DetailView 
+          <DetailView
             course={selectedCourse}
             onEnroll={handleEnrollCourse}
             isEnrolled={enrolledCourseIds.includes(selectedCourse.id)}
-            onNavigateTo={(page) => handleNavigate(page)}
+            onNavigateTo={page => handleNavigate(page)}
           />
         )}
 
-        {activePage === 'challenges' && (
-          <ChallengesView />
-        )}
+        {activePage === 'challenges' && <ChallengesView />}
 
         {activePage === 'ogrenci' && (
-          <StudentDashboard 
+          <StudentDashboard
             courses={courses}
             certificates={certificates}
-            onSelectCourse={(c) => {
+            onSelectCourse={c => {
               setSelectedCourse(c);
               handleNavigate('detay', { courseId: c.id }, `/ders/${c.id}`);
             }}
-            onNavigateTo={(page) => handleNavigate(page)}
+            onNavigateTo={page => handleNavigate(page)}
             onLogout={handleLogout}
           />
         )}
 
         {activePage === 'egitmen' && (
-          <InstructorDashboard 
-            courses={courses}
-            onLogout={handleLogout}
-          />
+          <InstructorDashboard courses={courses} onLogout={handleLogout} />
         )}
 
         {activePage === 'kurumsal' && (
-          <B2BDashboard 
+          <B2BDashboard
             initialEmployees={employees}
             courses={courses}
-            representativeName={loggedInUser || "Ayşe Yankı"}
+            representativeName={loggedInUser || 'Ayşe Yankı'}
             representativeCompany="Acme Corporation Ltd."
             onLogout={handleLogout}
           />
         )}
 
         {activePage === 'teachers-catalog' && (
-          <TeachersCatalogView 
+          <TeachersCatalogView
             courses={courses}
-            onSelectCourse={(course) => {
-               setSelectedCourse(course);
-               handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
+            onSelectCourse={course => {
+              setSelectedCourse(course);
+              handleNavigate('detay', { courseId: course.id }, `/ders/${course.id}`);
             }}
-            onNavigateTo={(page) => handleNavigate(page)}
+            onNavigateTo={page => handleNavigate(page)}
             onViewProfile={navigateToTeacherProfile}
           />
         )}
 
         {activePage === 'teacher-profile' && selectedTeacherProfile && (
-          <TeacherProfileView 
+          <TeacherProfileView
             teacher={selectedTeacherProfile}
             onBack={navigateToTeachersCatalog}
             courses={specialCourses}
-            onSelectCourse={(course) => {
+            onSelectCourse={course => {
               setSelectedCatalogSubject(course.title || course.name);
               handleNavigate('katalog', {}, '/dersler');
             }}
           />
         )}
 
-        {activePage === 'schools-catalog' && (
-          <SchoolsCatalogView />
-        )}
+        {activePage === 'schools-catalog' && <SchoolsCatalogView />}
 
-        {activePage === 'special-courses-catalog' && (
-          <SpecialCoursesCatalogView />
-        )}
+        {activePage === 'special-courses-catalog' && <SpecialCoursesCatalogView />}
 
         {activePage === 'admin' && (
-          <AdminDashboard 
-            onNavigateTo={(page) => handleNavigate(page)}
-            courses={courses}
-          />
+          <AdminDashboard onNavigateTo={page => handleNavigate(page)} courses={courses} />
         )}
 
         {activePage === 'school-mgmt' && (
@@ -520,282 +604,310 @@ export default function App() {
         )}
       </main>
 
-      {/* FOOTER & DYNAMIC CERTIFICATE SEARCH COMPONENT (Section 8) */}
+      {/* FOOTER */}
       <footer className="bg-[#1C1A18] text-zinc-400 border-t border-zinc-800 py-12 text-xs font-medium">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          
-          {/* Logo element description */}
+          {/* Brand Info */}
           <div className="md:col-span-4 flex flex-col gap-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white text-zinc-950 font-black rounded-lg flex items-center justify-center font-display">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-primary-container text-white font-black rounded-xl flex items-center justify-center font-display">
                 İST
               </div>
-              <span className="text-sm font-black text-white font-display uppercase tracking-wider">İSTANBUL EĞİTİM MERKEZİ</span>
-            </div>
-            <p className="text-[11px] leading-relaxed text-zinc-500">
-              Türkiye'nin bağımsız eğitmen güvencesiyle kurulan, komisyonsuz, yetkinliği tasdikleyen ilk açık pazar eğitim ekosistemi.
-            </p>
-          </div>
-
-          {/* QUICK LINKS */}
-          <div className="md:col-span-4 grid grid-cols-2 gap-6 text-sm">
-            <div className="space-y-2.5 text-left">
-              <span className="text-sm text-[#FF6600] font-black block tracking-wider">Keşfet</span>
-              <button onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); setSelectedCatalogSubject(null); }} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Tüm dersler</button>
-              <button onClick={() => handleNavigate('teachers-catalog', {}, '/ogretmenler')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Öğretmenler</button>
-              <button onClick={() => handleNavigate('schools-catalog', {}, '/okullar')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul ara</button>
-              <button onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Kurs Ara</button>
-            </div>
-            <div className="space-y-3 text-left">
               <div>
-                <span className="text-sm text-sky-400 font-black block tracking-wider mb-2">Kurumsal</span>
-                <button 
-                  onClick={() => setPopupModal({
-                    title: "Kurumsal Çözümler",
-                    content: "İstanbul Eğitim Merkezi, işletmenizin ve kurumunuzun nitelikli eğitim ihtiyaçlarını komisyonsuz, doğrudan ve güvenilir bir ekosistem ile çözüme kavuşturur. Kurumsal üyelikle ekiplerinizin gelişimini ve sertifikasyon süreçlerini canlı olarak takip edin."
-                  })} 
-                  className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
-                >
-                  Kurumsal
-                </button>
-                <button 
-                  onClick={() => setActivePage('kurumsal')} 
-                  className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
-                >
-                  İK Talent Portalı
-                </button>
+                <span className="text-sm font-black text-white font-display uppercase tracking-wider block">
+                  İSTANBUL EĞİTİM MERKEZİ (İSTEM)
+                </span>
+                <span className="text-[10px] text-zinc-400 font-bold">
+                  Beşikten Kariyere Komisyonsuz Eğitim Ekosistemi
+                </span>
               </div>
-              
-              <div className="pt-2 space-y-1">
-                <span className="text-sm text-red-500 font-black block tracking-wider">Girişler</span>
-                <button 
-                  onClick={() => {
-                    if (isLoggedIn) {
-                      setActivePage('ogrenci');
-                    } else {
-                      setAuthModalInitialMode('login');
-                      setIsAuthModalOpen(true);
-                    }
-                  }} 
-                  className="block text-white hover:text-zinc-200 text-left transition cursor-pointer font-bold"
-                >
-                  Öğrenci Girişi
-                </button>
-                <button onClick={() => setActivePage('egitmen')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Eğitmen Girişi</button>
-                <button onClick={() => setActivePage('school-mgmt')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Okul Girişi</button>
-                <button onClick={() => setActivePage('school-mgmt')} className="block text-zinc-400 hover:text-white text-left transition cursor-pointer">Kurs Girişi</button>
-              </div>
+            </div>
+            <p className="text-[11px] leading-relaxed text-zinc-400">
+              <strong>İstanbul Eğitim Merkezi (İSTEM)</strong>; kreş ve anaokullarından ilköğretim ve liseye, %0 komisyonlu özel ders öğretmenlerinden mesleki gelişim akademilerine kadar tüm eğitim paydaşlarını tek çatıda buluşturur.
+            </p>
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[11px] text-zinc-300">
+              🏢 <strong>Okul, Kreş ve Kurs Sahipleri İçin:</strong> Kurumsal ön muhasebe, öğrenci taksit sözleşmeleri, GİB e-Fatura ve kantin/kırtasiye stok süreçleri <strong>Stok Pratik</strong> altyapısıyla entegre çalışmaktadır.
             </div>
           </div>
 
-          {/* "VERIFY CERTIFICATE" FOOTER SEARCH ("FARK" implementation!) */}
-          <div className="md:col-span-4 bg-[#151412] p-5 rounded-2xl border border-zinc-850">
-            <span className="text-[9px] font-black tracking-widest text-[#FF6600] uppercase block mb-1">DİPLOMA / SERTİFİKA DOĞRULAMA</span>
-            <span className="text-xs font-black text-white block mb-2 leading-tight">Belgenizi almayı unutmayın!!</span>
-            <p className="text-[11px] text-zinc-500 leading-relaxed mb-3">
-              Şirketlerin direkt İK departmanları veya üçüncü şahıslar için öğrencinin ödev PDF'ini, kod test sonucunu ve biyografisini sorgulatın.
+          {/* Quick Links */}
+          <div className="md:col-span-4 grid grid-cols-2 gap-6 text-xs">
+            <div className="space-y-2.5 text-left">
+              <span className="text-xs text-[#FF6600] font-black uppercase tracking-wider block">
+                İSTEM Ekosistemi
+              </span>
+              <button
+                type="button"
+                onClick={() => handleNavigate('schools-catalog', {}, '/okullar')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                İSTEM Kids (Kreş &amp; Anaokulu)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavigate('schools-catalog', {}, '/okullar')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                İSTEM Junior &amp; Kampüs (Okullar)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavigate('teachers-catalog', {}, '/ogretmenler')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Özel Ders Öğretmenleri
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavigate('special-courses-catalog', {}, '/kurslar')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Kurs Merkezleri Ara
+              </button>
+              <button
+                type="button"
+                onClick={() => { setActivePage('katalog'); setSelectedCategory('Tümü'); }}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                İSTEM Akademi (420+ Ders)
+              </button>
+            </div>
+
+            <div className="space-y-2.5 text-left">
+              <span className="text-xs text-emerald-400 font-black uppercase tracking-wider block">
+                Portallar &amp; İşletme
+              </span>
+              <button
+                type="button"
+                onClick={() => handleNavigate('veli-portal', {}, '/portal')}
+                className="block text-white font-bold hover:text-primary-container text-left transition cursor-pointer"
+              >
+                Veli &amp; Günlük Karne Portalı
+              </button>
+              <button
+                type="button"
+                onClick={() => openAuthModalWithMode('kurum')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Kurum Kodu ile Okul Girişi
+              </button>
+              <button
+                type="button"
+                onClick={() => setActivePage('school-mgmt')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Okul &amp; Stok Pratik ERP Paneli
+              </button>
+              <button
+                type="button"
+                onClick={() => setActivePage('egitmen')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Eğitmen Paneli
+              </button>
+              <button
+                type="button"
+                onClick={() => setActivePage('kurumsal')}
+                className="block text-zinc-400 hover:text-white text-left transition cursor-pointer"
+              >
+                Şirket İK (B2B) Akademi
+              </button>
+            </div>
+          </div>
+
+          {/* Certificate Verification Box */}
+          <div className="md:col-span-4 bg-[#151412] p-5 rounded-2xl border border-zinc-800">
+            <span className="text-[10px] font-black tracking-widest text-[#FF6600] uppercase block mb-1">
+              İSTANBUL EĞİTİM MERKEZİ BELGE SORGULAMA
+            </span>
+            <span className="text-xs font-black text-white block mb-2 leading-tight">
+              QR Doğrulamalı Sertifika &amp; Karne Sorgula
+            </span>
+            <p className="text-[11px] text-zinc-400 leading-relaxed mb-3">
+              İSTEM bünyesinde verilen tüm sertifikaları, öğrenci projelerini ve akreditasyon belgelerini doğrulayın.
             </p>
 
             <form onSubmit={handleVerifyCertificate} className="flex gap-1.5">
-              <input 
+              <input
                 type="text"
                 required
                 value={searchCertId}
-                onChange={(e) => setSearchCertId(e.target.value)}
-                placeholder="Örn: NEXT-9842-12 veya GEMINI-3421-08"
-                className="w-full bg-[#252321] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#FF6600] placeholder-zinc-600 font-mono"
+                onChange={e => setSearchCertId(e.target.value)}
+                placeholder="Örn: NEXT-9842-12"
+                className="w-full bg-[#252321] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#FF6600] placeholder-zinc-500 font-mono"
               />
-              <button 
+              <button
                 type="submit"
-                className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shrink-0"
+                className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold text-xs px-3.5 py-2 rounded-lg transition shrink-0 cursor-pointer"
               >
                 Sorgula
               </button>
             </form>
 
-            {/* Error banner feedback */}
             {certSearchError && (
               <span className="text-[10px] font-bold text-red-500 block mt-2">
-                ✗ Geçersiz Sertifika Kimliği. Lütfen kontrol edip tekrar deneyin.
+                ✗ Geçersiz Sertifika Kimliği. Örnek: NEXT-9842-12
               </span>
             )}
           </div>
-
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-zinc-850/60 flex flex-col gap-4 text-xs sm:text-sm text-zinc-500 text-left">
-          <p className="leading-relaxed font-semibold text-zinc-400">
-            © 1999&apos;dan günümüze.. İstanbul Eğitim Merkezi DD İnternet topluluğu Markasıdır ve Markamız <a href="https://MeetWork.com.tr" target="_blank" rel="noopener noreferrer" className="underline text-[#FF6600] hover:text-white font-bold transition">MeetWork</a> İştirakidir.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
+          <p className="leading-relaxed font-semibold">
+            © 1999&apos;dan günümüze <strong>İstanbul Eğitim Merkezi (İSTEM)</strong> • DD İnternet Topluluğu Markası ve{' '}
+            <a
+              href="https://MeetWork.com.tr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-[#FF6600] hover:text-white font-bold transition"
+            >
+              MeetWork
+            </a>{' '}
+            İştirakidir. Okul muhasebe altyapısı <strong>Stok Pratik</strong> tarafından sağlanmaktadır.
           </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 font-bold text-zinc-400">
-            <button 
-              onClick={() => setPopupModal({
-                title: "Sıkça Sorulan Sorular",
-                content: "İSTEM platformunda komisyon oranları nedir? Platformumuz bağımsız eğitmenler için %0 komisyon politikası gütmektedir. Eğitimlerin tamamı eğitmenlerin tam güvencesi altındadır ve ödemeler doğrudan aktarılır. Sertifikalarımız SHA-256 imzalı olup her zaman doğrulanabilmektedir."
-              })} 
-              className="hover:text-white transition cursor-pointer text-left"
-            >
-              Sıkça Sorulanlar
-            </button>
-            <button 
-              onClick={() => setPopupModal({
-                title: "Kullanım Koşulları ve Sözleşme",
-                content: "İstanbul Eğitim Merkezi hizmetlerini kullanırken tarafların karşılıklı yükümlülükleri, eğitim içeriklerinin telif korumaları ve bağımsız eğitmen güvencelerinin yasal sınırları bu sözleşme kapsamında belirlenmektedir. Platform kurallarına uyulması tüm katılımcılar için zorunludur."
-              })} 
-              className="hover:text-white transition cursor-pointer text-left"
-            >
-              Kullanım Koşulları
-            </button>
-            <button 
-              onClick={() => setPopupModal({
-                title: "KVKK Aydınlatma Metni",
-                content: "6698 sayılı Kişisel Verilerin Korunması Kanunu uyarınca, platformumuzda gerçekleştirdiğiniz kayıt, eğitim takibi ve sertifika sorgulama gibi işlemler sırasında toplanan kişisel verileriniz yüksek güvenlikli sunucularda yasal sınırlar ve açık rıza temelinde güvenle işlenmektedir."
-              })} 
-              className="hover:text-white transition cursor-pointer text-left"
-            >
-              KVKK Aydınlatma Metni
-            </button>
-          </div>
         </div>
       </footer>
 
-      {/* DYNAMIC REAL-TIME CERTIFICATE VERIFICATION POPUP MODAL (Section 8) */}
+      {/* MOBILE APP BOTTOM NAVIGATION BAR (Stitch Super-App Bar) */}
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 shadow-[0_-8px_24px_rgba(0,0,0,0.06)] pb-safe">
+        <div className="flex items-center justify-around h-16 px-2 relative">
+          <button
+            type="button"
+            onClick={() => handleNavigate('home', {}, '/')}
+            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] cursor-pointer ${
+              activePage === 'home' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+            }`}
+          >
+            <Compass className="w-5 h-5" />
+            <span className="text-[10px]">Keşfet</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleNavigate('schools-catalog', {}, '/okullar')}
+            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] cursor-pointer ${
+              activePage === 'schools-catalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+            }`}
+          >
+            <Building2 className="w-5 h-5" />
+            <span className="text-[10px]">Okullar</span>
+          </button>
+
+          {/* Center Floating Portal Button */}
+          <div className="relative -top-4 flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => handleNavigate('veli-portal', {}, '/portal')}
+              className="w-13 h-13 rounded-full bg-primary-container text-white flex items-center justify-center shadow-[0_8px_20px_rgba(255,102,0,0.4)] active:scale-95 transition cursor-pointer"
+            >
+              <QrCode className="w-6 h-6" />
+            </button>
+            <span
+              className={`text-[10px] mt-0.5 font-bold ${
+                activePage === 'veli-portal' ? 'text-primary-container' : 'text-on-surface-variant'
+              }`}
+            >
+              Portalım
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={navigateToTeachersCatalog}
+            className={`flex flex-col items-center justify-center gap-0.5 min-w-[56px] cursor-pointer ${
+              activePage === 'teachers-catalog' ? 'text-primary-container font-extrabold' : 'text-on-surface-variant'
+            }`}
+          >
+            <BookOpen className="w-5 h-5" />
+            <span className="text-[10px]">Özel Ders</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openAuthModalWithMode('kurum')}
+            className="flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-on-surface-variant cursor-pointer"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-[10px]">Giriş</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* CERTIFICATE MODAL */}
       {showCertModal && searchedCertificate && (
-        <div className="fixed inset-0 bg-black/75 z-40 flex items-center justify-center p-4 animate-fade-in">
+        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white text-zinc-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative border border-zinc-200/80 shadow-2xl">
-            
-            <button 
+            <button
+              type="button"
               onClick={() => setShowCertModal(false)}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
-
             <div className="text-center">
               <span className="w-12 h-12 bg-emerald-50 text-emerald-700 flex items-center justify-center rounded-full mx-auto mb-4 border border-emerald-100">
                 <ShieldCheck className="w-7 h-7" />
               </span>
-
-              <span className="text-[10px] font-black text-emerald-800 uppercase tracking-widest block mb-1">✓ DOĞRULANMIŞ RESMİ DİPLOMA KARTI</span>
-              <h3 className="text-lg font-black font-display text-zinc-950">İstanbul Eğitim Akademisi Mezuniyet</h3>
-              <p className="text-[11px] text-zinc-400 mt-0.5">Sertifika ID: {searchedCertificate.verificationId}</p>
-
-              <div className="border-t border-b border-zinc-150 py-5 my-5 text-left space-y-3 font-medium">
-                <div className="flex justify-between text-xs">
+              <span className="text-[10px] font-black text-emerald-800 uppercase tracking-widest block mb-1">
+                ✓ DOĞRULANMIŞ RESMİ İSTANBUL EĞİTİM MERKEZİ DİPLOMA KARTI
+              </span>
+              <h3 className="text-lg font-black font-display text-zinc-950">
+                İstanbul Eğitim Merkezi (İSTEM) Mezuniyet Belgesi
+              </h3>
+              <p className="text-[11px] text-zinc-400 mt-0.5">
+                Sertifika ID: {searchedCertificate.verificationId}
+              </p>
+              <div className="border-t border-b border-zinc-100 py-5 my-5 text-left space-y-3 font-medium text-xs">
+                <div className="flex justify-between">
                   <span className="text-zinc-400">Mezun Öğrenci:</span>
                   <span className="font-extrabold text-zinc-950">{searchedCertificate.studentName}</span>
                 </div>
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between">
                   <span className="text-zinc-400">Eğitim Grubu:</span>
-                  <span className="font-semibold text-zinc-800 max-w-[200px] truncate">{searchedCertificate.courseTitle}</span>
+                  <span className="font-semibold text-zinc-800">{searchedCertificate.courseTitle}</span>
                 </div>
-                <div className="flex justify-between text-xs">
+                <div className="flex justify-between">
                   <span className="text-zinc-400">Tarih / Derece:</span>
-                  <span className="font-mono text-zinc-800">{searchedCertificate.issueDate} / {searchedCertificate.grade}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-zinc-400">Durumu:</span>
-                  <span className="text-emerald-800 font-bold">Aktif &amp; Geçerli (Ömürboyu)</span>
+                  <span className="font-mono text-zinc-800">
+                    {searchedCertificate.issueDate} / {searchedCertificate.grade}
+                  </span>
                 </div>
               </div>
-
-              {/* Fake QR generator image preview */}
-              <div className="bg-zinc-50 border border-zinc-150 p-4 rounded-xl flex items-center justify-center gap-4 mb-4">
-                <img src={searchedCertificate.qrCodeUrl} alt="QR" className="w-20 h-20 bg-white object-contain border border-zinc-200 rounded" />
-                <div className="text-left">
-                  <span className="text-[10px] text-zinc-400 font-bold block">QR DOĞRULAYICI</span>
-                  <p className="text-[11px] text-zinc-550 leading-relaxed">
-                    Akıllı telefon kamerasından okutulduğunda öğrencinin çözdüğü kod dosyalarını, sınav cevaplarını ve puan ortalamasını doğrular.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setShowCertModal(false)}
-                  className="flex-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-bold py-3 rounded-xl transition"
-                >
-                  Kapat
-                </button>
-                <button
-                  onClick={() => alert('Sertifika resmi PDF formatında indiriliyor...')}
-                  className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition"
-                >
-                  Belgeyi PDF İndir
-                </button>
-              </div>
-
+              <button
+                type="button"
+                onClick={() => setShowCertModal(false)}
+                className="w-full bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer"
+              >
+                Kapat
+              </button>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* COMPACT CLEAN POPUP MODAL FOR DOCUMENTS AND INFORMATION */}
-      {popupModal && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 animate-fade-in" id="generic-popup-modal">
-          <div className="bg-white text-zinc-900 rounded-3xl p-6 sm:p-8 max-w-lg w-full relative border border-zinc-200/85 shadow-2xl">
-            
-            <button 
-              onClick={() => setPopupModal(null)}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition cursor-pointer"
-              aria-label="Kapat"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="text-center">
-              <span className="w-12 h-12 bg-amber-50 text-[#FF6600] flex items-center justify-center rounded-full mx-auto mb-4 border border-amber-100">
-                <Sparkles className="w-6 h-6 animate-pulse" />
-              </span>
-
-              <h3 className="text-sm font-black font-display text-zinc-950 uppercase tracking-wide">{popupModal.title}</h3>
-
-              <div className="py-4 my-2 text-left text-xs text-zinc-600 leading-relaxed font-semibold">
-                {popupModal.content}
-              </div>
-
-              <div className="flex gap-2.5 mt-4">
-                <button
-                  onClick={() => setPopupModal(null)}
-                  className="flex-1 bg-zinc-150 hover:bg-zinc-200 text-zinc-800 text-xs font-bold py-3 rounded-xl transition cursor-pointer"
-                >
-                  Kapat
-                </button>
-                <button
-                  onClick={() => {
-                    alert('Detaylı döküman sayfasına yönlendiriliyorsunuz...');
-                    setPopupModal(null);
-                  }}
-                  className="flex-1 bg-[#FF6600] hover:bg-[#CC5200] text-white text-xs font-bold py-3 rounded-xl transition cursor-pointer"
-                >
-                  Devamı
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* AUTH MODAL POP-UP */}
+      {/* AUTH & INSTITUTION PORTAL MODAL */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         initialMode={authModalInitialMode}
-        onLoginSuccess={(userName, role) => {
+        initialTargetName={authModalTargetName}
+        onLoginSuccess={(userName, role, institutionCode) => {
           setIsLoggedIn(true);
           setLoggedInUser(userName);
           setLoggedInRole(role);
-          if (role === 'Bireysel') {
+          if (institutionCode) {
+            setActiveInstitutionCode(institutionCode);
+          }
+          if (role === 'Veli Portalı') {
+            handleNavigate('veli-portal', {}, '/portal');
+          } else if (role === 'Bireysel') {
             setActivePage('ogrenci');
           } else if (role === 'Kurumsal') {
             setActivePage('kurumsal');
           } else if (role === 'Öğretmen') {
             setActivePage('egitmen');
           } else if (role === 'Okul Temsilcisi') {
-            setActivePage('school-mgmt');
+            handleNavigate('veli-portal', {}, '/portal');
           } else if (role === 'Kurs Temsilcisi') {
             setActivePage('course-mgmt');
           } else if (role === 'Yönetici') {
@@ -803,9 +915,6 @@ export default function App() {
           }
         }}
       />
-
     </div>
   );
 }
-
-

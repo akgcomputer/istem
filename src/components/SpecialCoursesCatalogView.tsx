@@ -107,28 +107,28 @@ export default function SpecialCoursesCatalogView() {
   }, []);
 
   return (
-    <div className="bg-[#FAF9F5] min-h-screen py-10">
+    <div className="bg-surface min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER SECTION */}
-        <div className="bg-white border border-zinc-200/60 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xs">
+        <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm">
           <div>
-            <span className="text-[10px] tracking-widest font-black text-[#E58F49] uppercase block">
-              LGS, YKS, GÜZEL SANATLAR VE SÜRÜCÜ KURSLARI
+            <span className="text-[10px] tracking-widest font-black text-secondary bg-secondary-fixed px-3 py-1 rounded-full uppercase inline-block mb-2">
+              İSTANBUL EĞİTİM MERKEZİ (İSTEM) • LGS, YKS, SANAT &amp; SÜRÜCÜ KURSLARI
             </span>
-            <h1 id="special-courses-title" className="text-2xl sm:text-3.5xl font-extrabold font-display text-zinc-950 mt-1 leading-tight">
-              Arama Yap &amp; Kurs Bul
+            <h1 id="special-courses-title" className="text-2xl sm:text-3xl font-black font-display text-on-surface mt-1 leading-tight">
+              İSTEM Kampüs &amp; Akademi Kurs Merkezi
             </h1>
-            <p className="text-xs text-zinc-550 mt-1 max-w-2xl">
-              İstanbul genelindeki özel öğretim kurslarını, LGS-YKS hazırlık merkezlerini, özel yetenek sanat atölyelerini ve akredite motorlu taşıt sürücü kurslarını şeffaf ücret aralıklarıyla bulun.
+            <p className="text-xs text-on-surface-variant font-medium mt-1.5 max-w-2xl leading-relaxed">
+              İstanbul Eğitim Merkezi (İSTEM) güvencesiyle özel öğretim kurslarını, LGS-YKS hazırlık merkezlerini, güzel sanatlar atölyelerini ve akredite sürücü kurslarını şeffaf ücret aralıklarıyla karşılaştırın.
             </p>
           </div>
 
           <button 
             onClick={() => setShowRegForm(true)}
-            className="w-full sm:w-auto bg-zinc-950 hover:bg-zinc-900 hover:scale-[1.02] active:scale-98 text-white text-xs font-black px-6 py-4 rounded-2xl transition shadow-md flex items-center justify-center gap-2 border border-zinc-850"
+            className="w-full sm:w-auto bg-primary-container hover:bg-primary text-white text-xs font-black px-6 py-4 rounded-2xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Plus className="text-[#39FF14] w-4 h-4" />
+            <Plus className="text-tertiary-fixed w-4 h-4" />
             + Kurs veya Akademini Kaydet
           </button>
         </div>
