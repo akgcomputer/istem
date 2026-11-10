@@ -26,6 +26,7 @@ import AdminDashboard from './components/AdminDashboard';
 import SchoolManagementView from './components/SchoolManagementView';
 import InstructorSelectionView from './components/InstructorSelectionView';
 import ParentPortalView from './components/ParentPortalView';
+import { IstemKidsRole } from './data/istemKidsData';
 
 export default function App() {
   const [activePage, setActivePage] = useState<string>('home');
@@ -45,6 +46,7 @@ export default function App() {
   const [selectedTeacherProfile, setSelectedTeacherProfile] = useState<any>(null);
   const [selectedCatalogSubject, setSelectedCatalogSubject] = useState<string | null>(null);
   const [activeInstitutionCode, setActiveInstitutionCode] = useState<string>('zerdalikres');
+  const [activeKidsRole, setActiveKidsRole] = useState<IstemKidsRole>('veli');
 
   // Fetch Data on mount
   useEffect(() => {
@@ -495,6 +497,7 @@ export default function App() {
         {activePage === 'veli-portal' && (
           <ParentPortalView
             initialInstitutionCode={activeInstitutionCode}
+            initialKidsRole={activeKidsRole}
             onNavigateTo={page => handleNavigate(page)}
             onLogout={handleLogout}
           />
@@ -891,14 +894,26 @@ export default function App() {
         onClose={() => setIsAuthModalOpen(false)}
         initialMode={authModalInitialMode}
         initialTargetName={authModalTargetName}
-        onLoginSuccess={(userName, role, institutionCode) => {
+        onLoginSuccess={(userName, role, institutionCode, kidsRole) => {
           setIsLoggedIn(true);
           setLoggedInUser(userName);
           setLoggedInRole(role);
           if (institutionCode) {
             setActiveInstitutionCode(institutionCode);
           }
+          if (kidsRole) {
+            setActiveKidsRole(kidsRole);
+            handleNavigate('veli-portal', {}, '/portal');
+            return;
+          }
           if (role === 'Veli Portalı') {
+            setActiveKidsRole('veli');
+            handleNavigate('veli-portal', {}, '/portal');
+          } else if (role === 'Sınıf Öğretmeni') {
+            setActiveKidsRole('ogretmen');
+            handleNavigate('veli-portal', {}, '/portal');
+          } else if (role === 'Servis Görevlisi') {
+            setActiveKidsRole('servis_gorevlisi');
             handleNavigate('veli-portal', {}, '/portal');
           } else if (role === 'Bireysel') {
             setActivePage('ogrenci');
@@ -907,6 +922,7 @@ export default function App() {
           } else if (role === 'Öğretmen') {
             setActivePage('egitmen');
           } else if (role === 'Okul Temsilcisi') {
+            setActiveKidsRole('kurum_sahibi');
             handleNavigate('veli-portal', {}, '/portal');
           } else if (role === 'Kurs Temsilcisi') {
             setActivePage('course-mgmt');

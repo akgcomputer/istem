@@ -418,6 +418,45 @@ export default function HomeView({
               </button>
             ))}
           </div>
+
+          {/* 🧸 İSTEM Kids (0-6 Yaş Kreş & Anaokulu) 4 Rol & Üyelik Hızlı Başlatıcı */}
+          <div className="mt-5 max-w-5xl mx-auto p-4 rounded-3xl bg-primary-fixed/40 border border-primary-container/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-primary-container text-white flex items-center justify-center text-lg shrink-0 shadow-xs">
+                🧸
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-extrabold text-on-surface">
+                    İSTEM Kids (0-6 Yaş Kreş &amp; Anaokulu) Canlı Rol Sistemi
+                  </span>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-tertiary text-white">
+                    4 Yetki Rolü + Tek Öğrenci Pasaportu
+                  </span>
+                </div>
+                <p className="text-[11px] text-on-surface-variant mt-0.5">
+                  Veli (Günlük Karne &amp; Kapıdayım Zili), Sınıf Öğretmeni, Kreş Sahibi (Stok Pratik ERP) ve Servis Görevlisi panellerini canlı deneyimleyin:
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 shrink-0 w-full md:w-auto">
+              <button
+                type="button"
+                onClick={() => onNavigateTo('veli-portal')}
+                className="flex-1 md:flex-initial px-3.5 py-2 rounded-xl bg-primary-container hover:bg-primary text-white text-xs font-extrabold transition cursor-pointer"
+              >
+                🧸 4 Rol Panelini Aç
+              </button>
+              <button
+                type="button"
+                onClick={() => triggerOpenAuth('register')}
+                className="flex-1 md:flex-initial px-3.5 py-2 rounded-xl bg-surface-container-lowest hover:bg-white text-primary-container border border-primary-container/30 text-xs font-extrabold transition cursor-pointer"
+              >
+                + Yeni Kreş / Veli Üyelik
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
