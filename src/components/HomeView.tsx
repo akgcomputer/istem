@@ -310,24 +310,34 @@ export default function HomeView({
             </div>
           </div>
 
-          {/* Desktop 5 Life-Stage Ecosystem Pill Tabs */}
+          {/* Desktop 5 Life-Stage Ecosystem Pill Tabs (Şu an sadece İSTEM Kids & Kurum Yönetimi Aktif) */}
           <div className="mt-8 max-w-5xl mx-auto hidden sm:block">
             <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-surface-container-high/80 backdrop-blur-md overflow-x-auto no-scrollbar shadow-inner">
               {[
-                { id: 'kids' as const, emoji: '🧸', title: 'İSTEM Kids', sub: '0-6 Yaş Kreş & Anaokulu', count: '42 Kurum', badgeClass: 'bg-primary-fixed text-on-primary-fixed-variant' },
-                { id: 'junior' as const, emoji: '🎒', title: 'İSTEM Junior', sub: 'İlkokul & Ortaokul', count: 'K-8 Kolej', badgeClass: 'bg-secondary-fixed text-on-secondary-fixed-variant' },
-                { id: 'kampus' as const, emoji: '🎯', title: 'İSTEM Kampüs', sub: 'Lise & LGS/YKS', count: 'Fen & Anadolu', badgeClass: 'bg-primary-fixed text-on-primary-fixed' },
-                { id: 'pro' as const, emoji: '🚀', title: 'İSTEM Akademi', sub: 'Yazılım, AI, Dil, Kariyer', count: '420+ Ders', badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed-variant' },
-                { id: 'erp' as const, emoji: '🏛️', title: 'Kurumsal Okul Yönetimi', sub: 'Veli İletişim & Stok Pratik', count: 'İşletmeler İçin', badgeClass: 'bg-surface-container-highest text-on-surface' }
+                { id: 'kids' as const, emoji: '🧸', title: 'İSTEM Kids', sub: '0-6 Yaş Kreş & Anaokulu', count: 'AKTİF • 42 Kurum', badgeClass: 'bg-tertiary text-white', enabled: true },
+                { id: 'junior' as const, emoji: '🎒', title: 'İSTEM Junior', sub: 'İlkokul & Ortaokul', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
+                { id: 'kampus' as const, emoji: '🎯', title: 'İSTEM Kampüs', sub: 'Lise & LGS/YKS', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
+                { id: 'pro' as const, emoji: '🚀', title: 'İSTEM Akademi', sub: 'Yazılım, AI, Dil, Kariyer', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
+                { id: 'erp' as const, emoji: '🏛️', title: 'Kurum & Stok Pratik Yönetimi', sub: 'Koyu Tema İşletme Paneli', count: 'AKTİF', badgeClass: 'bg-inverse-surface text-white', enabled: true }
               ].map(tab => (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => handleStageSelect(tab.id)}
-                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer ${
-                    activeStageTab === tab.id
-                      ? 'bg-surface-container-lowest text-primary shadow-sm ring-1 ring-primary-container/20'
-                      : 'text-on-surface-variant hover:text-on-surface'
+                  onClick={() => {
+                    if (tab.enabled) {
+                      if (tab.id === 'kids') {
+                        onNavigateTo('veli-portal');
+                      } else {
+                        handleStageSelect(tab.id);
+                      }
+                    }
+                  }}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs whitespace-nowrap transition-all ${
+                    !tab.enabled
+                      ? 'opacity-50 cursor-not-allowed'
+                      : activeStageTab === tab.id
+                      ? 'bg-surface-container-lowest text-primary shadow-sm ring-1 ring-primary-container/30 cursor-pointer'
+                      : 'text-on-surface-variant hover:text-on-surface cursor-pointer'
                   }`}
                 >
                   <span className="text-xl">{tab.emoji}</span>
