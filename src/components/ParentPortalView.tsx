@@ -608,17 +608,22 @@ export default function ParentPortalView({
               </div>
             </div>
 
-            {/* MOBILE / APP SANDWICH MENU DRAWER (Alt Alta İkonlu Mobil Menü) */}
+            {/* MOBILE / APP SANDWICH MENU DRAWER (Alt Alta İkonlu Mobil Menü - Mavi/Lacivert Zemin) */}
             {isVeliMobileMenuOpen && (
-              <div className="lg:hidden bg-white p-4 rounded-3xl border-2 border-primary-container/20 shadow-xl space-y-2 animate-fade-in">
-                <div className="flex items-center justify-between px-2 pb-2 border-b border-slate-100">
-                  <span className="font-display font-extrabold text-xs text-slate-900">
-                    👨‍👩‍👧 Veli &amp; Öğrenci Menüsü
-                  </span>
+              <div className="lg:hidden bg-linear-to-b from-[#1E3A8A] to-[#0F2452] p-4 rounded-3xl border border-indigo-900 shadow-xl space-y-2.5 animate-fade-in">
+                <div className="flex items-center justify-between px-2 pb-2 border-b border-white/15">
+                  <div>
+                    <span className="font-display font-extrabold text-[11px] text-sky-200 block">
+                      👨‍👩‍👧 Veli &amp; Öğrenci Menüsü
+                    </span>
+                    <span className="font-display font-extrabold text-sm text-white block">
+                      Hızlı Erişim Modülleri
+                    </span>
+                  </div>
                   <button
                     type="button"
                     onClick={() => setIsVeliMobileMenuOpen(false)}
-                    className="p-1 rounded-lg bg-slate-100 text-slate-600"
+                    className="p-1.5 rounded-xl bg-white/15 text-white hover:bg-white/25 cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -636,12 +641,12 @@ export default function ParentPortalView({
                         }}
                         className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold flex items-center justify-between transition cursor-pointer ${
                           isActive
-                            ? 'bg-primary-container text-white shadow-sm'
-                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                            ? 'bg-[#F97316] text-white shadow-md border border-orange-400'
+                            : 'bg-white/95 text-slate-800 hover:bg-white border border-slate-200/80'
                         }`}
                       >
                         <span>{tab.label}</span>
-                        <ChevronRight className="w-4 h-4 shrink-0 opacity-75" />
+                        <ChevronRight className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                       </button>
                     );
                   })}
@@ -1655,19 +1660,19 @@ export default function ParentPortalView({
                 )}
               </div>
 
-              {/* RIGHT 4 COLUMNS: SAĞDA ALT ALTA İKONLU VELİ & ÖĞRENCİ MENÜSÜ (DESKTOP) */}
+              {/* LEFT 4 COLUMNS: SOLDA ALT ALTA İKONLU VELİ & ÖĞRENCİ MENÜSÜ (MAVİ-LACİVERT ZEMİN, AÇIK ÖĞELER, SEÇİLİ TURUNCU) */}
               <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 order-1 lg:order-1 sticky top-6">
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs p-4 space-y-2">
-                  <div className="px-3 py-2 border-b border-slate-100">
-                    <span className="text-[11px] font-extrabold text-primary-container block">
+                <div className="bg-linear-to-b from-[#1E3A8A] to-[#0F2452] rounded-3xl border border-indigo-900 shadow-lg p-4 space-y-3">
+                  <div className="px-3 py-2 border-b border-white/15">
+                    <span className="text-[11px] font-extrabold text-sky-200 block">
                       👨‍👩‍👧 Veli &amp; Öğrenci Menüsü
                     </span>
-                    <h3 className="font-display font-extrabold text-sm text-slate-900">
+                    <h3 className="font-display font-extrabold text-sm text-white mt-0.5">
                       Hızlı Erişim Modülleri
                     </h3>
                   </div>
 
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-2">
                     {VELI_MENU_ITEMS.map(tab => {
                       const isActive = activeVeliTab === tab.id;
                       return (
@@ -1677,8 +1682,8 @@ export default function ParentPortalView({
                           onClick={() => setActiveVeliTab(tab.id)}
                           className={`w-full text-left px-3.5 py-3 rounded-2xl transition cursor-pointer flex items-center justify-between gap-2 ${
                             isActive
-                              ? 'bg-primary-container text-white shadow-sm'
-                              : 'bg-slate-50/80 hover:bg-indigo-50/60 text-slate-700 border border-slate-200/60'
+                              ? 'bg-[#F97316] text-white shadow-md border border-orange-400'
+                              : 'bg-white/95 hover:bg-white text-slate-800 border border-slate-200/80 shadow-2xs'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
@@ -1689,7 +1694,7 @@ export default function ParentPortalView({
                               </span>
                               <span
                                 className={`text-[10px] block truncate ${
-                                  isActive ? 'text-indigo-100' : 'text-slate-400'
+                                  isActive ? 'text-orange-100' : 'text-slate-500'
                                 }`}
                               >
                                 {tab.desc}
