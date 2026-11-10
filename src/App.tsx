@@ -128,8 +128,22 @@ export default function App() {
         handleNavigate('teachers-catalog', {}, '/ogretmenler');
       } else if (pathname === '/admin') {
         handleNavigate('admin', {}, '/admin');
-      } else if (pathname === '/portal' || pathname === '/veli-portal') {
+      } else if (pathname === '/portal/veli' || pathname === '/portal/veli/') {
+        setActiveKidsRole('veli');
         setActivePage('veli-portal');
+      } else if (pathname === '/portal/ogretmen' || pathname === '/portal/ogretmen/') {
+        setActiveKidsRole('ogretmen');
+        setActivePage('veli-portal');
+      } else if (pathname === '/portal/servis' || pathname === '/portal/servis/') {
+        setActiveKidsRole('servis_gorevlisi');
+        setActivePage('veli-portal');
+      } else if (pathname === '/portal/kurum' || pathname === '/portal/kurum/') {
+        setActiveKidsRole('kurum_sahibi');
+        setActivePage('veli-portal');
+      } else if (pathname === '/portal' || pathname === '/portal/' || pathname === '/veli-portal') {
+        setActiveKidsRole('veli');
+        setActivePage('veli-portal');
+        window.history.replaceState({ page: 'veli-portal', kidsRole: 'veli' }, '', '/portal/veli');
       } else if (pathname === '/dersler' || pathname === '/dersler/') {
         setActivePage('katalog');
       } else if (pathname.startsWith('/ders/')) {
@@ -193,7 +207,7 @@ export default function App() {
       else if (page === 'teacher-profile') newPath = '/ogretmen';
       else if (page === 'admin') newPath = '/admin';
       else if (page === 'school-mgmt') newPath = '/yonetim';
-      else if (page === 'veli-portal') newPath = '/portal';
+      else if (page === 'veli-portal') newPath = '/portal/veli';
       else newPath = '/';
     }
     window.history.pushState({ page, ...extraState }, '', newPath);
@@ -498,6 +512,19 @@ export default function App() {
           <ParentPortalView
             initialInstitutionCode={activeInstitutionCode}
             initialKidsRole={activeKidsRole}
+            onRoleChange={nextRole => {
+              setActiveKidsRole(nextRole);
+              const targetPath =
+                nextRole === 'ogretmen'
+                  ? '/portal/ogretmen'
+                  : nextRole === 'servis_gorevlisi'
+                  ? '/portal/servis'
+                  : nextRole === 'kurum_sahibi'
+                  ? '/portal/kurum'
+                  : '/portal/veli';
+              window.history.pushState({ page: 'veli-portal', kidsRole: nextRole }, '', targetPath);
+              window.scrollTo(0, 0);
+            }}
             onNavigateTo={page => handleNavigate(page)}
             onLogout={handleLogout}
           />
@@ -901,20 +928,29 @@ export default function App() {
           if (institutionCode) {
             setActiveInstitutionCode(institutionCode);
           }
+          const getRolePath = (r: string) =>
+            r === 'ogretmen'
+              ? '/portal/ogretmen'
+              : r === 'servis_gorevlisi'
+              ? '/portal/servis'
+              : r === 'kurum_sahibi'
+              ? '/portal/kurum'
+              : '/portal/veli';
+
           if (kidsRole) {
             setActiveKidsRole(kidsRole);
-            handleNavigate('veli-portal', {}, '/portal');
+            handleNavigate('veli-portal', { kidsRole }, getRolePath(kidsRole));
             return;
           }
           if (role === 'Veli Portalı') {
             setActiveKidsRole('veli');
-            handleNavigate('veli-portal', {}, '/portal');
+            handleNavigate('veli-portal', { kidsRole: 'veli' }, '/portal/veli');
           } else if (role === 'Sınıf Öğretmeni') {
             setActiveKidsRole('ogretmen');
-            handleNavigate('veli-portal', {}, '/portal');
+            handleNavigate('veli-portal', { kidsRole: 'ogretmen' }, '/portal/ogretmen');
           } else if (role === 'Servis Görevlisi') {
             setActiveKidsRole('servis_gorevlisi');
-            handleNavigate('veli-portal', {}, '/portal');
+            handleNavigate('veli-portal', { kidsRole: 'servis_gorevlisi' }, '/portal/servis');
           } else if (role === 'Bireysel') {
             setActivePage('ogrenci');
           } else if (role === 'Kurumsal') {
@@ -923,7 +959,7 @@ export default function App() {
             setActivePage('egitmen');
           } else if (role === 'Okul Temsilcisi') {
             setActiveKidsRole('kurum_sahibi');
-            handleNavigate('veli-portal', {}, '/portal');
+            handleNavigate('veli-portal', { kidsRole: 'kurum_sahibi' }, '/portal/kurum');
           } else if (role === 'Kurs Temsilcisi') {
             setActivePage('course-mgmt');
           } else if (role === 'Yönetici') {
