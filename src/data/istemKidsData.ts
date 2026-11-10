@@ -203,13 +203,13 @@ export interface DemoRoleAccount {
 export const ISTEM_KIDS_DEMO_ACCOUNTS: DemoRoleAccount[] = [
   {
     role: 'veli',
-    roleLabel: '👨‍👩‍👧 Veli & Öğrenci Görünümü',
+    roleLabel: '👨‍👩‍👧 Veli & Öğrenci',
     badge: 'Açık Tema • Veli Portalı',
     username: 'fatihsari',
     password: '141346',
     institutionCode: 'zerdalikres',
-    fullName: 'Fatih Sarı (Zeynep & Ali Efe Veli)',
-    summary: 'Ders zili sayacı, Kapı Çal/Talep, Sıralı Servis Onayı, Salgın/İlaç Çizelgesi, Kreşten Günlükler (KVKK İzinli) ve Kazanımlar.'
+    fullName: 'Fatih Sarı (Zeynep Sarı Veli)',
+    summary: 'Ders zili sayacı, Hızlı Talebini İlet, Sıralı Servis Onayı, Salgın/İlaç Çizelgesi, Kreşten Günlükler (KVKK İzinli) ve Kazanımlar.'
   },
   {
     role: 'ogretmen',
@@ -391,7 +391,7 @@ export const INITIAL_KIDS_STUDENTS: KidsStudentRecord[] = [
   {
     id: 'aliefe',
     passportId: 'IST-KIDS-2024-0892',
-    name: 'Ali Efe Sarı',
+    name: 'Ali Efe Kaya',
     birthDate: '10 Kasım 2024',
     heightCm: 88,
     weightKg: 12.6,
@@ -399,9 +399,9 @@ export const INITIAL_KIDS_STUDENTS: KidsStudentRecord[] = [
     ageGroup: '0-3',
     className: 'Minik Kalpler Sınıfı (0-3 Yaş)',
     avatar: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=300&q=80',
-    parentName: 'Fatih & Esra Sarı',
-    parentPhone: '0532 410 22 33',
-    parentUsername: 'fatihsari',
+    parentName: 'Murat & Elif Kaya',
+    parentPhone: '0535 210 44 19',
+    parentUsername: 'muratkaya',
     allergies: ['Yumurta Akı Hassasiyeti'],
     attendance: 'geldi',
     ateBreakfast: true,

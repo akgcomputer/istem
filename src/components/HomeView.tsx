@@ -280,8 +280,8 @@ export default function HomeView({
           {/* Mobile App Story-Style Education Level Circles (Visible on Mobile, Pill Tabs on Desktop) */}
           <div className="mt-7 sm:hidden">
             <div className="flex items-center justify-between mb-2 px-1">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-on-surface-variant">
-                EĞİTİM KADEMELERİ
+              <span className="text-[11px] font-extrabold text-on-surface-variant">
+                Eğitim Kademeleri
               </span>
               <span className="text-[11px] font-bold text-primary">Yaşa Göre Seçin</span>
             </div>
@@ -314,11 +314,11 @@ export default function HomeView({
           <div className="mt-8 max-w-5xl mx-auto hidden sm:block">
             <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-surface-container-high/80 backdrop-blur-md overflow-x-auto no-scrollbar shadow-inner">
               {[
-                { id: 'kids' as const, emoji: '🧸', title: 'İSTEM Kids', sub: '0-6 Yaş Kreş & Anaokulu', count: 'AKTİF • 42 Kurum', badgeClass: 'bg-tertiary text-white', enabled: true },
+                { id: 'kids' as const, emoji: '🧸', title: 'İSTEM Kids', sub: '0-6 Yaş Kreş & Anaokulu', count: 'Aktif • 42 Kurum', badgeClass: 'bg-tertiary text-white', enabled: true },
                 { id: 'junior' as const, emoji: '🎒', title: 'İSTEM Junior', sub: 'İlkokul & Ortaokul', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
                 { id: 'kampus' as const, emoji: '🎯', title: 'İSTEM Kampüs', sub: 'Lise & LGS/YKS', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
                 { id: 'pro' as const, emoji: '🚀', title: 'İSTEM Akademi', sub: 'Yazılım, AI, Dil, Kariyer', count: 'Sıradaki Faz', badgeClass: 'bg-surface-container text-on-surface-variant', enabled: false },
-                { id: 'erp' as const, emoji: '🏛️', title: 'Kurum & Stok Pratik Yönetimi', sub: 'Koyu Tema İşletme Paneli', count: 'AKTİF', badgeClass: 'bg-inverse-surface text-white', enabled: true }
+                { id: 'erp' as const, emoji: '🏛️', title: 'Kurum & Stok Pratik Yönetimi', sub: 'Koyu Tema İşletme Paneli', count: 'Aktif', badgeClass: 'bg-inverse-surface text-white', enabled: true }
               ].map(tab => (
                 <button
                   key={tab.id}
@@ -445,7 +445,7 @@ export default function HomeView({
                   </span>
                 </div>
                 <p className="text-[11px] text-on-surface-variant mt-0.5">
-                  Veli (Günlük Karne &amp; Kapıdayım Zili), Sınıf Öğretmeni, Kreş Sahibi (Stok Pratik ERP) ve Servis Görevlisi panellerini canlı deneyimleyin:
+                  Veli &amp; Öğrenci, Sınıf Öğretmeni, Kurum &amp; Stok Pratik Yönetimi ve Servis &amp; Hostes panellerini canlı deneyimleyin:
                 </p>
               </div>
             </div>
@@ -475,8 +475,8 @@ export default function HomeView({
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-xs font-bold uppercase tracking-wider">
-                İSTANBUL EĞİTİM MERKEZİ (İSTEM) MİMARİSİ
+              <span className="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-xs font-bold">
+                İstanbul Eğitim Merkezi (İSTEM) Mimarisi
               </span>
               <h2 className="font-display text-2xl sm:text-4xl text-on-surface mt-2 font-extrabold">
                 Eğitim Sürecinizin Tüm Paydaşları Tek Çatıda
@@ -582,7 +582,7 @@ export default function HomeView({
 
                 <div className="mt-6 p-4 rounded-2xl bg-secondary-fixed/25 space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-extrabold text-secondary uppercase">ORTALAMA DERS ÜCRETİ</span>
+                    <span className="font-extrabold text-secondary">Ortalama Ders Ücreti</span>
                     <span className="font-extrabold text-on-surface text-sm">₺450 - ₺950 / saat</span>
                   </div>
                   <div className="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
@@ -727,8 +727,8 @@ export default function HomeView({
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-extrabold text-primary uppercase tracking-wider">
-                GÜVENİLİR VE AKREDİTE EĞİTİM KURUMLARI
+              <span className="text-xs font-extrabold text-primary">
+                Güvenilir ve Akredite Eğitim Kurumları
               </span>
               <h2 className="font-display text-2xl sm:text-4xl text-on-surface mt-1 font-extrabold">
                 Öne Çıkan Okul, Kreş ve Kolejler
@@ -815,7 +815,7 @@ export default function HomeView({
 
                     <div className="p-3.5 rounded-2xl bg-surface-container-low flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] text-on-surface-variant uppercase font-extrabold block">
+                        <span className="text-[11px] text-on-surface-variant font-extrabold block">
                           {school.priceLabel}
                         </span>
                         <p className="font-display text-lg text-on-surface font-extrabold">
@@ -868,8 +868,8 @@ export default function HomeView({
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-extrabold text-tertiary uppercase tracking-wider">
-                İSTANBUL EĞİTİM MERKEZİ • KOMİSYONSUZ ÖZEL DERS PAZARYERİ
+              <span className="text-xs font-extrabold text-tertiary">
+                İstanbul Eğitim Merkezi • Komisyonsuz Özel Ders Pazaryeri
               </span>
               <h2 className="font-display text-2xl sm:text-4xl text-on-surface mt-1 font-extrabold">
                 670+ Onaylı Eğitmenden Doğrudan Özel Ders
@@ -954,8 +954,8 @@ export default function HomeView({
       <section className="w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-12 bg-surface-container-lowest border-t border-outline-variant/20">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold uppercase tracking-wider">
-              360 DERECE ENTEGRE EĞİTİM ÜÇGENİ
+            <span className="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold">
+              360 Derece Entegre Eğitim Üçgeni
             </span>
             <h2 className="font-display text-2xl sm:text-4xl text-on-surface font-extrabold">
               Okul, Veli ve Öğrenci Tek Bir Ekosistemde
@@ -1018,8 +1018,8 @@ export default function HomeView({
                         <Navigation className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-on-surface">&ldquo;Kapıdayım&rdquo; Kurum Zili</p>
-                        <p className="text-[11px] text-on-surface-variant">Okula 200m kala öğretmene otomatik hazırlık bildirimi</p>
+                        <p className="text-xs font-bold text-on-surface">Hızlı Talebini İlet</p>
+                        <p className="text-[11px] text-on-surface-variant">Okula yaklaştığınızda öğretmene otomatik hazırlık bildirimi</p>
                       </div>
                     </div>
                     <span className="text-[11px] font-bold text-primary">Aktif</span>
@@ -1028,7 +1028,7 @@ export default function HomeView({
                   <div className="p-3.5 rounded-2xl bg-surface-container-lowest shadow-2xs space-y-1.5">
                     <p className="text-xs font-bold text-on-surface flex items-center justify-between">
                       <span>Günlük Kreş Karnesi &amp; Fotoğraf Akışı</span>
-                      <span className="text-[10px] text-tertiary font-bold">CANLI</span>
+                      <span className="text-[10px] text-tertiary font-bold">Canlı</span>
                     </p>
                     <div className="flex items-center justify-between text-xs text-on-surface-variant">
                       <span>🥣 Kahvaltı &amp; Öğle Menüsü</span>
@@ -1205,7 +1205,7 @@ export default function HomeView({
                   value={certCodeInput}
                   onChange={e => setCertCodeInput(e.target.value)}
                   placeholder="Örn: IST-2025-KID-8492"
-                  className="w-full px-4 py-3 rounded-2xl bg-inverse-surface/90 border border-white/25 text-white font-mono text-sm outline-none focus:border-primary-container uppercase"
+                  className="w-full px-4 py-3 rounded-2xl bg-inverse-surface/90 border border-white/25 text-white font-mono text-sm outline-none focus:border-primary-container"
                 />
                 <button
                   type="button"
@@ -1220,9 +1220,9 @@ export default function HomeView({
                 <div className="p-4 rounded-2xl bg-white text-on-surface space-y-2 animate-fade-in">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant text-[11px] font-bold">
-                      ✓ GEÇERLİ VE ONAYLI İSTEM BELGESİ
+                      ✓ Geçerli ve Onaylı İSTEM Belgesi
                     </span>
-                    <span className="font-mono text-xs text-on-surface-variant">{certCodeInput.toUpperCase()}</span>
+                    <span className="font-mono text-xs text-on-surface-variant">{certCodeInput}</span>
                   </div>
                   <p className="font-display text-sm font-extrabold text-on-surface">
                     Montessori Erken Çocukluk &amp; Bilişsel Gelişim Programı / İSTEM Akreditasyonu

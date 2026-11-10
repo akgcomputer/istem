@@ -5,7 +5,7 @@ import {
   AlertCircle, Camera, Send, LogOut, Building2, Users,
   Package, Baby, QrCode, Volume2, Lock, Megaphone, Award,
   FileText, CreditCard, Wallet, Activity, Gift, ShieldAlert,
-  HelpCircle, Check, X, DoorOpen, ChevronRight
+  HelpCircle, Check, X, DoorOpen, ChevronRight, Menu
 } from 'lucide-react';
 import {
   IstemKidsRole,
@@ -55,6 +55,17 @@ type ManagementMenuTab =
   | 'stok_pratik_erp'
   | 'diger_islemler';
 
+const VELI_MENU_ITEMS: { id: VeliSectionTab; label: string; icon: string; desc: string }[] = [
+  { id: 'gunluk_karne', label: '📋 Günlük Karne & Yoklama', icon: '📋', desc: 'Beslenme, Uyku ve Yoklama' },
+  { id: 'kazanimlar', label: '🎯 Bireysel Kazanımlar', icon: '🎯', desc: 'Gelişim ve Beceri Tablosu' },
+  { id: 'kresten_gunlukler', label: '📸 Kreşten Günlükler (Şifreli & KVKK)', icon: '📸', desc: 'Kapalı Devre Albüm & İzin' },
+  { id: 'ilac_saglik', label: '💊 İlaç & Sağlık Çizelgesi', icon: '💊', desc: 'Salgın Tanısı ve İlaç Zili' },
+  { id: 'beslenme_menu', label: '🍽️ Diyetisyen Beslenme Menüsü', icon: '🍽️', desc: 'Haftalık Onaylı Yemek Listesi' },
+  { id: 'servis_rota', label: '🚌 Sıralı Servis Rotası (Root)', icon: '🚌', desc: 'Sıralı Durak ve Veli Onayı' },
+  { id: 'duyurular', label: '📢 Duyurular (Önem Sıralı)', icon: '📢', desc: 'Önemli ve Resmi Bildirimler' },
+  { id: 'aidat_odeme', label: '💳 Aidat & Fatura', icon: '💳', desc: 'Eğitim Taksiti ve e-Fatura' }
+];
+
 export default function ParentPortalView({
   initialInstitutionCode = 'zerdalikres',
   initialKidsRole = 'veli',
@@ -77,17 +88,25 @@ export default function ParentPortalView({
   const [pickupPersons, setPickupPersons] = useState<KidsPickupPerson[]>(INITIAL_PICKUP_PERSONS);
   const [weeklyMenu, setWeeklyMenu] = useState(INITIAL_WEEKLY_DIET_MENU);
 
-  // Active child in Veli view (Only İSTEM Kids 0-6 age children)
+  // Active child in Veli view (By default only 1 child for demo parent; optional sibling toggle if parent has >1 child)
   const [selectedChildId, setSelectedChildId] = useState<string>('zeynep');
+  const [showDemoSibling, setShowDemoSibling] = useState<boolean>(false);
+  const [isVeliMobileMenuOpen, setIsVeliMobileMenuOpen] = useState<boolean>(false);
   const [activeVeliTab, setActiveVeliTab] = useState<VeliSectionTab>('gunluk_karne');
   const [activeMgmtTab, setActiveMgmtTab] = useState<ManagementMenuTab>('kayit_islemleri');
   const [activeMgmtSubTab, setActiveMgmtSubTab] = useState<string>('Ön Kayıt');
 
-  // Live countdown timer for Lesson Bell (1. Aşama Kurum Ders Zili)
+  // Live countdown timer for Lesson Bell (Otomatik Kurum Ders Zili)
   const [bellSecondsLeft, setBellSecondsLeft] = useState<number>(14 * 60 + 25);
   useEffect(() => {
     const timer = setInterval(() => {
-      setBellSecondsLeft(prev => (prev > 0 ? prev - 1 : 15 * 60));
+      setBellSecondsLeft(prev => {
+        if (prev <= 1) {
+          playMelodicChime('lesson');
+          return 15 * 60;
+        }
+        return prev - 1;
+      });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -331,15 +350,15 @@ export default function ParentPortalView({
                     İSTEM Kids • 0-6 Yaş Kreş &amp; Anaokulu Sistemi
                   </h1>
                   <span
-                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                    className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
                       isDarkManagement
                         ? 'bg-amber-500/20 text-amber-300 border border-amber-400/30'
                         : 'bg-sky-100 text-sky-900 border border-sky-200'
                     }`}
                   >
                     {isDarkManagement
-                      ? '🌙 KOYU TEMA • KURUM & STOK PRATİK YÖNETİMİ'
-                      : '☀️ AÇIK TEMA • VELİ / ÖĞRETMEN / SERVİS PORTALI'}
+                      ? '🌙 Koyu Tema • Kurum & Stok Pratik Yönetimi'
+                      : '☀️ Açık Tema • Veli & Öğrenci / Öğretmen / Servis Portalı'}
                   </span>
                 </div>
                 <p
@@ -365,7 +384,7 @@ export default function ParentPortalView({
             )}
           </div>
 
-          {/* Role Switcher with Explicit Light / Dark Theme Badges */}
+          {/* Role Switcher (Active during demo/testing; in live mode only the logged-in user's role opens) */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             <div
               className={`p-1 rounded-2xl flex items-center gap-1 border ${
@@ -401,65 +420,56 @@ export default function ParentPortalView({
         </div>
 
         {/* =====================================================================
-            1. AŞAMA KURUM DERS & ETKİNLİK ZİLİ BANDI (CANLI SAYAÇ + MELODİK SES)
+            OTOMATİK KURUM DERS ZİLİ BANDI (3 SATIR ALT ALTA + HIZLI TALEBİNİ İLET)
            ===================================================================== */}
         <div
-          className={`border-t px-4 sm:px-6 lg:px-8 py-2.5 text-xs ${
+          className={`border-t px-4 sm:px-6 lg:px-8 py-3 text-xs ${
             isDarkManagement
               ? 'bg-[#0F172A] border-slate-800 text-slate-200'
               : 'bg-indigo-50/90 border-indigo-100 text-indigo-950'
           }`}
         >
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2">
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider">
-                <Bell className="w-3 h-3 animate-C" />
-                1. Aşama: Otomatik Kurum Ders Zili
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            {/* 3 Satır Alt Alta Kurum Ders Zili Alanı */}
+            <div className="flex flex-col items-start gap-1.5">
+              {/* 1. Satır */}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white font-extrabold text-xs">
+                <Bell className="w-3.5 h-3.5" />
+                <span>Otomatik Kurum Ders Zili</span>
               </span>
-              <span className="font-extrabold">
+
+              {/* 2. Satır */}
+              <div className="font-extrabold text-xs sm:text-sm">
                 Şu An: {currentBellSlot.title} ({currentBellSlot.startTime} - {currentBellSlot.endTime})
-              </span>
-              <span
-                className={`px-2.5 py-0.5 rounded-lg font-mono font-black ${
+              </div>
+
+              {/* 3. Satır */}
+              <div
+                className={`px-3 py-1 rounded-xl font-mono font-extrabold text-xs inline-flex items-center gap-1.5 ${
                   isDarkManagement
                     ? 'bg-amber-500/20 text-amber-300'
                     : 'bg-amber-200/80 text-amber-950'
                 }`}
               >
-                ⏳ {currentBellSlot.type === 'ders' ? 'Ders Bitiş Ziline:' : 'Teneffüs Bitişine:'}{' '}
-                {formatCountdown(bellSecondsLeft)}
-              </span>
-              <span className="text-[11px] opacity-80 hidden sm:inline">
-                (Ders saatinde sınıf bölünmez; acil durumlar için &ldquo;Kapı Çal / Hızlı Talep&rdquo; kullanılır)
-              </span>
+                <span>
+                  ⏳ {currentBellSlot.type === 'ders' ? 'Ders Bitiş Ziline:' : 'Teneffüs Bitişine:'}{' '}
+                  {formatCountdown(bellSecondsLeft)}
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                type="button"
-                onClick={() =>
-                  triggerAlert(
-                    `🔔 Melodik Kurum Zili Çaldı: "${currentBellSlot.title}" süresi tamamlandı!`,
-                    'lesson'
-                  )
-                }
-                className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-[11px] flex items-center gap-1.5 cursor-pointer shadow-2xs"
-              >
-                <Volume2 className="w-3.5 h-3.5" />
-                <span>Melodik Zil Sesini Dinle</span>
-              </button>
-
-              {activeKidsRole !== 'kurum_sahibi' && (
+            {activeKidsRole !== 'kurum_sahibi' && (
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsRequestModalOpen(true)}
-                  className="px-3 py-1.5 rounded-xl bg-primary-container hover:bg-primary text-white font-extrabold text-[11px] flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                  className="px-4 py-2.5 rounded-xl bg-primary-container hover:bg-primary text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer shadow-xs"
                 >
-                  <DoorOpen className="w-3.5 h-3.5" />
-                  <span>2. Aşama: Kapı Çal / Hızlı Talep İlet</span>
+                  <DoorOpen className="w-4 h-4" />
+                  <span>Hızlı Talebini İlet</span>
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -469,15 +479,19 @@ export default function ParentPortalView({
          ===================================================================== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {/* ===================================================================
-            ROL 1: 👨‍👩‍👧 VELİ & ÖĞRENCİ GÖRÜNÜMÜ (AÇIK TEMA - LIGHT MODE)
+            ROL 1: 👨‍👩‍👧 VELİ & ÖĞRENCİ (AÇIK TEMA - LIGHT MODE)
            =================================================================== */}
         {activeKidsRole === 'veli' && (
-          <div className="space-y-6 animate-fade-in">
-            {/* Top Row: Kids Child Selector (Zeynep 4 Yaş & Ali Efe 2 Yaş) + 2. Aşama Kapı Çal Button */}
+          <div className="space-y-5 animate-fade-in">
+            {/* Top Row: Veli Child Card (Only 1 child shown by default; 2nd child only if sibling exists) */}
             <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2.5">
                 {students
-                  .filter(s => s.parentUsername === 'fatihsari')
+                  .filter(
+                    s =>
+                      s.parentUsername === 'fatihsari' ||
+                      (showDemoSibling && s.id === 'aliefe')
+                  )
                   .map(child => (
                     <button
                       key={child.id}
@@ -509,9 +523,27 @@ export default function ParentPortalView({
                       </div>
                     </button>
                   ))}
+
+                {/* Optional Toggle to test multi-child parent view */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const nextVal = !showDemoSibling;
+                    setShowDemoSibling(nextVal);
+                    if (!nextVal && selectedChildId === 'aliefe') {
+                      setSelectedChildId('zeynep');
+                    }
+                  }}
+                  className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold cursor-pointer"
+                  title="Velinin birden fazla çocuğu olduğunda nasıl göründüğünü test edin"
+                >
+                  {showDemoSibling
+                    ? 'Tek Çocuk Görünümüne Dön'
+                    : '+ Kardeş Varsa Göster (Çoklu Çocuk Testi)'}
+                </button>
               </div>
 
-              {/* 2. Aşama: Kapı Çalma / Veli Hızlı Talep & Bilgilendirme Butonu */}
+              {/* Hızlı Talebini İlet & Mobil Sandwich Menü Tetikleyici */}
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
@@ -522,822 +554,920 @@ export default function ParentPortalView({
                   className="px-4 py-3 rounded-2xl bg-secondary hover:opacity-95 text-white font-display font-extrabold text-xs flex items-center gap-2 shadow-md cursor-pointer"
                 >
                   <DoorOpen className="w-4 h-4" />
-                  <span>🚪 Kapı Çal / Erken-Geç Alma &amp; Görüşme Talebi</span>
+                  <span>Hızlı Talebini İlet</span>
                 </button>
-              </div>
-            </div>
 
-            {/* Veli Navigation Sub-Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-              {[
-                { id: 'gunluk_karne', label: '📋 Günlük Karne & Yoklama' },
-                { id: 'kazanimlar', label: '🎯 Bireysel Kazanımlar' },
-                { id: 'kresten_gunlukler', label: '📸 Kreşten Günlükler (Şifreli & KVKK)' },
-                { id: 'ilac_saglik', label: '💊 İlaç & Sağlık Çizelgesi' },
-                { id: 'beslenme_menu', label: '🍽️ Diyetisyen Beslenme Menüsü' },
-                { id: 'servis_rota', label: '🚌 Sıralı Servis Rotası (Root)' },
-                { id: 'duyurular', label: '📢 Duyurular (Önem Sıralı)' },
-                { id: 'aidat_odeme', label: '💳 Aidat & Fatura' }
-              ].map(tab => (
+                {/* Mobile / App Sandwich Menu Button (Visible on screens < lg) */}
                 <button
-                  key={tab.id}
                   type="button"
-                  onClick={() => setActiveVeliTab(tab.id as VeliSectionTab)}
-                  className={`px-4 py-2.5 rounded-2xl text-xs font-extrabold transition shrink-0 cursor-pointer ${
-                    activeVeliTab === tab.id
-                      ? 'bg-primary-container text-white shadow-sm'
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-                  }`}
+                  onClick={() => setIsVeliMobileMenuOpen(prev => !prev)}
+                  className="lg:hidden px-4 py-3 rounded-2xl bg-primary-container text-white font-display font-extrabold text-xs flex items-center gap-2 shadow-md cursor-pointer"
                 >
-                  {tab.label}
+                  {isVeliMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                  <span>Menü</span>
                 </button>
-              ))}
+              </div>
             </div>
 
-            {/* TAB 1: GÜNLÜK KARNE & SAYISAL YOKLAMA ÖZETİ */}
-            {activeVeliTab === 'gunluk_karne' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-7 space-y-5">
-                  {/* Numerical Class Attendance Box (Names Hidden for Privacy) */}
-                  <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-base">
-                        {presentClassCount}/{totalClassCount}
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                          GÜNLÜK SINIF YOKLAMA ÖZETİ (SAYISAL)
-                        </span>
-                        <h3 className="font-display font-extrabold text-sm text-slate-900 mt-1">
-                          {currentStudent.className}: Bugün {presentClassCount} öğrenci okulda,{' '}
-                          <span className="text-red-600">{absentClassCount} öğrenci gelmedi</span>
-                        </h3>
-                        <p className="text-[11px] text-slate-500">
-                          Çocuğunuz ({currentStudent.name}):{' '}
-                          <strong className="text-emerald-700">
-                            {currentStudent.attendance === 'geldi' ? 'Okulda (Geldi ✅)' : 'Gelmedi'}
-                          </strong>{' '}
-                          • KVKK gereği gelmeyen diğer öğrencilerin isimleri gösterilmez.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Daily Activities, Meals (Default Ate Rule), Sleep & Diaper Logs */}
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-display font-extrabold text-base text-slate-900">
-                          {currentStudent.name} — Günlük Aktivite, Yemek ve Uyku Özeti
-                        </h3>
-                        <p className="text-xs text-slate-500">
-                          Gün içerisinde öğretmen işledikçe canlı güncellenir
-                        </p>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">
-                        Canlı Karne
-                      </span>
-                    </div>
-
-                    {/* Meal Status Cards (Default: Yemeğini Yedi unless teacher marked exception) */}
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-extrabold text-slate-700">
-                          🍽️ Günlük Beslenme Takibi (Varsayılan: Yemeğini Yedi)
-                        </span>
-                        <span className="text-[10px] font-bold text-slate-500">
-                          Öğretmen sadece yemeyen öğrenciyi işaretler
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-3 gap-3">
-                        {[
-                          { label: 'Sabah Kahvaltısı', ate: currentStudent.ateBreakfast },
-                          { label: 'Öğle Yemeği', ate: currentStudent.ateLunch },
-                          { label: 'İkindi Ara Öğünü', ate: currentStudent.ateSnack }
-                        ].map((m, i) => (
-                          <div
-                            key={i}
-                            className={`p-3.5 rounded-2xl border text-center ${
-                              m.ate
-                                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
-                                : 'bg-red-50 border-red-200 text-red-900'
-                            }`}
-                          >
-                            <span className="text-[11px] font-bold block opacity-80">{m.label}</span>
-                            <span className="text-xs font-black mt-1 block">
-                              {m.ate ? 'Yemeğini Yedi ✅' : 'Yemedi / Az Yedi ⚠️'}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                      {currentStudent.mealExceptionNote && (
-                        <p className="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl mt-2 font-semibold">
-                          Not: {currentStudent.mealExceptionNote}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Sleep & Mood */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span className="text-[10px] font-bold text-slate-500 block">
-                          😴 Öğle Uykusu &amp; Dinlenme
-                        </span>
-                        <span className="text-xs font-extrabold text-slate-900 mt-0.5 block">
-                          {currentStudent.sleepStatus}
-                        </span>
-                      </div>
-                      <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span className="text-[10px] font-bold text-slate-500 block">
-                          😊 Gün İçi Duygu &amp; Uyum
-                        </span>
-                        <span className="text-xs font-extrabold text-slate-900 mt-0.5 block">
-                          {currentStudent.mood}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Completed Daily Lessons & Workshops */}
-                    <div>
-                      <span className="text-xs font-extrabold text-slate-700 block mb-2">
-                        🎨 Bugün Yapılan Dersler ve Etkinlikler:
-                      </span>
-                      <div className="flex flex-wrap gap-2">
-                        {currentStudent.activities.map((act, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-900 border border-indigo-200/60 text-xs font-bold"
-                          >
-                            ✓ {act}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* 0-3 Age Diaper & Self-Care Logs */}
-                    {currentStudent.ageGroup === '0-3' && (
-                      <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
-                        <span className="text-xs font-extrabold text-amber-950 block">
-                          🍼 0-3 Yaş Özbakım &amp; Bez Değişim Saatleri:
-                        </span>
-                        {currentStudent.diaperLogs.map(log => (
-                          <div
-                            key={log.id}
-                            className="bg-white p-2.5 rounded-xl flex items-center justify-between text-xs border border-amber-100"
-                          >
-                            <span>
-                              <strong>{log.time}:</strong> {log.note}
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[10px]">
-                              {log.type}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-xs">
-                      <strong className="text-primary-container">👩‍🏫 Sınıf Öğretmeni Günlük Özeti:</strong>{' '}
-                      {currentStudent.teacherDailyNote}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right 5 Cols: Daily Bell Schedule & Active Parent Requests */}
-                <div className="lg:col-span-5 space-y-5">
-                  <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-display font-extrabold text-sm text-slate-900 flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-primary-container" />
-                        <span>Günlük Ders &amp; Teneffüs Zili Çizelgesi</span>
-                      </h4>
-                      <span className="text-[10px] font-bold text-slate-500">Yönetim Aylık Planı</span>
-                    </div>
-                    <div className="space-y-2">
-                      {bellSlots.map(slot => (
-                        <div
-                          key={slot.id}
-                          className={`p-3 rounded-2xl border flex items-center justify-between text-xs ${
-                            slot.isCurrent
-                              ? 'bg-emerald-50 border-emerald-300 font-extrabold text-emerald-950'
-                              : 'bg-slate-50 border-slate-200/70 text-slate-700'
-                          }`}
-                        >
-                          <div>
-                            <span className="block">{slot.title}</span>
-                            <span className="text-[10px] opacity-75">
-                              {slot.startTime} - {slot.endTime}
-                            </span>
-                          </div>
-                          {slot.isCurrent && (
-                            <span className="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-black">
-                              Şu An Aktif • {formatCountdown(bellSecondsLeft)}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Active 2. Aşama Parent Requests */}
-                  <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-display font-extrabold text-sm text-slate-900 flex items-center gap-2">
-                        <DoorOpen className="w-4 h-4 text-secondary" />
-                        <span>İlettiğiniz Kapı / Erken Alma / Görüşme Talepleri</span>
-                      </h4>
-                      <button
-                        type="button"
-                        onClick={() => setIsRequestModalOpen(true)}
-                        className="text-xs font-extrabold text-primary-container hover:underline cursor-pointer"
-                      >
-                        + Yeni Talep
-                      </button>
-                    </div>
-                    <div className="space-y-2">
-                      {requests.map(r => (
-                        <div
-                          key={r.id}
-                          className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-extrabold text-slate-900">{r.templateType}</span>
-                            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold">
-                              {r.status}
-                            </span>
-                          </div>
-                          <p className="text-slate-600">{r.shortNote}</p>
-                          <span className="text-[10px] text-slate-400 block">
-                            Muhatap: {r.recipient} • Saat: {r.createdAt}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: 🎯 BİREYSEL KAZANIMLAR */}
-            {activeVeliTab === 'kazanimlar' && (
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-primary-container bg-indigo-50 px-3 py-1 rounded-full">
-                      🎯 BİREYSEL GELİŞİM &amp; BECERİ KAZANIMLARI KARNESİ
-                    </span>
-                    <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
-                      {currentStudent.name} — Dönem İçi Kazanım ve Beceri Tablosu
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {currentStudent.competencies.map(comp => (
-                    <div
-                      key={comp.id}
-                      className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-900">
-                          {comp.category}
-                        </span>
-                        <span className="text-xs font-extrabold text-emerald-700">{comp.status}</span>
-                      </div>
-                      <h4 className="font-display font-extrabold text-sm text-slate-900">
-                        {comp.skillTitle}
-                      </h4>
-                      <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary-container rounded-full"
-                          style={{ width: `${comp.progressPercent}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-slate-600">
-                        <strong>Öğretmen Gözlemi:</strong> {comp.teacherNote}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 3: 📸 KREŞTEN GÜNLÜKLER (ŞİFRELİ KAPALI AĞ + KVKK SOSYAL MEDYA İZNİ) */}
-            {activeVeliTab === 'kresten_gunlukler' && (
-              <div className="space-y-5">
-                <div className="bg-indigo-950 text-white p-5 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-6 h-6 text-amber-400 shrink-0" />
-                    <div>
-                      <h3 className="font-display font-extrabold text-sm sm:text-base">
-                        🔒 Kreşten Günlükler (Şifreli Kapalı Devre Okul Ağı)
-                      </h3>
-                      <p className="text-xs text-indigo-200 mt-0.5">
-                        Burada paylaşılanlar sadece okul içerisinde kalır; veliler ve öğretmenler dışında kimse göremez. Velilerin sadece görme yetkisi vardır (beğeni ve yorum kapalıdır).
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {diaryPosts.map(post => {
-                  const myConsent = post.consents.find(c => c.studentId === currentStudent.id);
-                  return (
-                    <div
-                      key={post.id}
-                      className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden p-6 space-y-4"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="text-xs font-extrabold text-primary-container">
-                            👩‍🏫 {post.teacherName} • {post.className}
-                          </span>
-                          <p className="text-[11px] text-slate-400">{post.timeAgo}</p>
-                        </div>
-                        <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-extrabold">
-                          🔒 Şifreli Sınıf Akışı ({post.scope})
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-slate-800 leading-relaxed">{post.caption}</p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-2xl overflow-hidden">
-                        {post.images.map((img, i) => (
-                          <img
-                            key={i}
-                            src={img}
-                            alt="Kreş Günlüğü"
-                            className="w-full h-60 object-cover rounded-2xl"
-                          />
-                        ))}
-                      </div>
-
-                      {/* KVKK Social Media Permission Request Banner */}
-                      {post.socialMediaRequested && myConsent && (
-                        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div>
-                            <span className="text-[10px] font-black uppercase tracking-wider bg-amber-200 text-amber-950 px-2.5 py-0.5 rounded-full">
-                              📲 RESMİ SOSYAL MEDYA (INSTAGRAM / YOUTUBE) PAYLAŞIM İZNİ TALEBİ
-                            </span>
-                            <p className="text-xs font-bold text-slate-900 mt-1">
-                              Yönetim/Öğretmen bu görseli kurumun herkese açık resmi sosyal medya hesabında paylaşmak için onayınızı istiyor ({post.scope}).
-                            </p>
-                            <p className="text-[11px] text-slate-600 mt-0.5">
-                              Mevcut Kararınız: <strong>{myConsent.decision}</strong>
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-2 shrink-0">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setDiaryPosts(prev =>
-                                  prev.map(p =>
-                                    p.id === post.id
-                                      ? {
-                                          ...p,
-                                          consents: p.consents.map(c =>
-                                            c.studentId === currentStudent.id
-                                              ? { ...c, decision: 'İzin Veriyorum ✅' }
-                                              : c
-                                          )
-                                        }
-                                      : p
-                                  )
-                                );
-                                triggerAlert(
-                                  '✅ Sosyal medya paylaşım izniniz ("İzin Veriyorum") yönetime kaydedildi.'
-                                );
-                              }}
-                              className="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-extrabold cursor-pointer"
-                            >
-                              ✅ İzin Veriyorum
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setDiaryPosts(prev =>
-                                  prev.map(p =>
-                                    p.id === post.id
-                                      ? {
-                                          ...p,
-                                          consents: p.consents.map(c =>
-                                            c.studentId === currentStudent.id
-                                              ? { ...c, decision: 'İzin Vermiyorum ❌' }
-                                              : c
-                                          )
-                                        }
-                                      : p
-                                  )
-                                );
-                                triggerAlert(
-                                  '❌ Sosyal medya paylaşım izni reddedildi ("İzin Vermiyorum"). Görsel dışarıda paylaşılmayacaktır.'
-                                );
-                              }}
-                              className="px-3.5 py-2 rounded-xl bg-red-600 text-white text-xs font-extrabold cursor-pointer"
-                            >
-                              ❌ İzin Vermiyorum
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* TAB 4: 💊 İLAÇ & SAĞLIK TAKİP ÇİZELGESİ (SALGIN KONTROLÜ + İLAÇ ZİLİ) */}
-            {activeVeliTab === 'ilac_saglik' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-900 px-3 py-1 rounded-full">
-                    💊 VELİ İLAÇ &amp; SALGIN BİLDİRİM FORMU
+            {/* MOBILE / APP SANDWICH MENU DRAWER (Alt Alta İkonlu Mobil Menü) */}
+            {isVeliMobileMenuOpen && (
+              <div className="lg:hidden bg-white p-4 rounded-3xl border-2 border-primary-container/20 shadow-xl space-y-2 animate-fade-in">
+                <div className="flex items-center justify-between px-2 pb-2 border-b border-slate-100">
+                  <span className="font-display font-extrabold text-xs text-slate-900">
+                    👨‍👩‍👧 Veli &amp; Öğrenci Menüsü
                   </span>
-                  <h3 className="font-display font-extrabold text-base text-slate-900">
-                    Yeni İlaç / Vitamin ve Hastalık Tanısı Girin
-                  </h3>
-                  <form onSubmit={handleAddMedicine} className="space-y-3 text-xs">
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <label className="font-bold text-slate-700">
-                          Salgın Kontrolü: Hastalık Adı (Belliyse)
-                        </label>
-                        <label className="flex items-center gap-1 text-[11px] text-slate-500 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={medHideDisease}
-                            onChange={e => setMedHideDisease(e.target.checked)}
-                          />
-                          <span>Adı yok / Belirtmek istemiyorum</span>
-                        </label>
-                      </div>
-                      <input
-                        type="text"
-                        disabled={medHideDisease}
-                        value={medDiseaseName}
-                        onChange={e => setMedDiseaseName(e.target.value)}
-                        placeholder={
-                          medHideDisease
-                            ? 'Hastalığın adı girilmedi olarak kaydedilecek'
-                            : 'Örn: Mevsimsel Grip, Alerjik Rinit, Suçiçeği...'
-                        }
-                        className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <div>
-                        <label className="font-bold text-slate-700 block mb-1">İlaç / Vitamin Adı *</label>
-                        <input
-                          type="text"
-                          required
-                          value={medName}
-                          onChange={e => setMedName(e.target.value)}
-                          placeholder="Örn: D Vitamini Damla"
-                          className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
-                        />
-                      </div>
-                      <div>
-                        <label className="font-bold text-slate-700 block mb-1">Verilecek Saat *</label>
-                        <input
-                          type="time"
-                          value={medTime}
-                          onChange={e => setMedTime(e.target.value)}
-                          className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <div>
-                        <label className="font-bold text-slate-700 block mb-1">Aç / Tok Durumu</label>
-                        <select
-                          value={medStomach}
-                          onChange={e => setMedStomach(e.target.value as any)}
-                          className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
-                        >
-                          <option value="Tok Karnına">Tok Alınmalı</option>
-                          <option value="Aç Karnına">Aç Alınmalı</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="font-bold text-slate-700 block mb-1">Kullanım Süresi</label>
-                        <select
-                          value={medDuration}
-                          onChange={e => setMedDuration(e.target.value)}
-                          className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
-                        >
-                          <option value="İlaç bitene kadar">İlaç bitene kadar</option>
-                          <option value="3 Gün Boyunca">3 Gün Boyunca</option>
-                          <option value="5 Gün Boyunca">5 Gün Boyunca</option>
-                          <option value="7 Gün Boyunca">7 Gün Boyunca</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="font-bold text-slate-700 block mb-1">Nasıl Verileceği</label>
-                      <input
-                        type="text"
-                        value={medHowToGive}
-                        onChange={e => setMedHowToGive(e.target.value)}
-                        placeholder="Örn: Su ile karıştırarak / Meyve püresiyle / 1 ölçek"
-                        className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full h-11 rounded-xl bg-primary-container text-white font-display font-extrabold text-xs cursor-pointer shadow-sm"
-                    >
-                      💊 İlaç Zili Kur &amp; Öğretmene İlet
-                    </button>
-                  </form>
-                </div>
-
-                <div className="lg:col-span-7 bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
-                  <h3 className="font-display font-extrabold text-base text-slate-900">
-                    {currentStudent.name} — Aktif İlaç &amp; Sağlık Çizelgesi
-                  </h3>
-                  <div className="space-y-3">
-                    {currentStudent.medicines.map(med => (
-                      <div
-                        key={med.id}
-                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
-                      >
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-mono font-black text-sm text-primary-container">
-                              ⏰ {med.time}
-                            </span>
-                            <span className="font-extrabold text-slate-900 text-sm">
-                              {med.medicineName}
-                            </span>
-                            <span className="px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-900 font-bold text-[10px]">
-                              {med.stomachStatus}
-                            </span>
-                          </div>
-                          <p className="text-slate-600">
-                            <strong>Veriliş Şekli:</strong> {med.howToGive} • <strong>Süre:</strong>{' '}
-                            {med.durationText}
-                          </p>
-                          <p className="text-[11px] text-rose-800 font-bold">
-                            🩺 Salgın / Hastalık Kaydı: {med.diseaseName}
-                          </p>
-                        </div>
-
-                        <div className="shrink-0">
-                          {med.given ? (
-                            <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 font-extrabold text-xs block">
-                              ✅ İlaç Verildi ({med.givenAt} - {med.givenBy})
-                            </span>
-                          ) : (
-                            <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-xs block">
-                              ⏳ İlaç Saati Bekleniyor ({med.time})
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 5: 🍽️ DİYETİSYEN ONAYLI GÜNLÜK BESLENME MENÜSÜ */}
-            {activeVeliTab === 'beslenme_menu' && (
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
-                      🍽️ DİYETİSYEN ONAYLI HAFTALIK BESLENME TABLOSU
-                    </span>
-                    <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
-                      Haftalık Kahvaltı, Öğle Yemeği ve İkindi Menüsü
-                    </h3>
-                  </div>
                   <button
                     type="button"
-                    onClick={() => {
-                      setReqTemplate('Beslenme menüsü görüş / öneri / şikayet');
-                      setReqRecipient('Yönetim');
-                      setIsRequestModalOpen(true);
-                    }}
-                    className="px-4 py-2.5 rounded-xl bg-secondary text-white text-xs font-extrabold cursor-pointer shrink-0"
+                    onClick={() => setIsVeliMobileMenuOpen(false)}
+                    className="p-1 rounded-lg bg-slate-100 text-slate-600"
                   >
-                    💬 Menü Görüş / Öneri / Şikayet İlet (Talep Bölümü)
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {weeklyMenu.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-display font-black text-sm text-primary-container">
-                          {item.day}
-                        </span>
-                        <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
-                          {item.calories} • {item.dietitian}
-                        </span>
-                      </div>
-                      <p>
-                        <strong>🍳 Kahvaltı:</strong> {item.breakfast}
-                      </p>
-                      <p>
-                        <strong>🍲 Öğle:</strong> {item.lunch}
-                      </p>
-                      <p>
-                        <strong>🍎 İkindi:</strong> {item.snack}
-                      </p>
-                      <p className="text-[10px] font-bold text-amber-900 bg-amber-100/80 p-2 rounded-lg">
-                        ⚠️ {item.allergenNote}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 6: 🚌 SIRALI SERVİS ROTASI (ROOT - SIRA ATLANAMAZ) */}
-            {activeVeliTab === 'servis_rota' && (
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
-                      🚌 SIRALI SERVİS ROTASI (ROOT) &amp; ZİNCİRLEME VELİ BİLDİRİMİ
-                    </span>
-                    <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
-                      Canlı Durak Sırası (Öğrenciler Atlanarak İlerlenemez)
-                    </h3>
-                    <p className="text-xs text-slate-500">
-                      Bir önceki öğrenci alındığında/indirildiğinde sıradaki veliye otomatik hazırlık zili çalar. Veli de &ldquo;Çocuğu Servise Verdim / Teslim Aldım&rdquo; diyerek sırayı ilerletebilir.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  {shuttleStops.map(stop => {
-                    const isCurrentActiveStop =
-                      firstActiveStop && firstActiveStop.stopOrder === stop.stopOrder;
+                <div className="flex flex-col gap-1.5">
+                  {VELI_MENU_ITEMS.map(tab => {
+                    const isActive = activeVeliTab === tab.id;
                     return (
-                      <div
-                        key={stop.stopOrder}
-                        className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                          stop.completed
-                            ? 'bg-emerald-50/60 border-emerald-200'
-                            : isCurrentActiveStop
-                            ? 'bg-amber-50 border-amber-400 ring-2 ring-amber-400/40'
-                            : 'bg-slate-50 border-slate-200 opacity-75'
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveVeliTab(tab.id);
+                          setIsVeliMobileMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold flex items-center justify-between transition cursor-pointer ${
+                          isActive
+                            ? 'bg-primary-container text-white shadow-sm'
+                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-primary-container text-white font-black text-xs flex items-center justify-center shrink-0">
-                            #{stop.stopOrder}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-extrabold text-sm text-slate-900">
-                                {stop.studentName}
-                              </span>
-                              <span className="text-xs font-mono font-bold text-primary-container">
-                                Tahmini: {stop.plannedTime}
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-600">{stop.addressStop}</p>
-                            <span className="text-[11px] font-extrabold text-indigo-900 mt-0.5 block">
-                              Durum: {stop.status}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2 shrink-0">
-                          {stop.completed ? (
-                            <span className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold">
-                              ✓ Tamamlandı
-                            </span>
-                          ) : isCurrentActiveStop ? (
-                            <>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleCompleteShuttleStop(
-                                    stop.stopOrder,
-                                    'Veli: Çocuğu Servise Verdim / Teslim Aldım ✅',
-                                    'Veli'
-                                  )
-                                }
-                                className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold cursor-pointer"
-                              >
-                                👨‍👩‍👧 Veli: Servise Verdim / Aldım ✓
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  handleCompleteShuttleStop(
-                                    stop.stopOrder,
-                                    'Bugün Gelmedi (Atlandı)',
-                                    'Veli'
-                                  )
-                                }
-                                className="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-extrabold cursor-pointer"
-                              >
-                                Bugün Binmeyecek
-                              </button>
-                            </>
-                          ) : (
-                            <span className="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-600 text-xs font-bold flex items-center gap-1">
-                              <Lock className="w-3.5 h-3.5" />
-                              <span>Önce #{firstActiveStop?.stopOrder}. Durak Tamamlanmalı</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                        <span>{tab.label}</span>
+                        <ChevronRight className="w-4 h-4 shrink-0 opacity-75" />
+                      </button>
                     );
                   })}
                 </div>
               </div>
             )}
 
-            {/* TAB 7: 📢 ÖNCELİK SIRALI DUYURULAR */}
-            {activeVeliTab === 'duyurular' && (
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="font-display font-extrabold text-base text-slate-900">
-                  📢 Kurum Duyuruları (Önemli ve Resmi Duyurular En Üstte Sabittir)
-                </h3>
-                <div className="space-y-3">
-                  {sortedAnnouncements.map(ann => (
-                    <div
-                      key={ann.id}
-                      className={`p-4 rounded-2xl border space-y-1.5 ${
-                        ann.tag === 'Önemli Duyuru'
-                          ? 'bg-rose-50/70 border-rose-300'
-                          : ann.tag === 'Resmi Duyuru'
-                          ? 'bg-indigo-50/70 border-indigo-300'
-                          : 'bg-slate-50 border-slate-200'
-                      }`}
-                    >
+            {/* =================================================================
+                VELİ ANA YERLEŞİMİ: SOLDA İÇERİK (8 SÜTUN) + SAĞDA ALT ALTA İKONLU MENÜ (4 SÜTUN)
+               ================================================================= */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* LEFT 8 COLUMNS: ACTIVE VELI TAB CONTENT */}
+              <div className="lg:col-span-8 xl:col-span-9 space-y-6 order-2 lg:order-1">
+                {/* TAB 1: GÜNLÜK KARNE & SAYISAL YOKLAMA ÖZETİ */}
+                {activeVeliTab === 'gunluk_karne' && (
+                  <div className="space-y-5">
+                    {/* Numerical Class Attendance Box (Names Hidden for Privacy) */}
+                    <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-base shrink-0">
+                          {presentClassCount}/{totalClassCount}
+                        </div>
+                        <div>
+                          <span className="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                            Günlük Sınıf Yoklama Özeti (Sayısal)
+                          </span>
+                          <h3 className="font-display font-extrabold text-sm text-slate-900 mt-1">
+                            {currentStudent.className}: Bugün {presentClassCount} öğrenci okulda,{' '}
+                            <span className="text-red-600">{absentClassCount} öğrenci gelmedi</span>
+                          </h3>
+                          <p className="text-[11px] text-slate-500">
+                            Çocuğunuz ({currentStudent.name}):{' '}
+                            <strong className="text-emerald-700">
+                              {currentStudent.attendance === 'geldi' ? 'Okulda (Geldi ✅)' : 'Gelmedi'}
+                            </strong>{' '}
+                            • KVKK gereği diğer öğrencilerin isimleri gösterilmez.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Daily Activities, Meals (Default Ate Rule), Sleep & Diaper Logs */}
+                    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
                       <div className="flex items-center justify-between">
-                        <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                        <div>
+                          <h3 className="font-display font-extrabold text-base text-slate-900">
+                            {currentStudent.name} — Günlük Aktivite, Yemek ve Uyku Özeti
+                          </h3>
+                          <p className="text-xs text-slate-500">
+                            Gün içerisinde öğretmen işledikçe canlı güncellenir
+                          </p>
+                        </div>
+                        <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">
+                          Canlı Karne
+                        </span>
+                      </div>
+
+                      {/* Meal Status Cards (Default: Yemeğini Yedi unless teacher marked exception) */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-extrabold text-slate-700">
+                            🍽️ Günlük Beslenme Takibi (Varsayılan: Yemeğini Yedi)
+                          </span>
+                          <span className="text-[10px] font-bold text-slate-500">
+                            Öğretmen sadece yemeyen öğrenciyi işaretler
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
+                          {[
+                            { label: 'Sabah Kahvaltısı', ate: currentStudent.ateBreakfast },
+                            { label: 'Öğle Yemeği', ate: currentStudent.ateLunch },
+                            { label: 'İkindi Ara Öğünü', ate: currentStudent.ateSnack }
+                          ].map((m, i) => (
+                            <div
+                              key={i}
+                              className={`p-3.5 rounded-2xl border text-center ${
+                                m.ate
+                                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
+                                  : 'bg-red-50 border-red-200 text-red-900'
+                              }`}
+                            >
+                              <span className="text-[11px] font-bold block opacity-80">{m.label}</span>
+                              <span className="text-xs font-black mt-1 block">
+                                {m.ate ? 'Yemeğini Yedi ✅' : 'Yemedi / Az Yedi ⚠️'}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        {currentStudent.mealExceptionNote && (
+                          <p className="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl mt-2 font-semibold">
+                            Not: {currentStudent.mealExceptionNote}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Sleep & Mood */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                          <span className="text-[10px] font-bold text-slate-500 block">
+                            😴 Öğle Uykusu &amp; Dinlenme
+                          </span>
+                          <span className="text-xs font-extrabold text-slate-900 mt-0.5 block">
+                            {currentStudent.sleepStatus}
+                          </span>
+                        </div>
+                        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                          <span className="text-[10px] font-bold text-slate-500 block">
+                            😊 Gün İçi Duygu &amp; Uyum
+                          </span>
+                          <span className="text-xs font-extrabold text-slate-900 mt-0.5 block">
+                            {currentStudent.mood}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Completed Daily Lessons & Workshops */}
+                      <div>
+                        <span className="text-xs font-extrabold text-slate-700 block mb-2">
+                          🎨 Bugün Yapılan Dersler ve Etkinlikler:
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {currentStudent.activities.map((act, idx) => (
+                            <span
+                              key={idx}
+                              className="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-900 border border-indigo-200/60 text-xs font-bold"
+                            >
+                              ✓ {act}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 0-3 Age Diaper & Self-Care Logs */}
+                      {currentStudent.ageGroup === '0-3' && (
+                        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
+                          <span className="text-xs font-extrabold text-amber-950 block">
+                            🍼 0-3 Yaş Özbakım &amp; Bez Değişim Saatleri:
+                          </span>
+                          {currentStudent.diaperLogs.map(log => (
+                            <div
+                              key={log.id}
+                              className="bg-white p-2.5 rounded-xl flex items-center justify-between text-xs border border-amber-100"
+                            >
+                              <span>
+                                <strong>{log.time}:</strong> {log.note}
+                              </span>
+                              <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[10px]">
+                                {log.type}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-xs">
+                        <strong className="text-primary-container">👩‍🏫 Sınıf Öğretmeni Günlük Özeti:</strong>{' '}
+                        {currentStudent.teacherDailyNote}
+                      </div>
+                    </div>
+
+                    {/* Daily Bell Schedule & Active Parent Requests */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-display font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-primary-container" />
+                            <span>Günlük Ders &amp; Teneffüs Zili Çizelgesi</span>
+                          </h4>
+                          <span className="text-[10px] font-bold text-slate-500">Yönetim Aylık Planı</span>
+                        </div>
+                        <div className="space-y-2">
+                          {bellSlots.map(slot => (
+                            <div
+                              key={slot.id}
+                              className={`p-3 rounded-2xl border flex items-center justify-between text-xs ${
+                                slot.isCurrent
+                                  ? 'bg-emerald-50 border-emerald-300 font-extrabold text-emerald-950'
+                                  : 'bg-slate-50 border-slate-200/70 text-slate-700'
+                              }`}
+                            >
+                              <div>
+                                <span className="block">{slot.title}</span>
+                                <span className="text-[10px] opacity-75">
+                                  {slot.startTime} - {slot.endTime}
+                                </span>
+                              </div>
+                              {slot.isCurrent && (
+                                <span className="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-black">
+                                  Şu An Aktif • {formatCountdown(bellSecondsLeft)}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-2xs space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-display font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                            <DoorOpen className="w-4 h-4 text-secondary" />
+                            <span>İlettiğiniz Hızlı Talepler</span>
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() => setIsRequestModalOpen(true)}
+                            className="text-xs font-extrabold text-primary-container hover:underline cursor-pointer"
+                          >
+                            + Hızlı Talebini İlet
+                          </button>
+                        </div>
+                        <div className="space-y-2">
+                          {requests
+                            .filter(r => r.studentId === currentStudent.id)
+                            .map(r => (
+                              <div
+                                key={r.id}
+                                className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="font-extrabold text-slate-900">{r.templateType}</span>
+                                  <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold">
+                                    {r.status}
+                                  </span>
+                                </div>
+                                <p className="text-slate-600">{r.shortNote}</p>
+                                <span className="text-[10px] text-slate-400 block">
+                                  Muhatap: {r.recipient} • Saat: {r.createdAt}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 2: 🎯 BİREYSEL KAZANIMLAR */}
+                {activeVeliTab === 'kazanimlar' && (
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <span className="text-xs font-extrabold text-primary-container bg-indigo-50 px-3 py-1 rounded-full">
+                          🎯 Bireysel Gelişim &amp; Beceri Kazanımları Karnesi
+                        </span>
+                        <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
+                          {currentStudent.name} — Dönem İçi Kazanım ve Beceri Tablosu
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {currentStudent.competencies.map(comp => (
+                        <div
+                          key={comp.id}
+                          className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-900">
+                              {comp.category}
+                            </span>
+                            <span className="text-xs font-extrabold text-emerald-700">{comp.status}</span>
+                          </div>
+                          <h4 className="font-display font-extrabold text-sm text-slate-900">
+                            {comp.skillTitle}
+                          </h4>
+                          <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-primary-container rounded-full"
+                              style={{ width: `${comp.progressPercent}%` }}
+                            />
+                          </div>
+                          <p className="text-xs text-slate-600">
+                            <strong>Öğretmen Gözlemi:</strong> {comp.teacherNote}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 3: 📸 KREŞTEN GÜNLÜKLER (ŞİFRELİ KAPALI AĞ + KVKK SOSYAL MEDYA İZNİ) */}
+                {activeVeliTab === 'kresten_gunlukler' && (
+                  <div className="space-y-5">
+                    <div className="bg-indigo-950 text-white p-5 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <Lock className="w-6 h-6 text-amber-400 shrink-0" />
+                        <div>
+                          <h3 className="font-display font-extrabold text-sm sm:text-base">
+                            🔒 Kreşten Günlükler (Şifreli Kapalı Devre Okul Ağı)
+                          </h3>
+                          <p className="text-xs text-indigo-200 mt-0.5">
+                            Burada paylaşılanlar sadece okul içerisinde kalır; veliler sadece kendi çocuğunun sınıf akışını görür (beğeni ve yorum kapalıdır).
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {diaryPosts
+                      .filter(post => post.consents.some(c => c.studentId === currentStudent.id))
+                      .map(post => {
+                        const myConsent = post.consents.find(c => c.studentId === currentStudent.id);
+                        return (
+                          <div
+                            key={post.id}
+                            className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden p-6 space-y-4"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-xs font-extrabold text-primary-container">
+                                  👩‍🏫 {post.teacherName} • {post.className}
+                                </span>
+                                <p className="text-[11px] text-slate-400">{post.timeAgo}</p>
+                              </div>
+                              <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-extrabold">
+                                🔒 Şifreli Sınıf Akışı ({post.scope})
+                              </span>
+                            </div>
+
+                            <p className="text-sm text-slate-800 leading-relaxed">{post.caption}</p>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 rounded-2xl overflow-hidden">
+                              {post.images.map((img, i) => (
+                                <img
+                                  key={i}
+                                  src={img}
+                                  alt="Kreş Günlüğü"
+                                  className="w-full h-60 object-cover rounded-2xl"
+                                />
+                              ))}
+                            </div>
+
+                            {/* KVKK Social Media Permission Request Banner */}
+                            {post.socialMediaRequested && myConsent && (
+                              <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div>
+                                  <span className="text-[11px] font-extrabold bg-amber-200 text-amber-950 px-2.5 py-0.5 rounded-full">
+                                    📲 Resmi Sosyal Medya (Instagram / YouTube) Paylaşım İzni Talebi
+                                  </span>
+                                  <p className="text-xs font-bold text-slate-900 mt-1">
+                                    Yönetim/Öğretmen bu görseli kurumun herkese açık resmi sosyal medya hesabında paylaşmak için onayınızı istiyor ({post.scope}).
+                                  </p>
+                                  <p className="text-[11px] text-slate-600 mt-0.5">
+                                    Mevcut Kararınız ({currentStudent.name}):{' '}
+                                    <strong>{myConsent.decision}</strong>
+                                  </p>
+                                </div>
+
+                                <div className="flex items-center gap-2 shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setDiaryPosts(prev =>
+                                        prev.map(p =>
+                                          p.id === post.id
+                                            ? {
+                                                ...p,
+                                                consents: p.consents.map(c =>
+                                                  c.studentId === currentStudent.id
+                                                    ? { ...c, decision: 'İzin Veriyorum ✅' }
+                                                    : c
+                                                )
+                                              }
+                                            : p
+                                        )
+                                      );
+                                      triggerAlert(
+                                        '✅ Sosyal medya paylaşım izniniz ("İzin Veriyorum") yönetime kaydedildi.'
+                                      );
+                                    }}
+                                    className="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-extrabold cursor-pointer"
+                                  >
+                                    ✅ İzin Veriyorum
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setDiaryPosts(prev =>
+                                        prev.map(p =>
+                                          p.id === post.id
+                                            ? {
+                                                ...p,
+                                                consents: p.consents.map(c =>
+                                                  c.studentId === currentStudent.id
+                                                    ? { ...c, decision: 'İzin Vermiyorum ❌' }
+                                                    : c
+                                                )
+                                              }
+                                            : p
+                                        )
+                                      );
+                                      triggerAlert(
+                                        '❌ Sosyal medya paylaşım izni reddedildi ("İzin Vermiyorum"). Görsel dışarıda paylaşılmayacaktır.'
+                                      );
+                                    }}
+                                    className="px-3.5 py-2 rounded-xl bg-red-600 text-white text-xs font-extrabold cursor-pointer"
+                                  >
+                                    ❌ İzin Vermiyorum
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                  </div>
+                )}
+
+                {/* TAB 4: 💊 İLAÇ & SAĞLIK TAKİP ÇİZELGESİ (SALGIN KONTROLÜ + İLAÇ ZİLİ) */}
+                {activeVeliTab === 'ilac_saglik' && (
+                  <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                    <div className="xl:col-span-5 bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
+                      <span className="text-xs font-extrabold bg-rose-100 text-rose-900 px-3 py-1 rounded-full">
+                        💊 Veli İlaç &amp; Salgın Bildirim Formu
+                      </span>
+                      <h3 className="font-display font-extrabold text-base text-slate-900">
+                        Yeni İlaç / Vitamin ve Hastalık Tanısı Girin
+                      </h3>
+                      <form onSubmit={handleAddMedicine} className="space-y-3 text-xs">
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="font-bold text-slate-700">
+                              Salgın Kontrolü: Hastalık Adı (Belliyse)
+                            </label>
+                            <label className="flex items-center gap-1 text-[11px] text-slate-500 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={medHideDisease}
+                                onChange={e => setMedHideDisease(e.target.checked)}
+                              />
+                              <span>Adı yok / Belirtmek istemiyorum</span>
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            disabled={medHideDisease}
+                            value={medDiseaseName}
+                            onChange={e => setMedDiseaseName(e.target.value)}
+                            placeholder={
+                              medHideDisease
+                                ? 'Hastalığın adı girilmedi olarak kaydedilecek'
+                                : 'Örn: Mevsimsel Grip, Alerjik Rinit, Suçiçeği...'
+                            }
+                            className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="font-bold text-slate-700 block mb-1">İlaç / Vitamin Adı *</label>
+                            <input
+                              type="text"
+                              required
+                              value={medName}
+                              onChange={e => setMedName(e.target.value)}
+                              placeholder="Örn: D Vitamini Damla"
+                              className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
+                            />
+                          </div>
+                          <div>
+                            <label className="font-bold text-slate-700 block mb-1">Verilecek Saat *</label>
+                            <input
+                              type="time"
+                              value={medTime}
+                              onChange={e => setMedTime(e.target.value)}
+                              className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="font-bold text-slate-700 block mb-1">Aç / Tok Durumu</label>
+                            <select
+                              value={medStomach}
+                              onChange={e => setMedStomach(e.target.value as any)}
+                              className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
+                            >
+                              <option value="Tok Karnına">Tok Alınmalı</option>
+                              <option value="Aç Karnına">Aç Alınmalı</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="font-bold text-slate-700 block mb-1">Kullanım Süresi</label>
+                            <select
+                              value={medDuration}
+                              onChange={e => setMedDuration(e.target.value)}
+                              className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-bold"
+                            >
+                              <option value="İlaç bitene kadar">İlaç bitene kadar</option>
+                              <option value="3 Gün Boyunca">3 Gün Boyunca</option>
+                              <option value="5 Gün Boyunca">5 Gün Boyunca</option>
+                              <option value="7 Gün Boyunca">7 Gün Boyunca</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="font-bold text-slate-700 block mb-1">Nasıl Verileceği</label>
+                          <input
+                            type="text"
+                            value={medHowToGive}
+                            onChange={e => setMedHowToGive(e.target.value)}
+                            placeholder="Örn: Su ile karıştırarak / Meyve püresiyle / 1 ölçek"
+                            className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold"
+                          />
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="w-full h-11 rounded-xl bg-primary-container text-white font-display font-extrabold text-xs cursor-pointer shadow-sm"
+                        >
+                          💊 İlaç Zili Kur &amp; Öğretmene İlet
+                        </button>
+                      </form>
+                    </div>
+
+                    <div className="xl:col-span-7 bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
+                      <h3 className="font-display font-extrabold text-base text-slate-900">
+                        {currentStudent.name} — Aktif İlaç &amp; Sağlık Çizelgesi
+                      </h3>
+                      <div className="space-y-3">
+                        {currentStudent.medicines.map(med => (
+                          <div
+                            key={med.id}
+                            className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-mono font-black text-sm text-primary-container">
+                                  ⏰ {med.time}
+                                </span>
+                                <span className="font-extrabold text-slate-900 text-sm">
+                                  {med.medicineName}
+                                </span>
+                                <span className="px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-900 font-bold text-[10px]">
+                                  {med.stomachStatus}
+                                </span>
+                              </div>
+                              <p className="text-slate-600">
+                                <strong>Veriliş Şekli:</strong> {med.howToGive} • <strong>Süre:</strong>{' '}
+                                {med.durationText}
+                              </p>
+                              <p className="text-[11px] text-rose-800 font-bold">
+                                🩺 Salgın / Hastalık Kaydı: {med.diseaseName}
+                              </p>
+                            </div>
+
+                            <div className="shrink-0">
+                              {med.given ? (
+                                <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 font-extrabold text-xs block">
+                                  ✅ İlaç Verildi ({med.givenAt} - {med.givenBy})
+                                </span>
+                              ) : (
+                                <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-xs block">
+                                  ⏳ İlaç Saati Bekleniyor ({med.time})
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 5: 🍽️ DİYETİSYEN ONAYLI GÜNLÜK BESLENME MENÜSÜ */}
+                {activeVeliTab === 'beslenme_menu' && (
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <span className="text-xs font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
+                          🍽️ Diyetisyen Onaylı Haftalık Beslenme Tablosu
+                        </span>
+                        <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
+                          Haftalık Kahvaltı, Öğle Yemeği ve İkindi Menüsü
+                        </h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setReqTemplate('Beslenme menüsü görüş / öneri / şikayet');
+                          setReqRecipient('Yönetim');
+                          setIsRequestModalOpen(true);
+                        }}
+                        className="px-4 py-2.5 rounded-xl bg-secondary text-white text-xs font-extrabold cursor-pointer shrink-0"
+                      >
+                        💬 Menü Görüş / Öneri İlet
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {weeklyMenu.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-display font-black text-sm text-primary-container">
+                              {item.day}
+                            </span>
+                            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full">
+                              {item.calories} • {item.dietitian}
+                            </span>
+                          </div>
+                          <p>
+                            <strong>🍳 Kahvaltı:</strong> {item.breakfast}
+                          </p>
+                          <p>
+                            <strong>🍲 Öğle:</strong> {item.lunch}
+                          </p>
+                          <p>
+                            <strong>🍎 İkindi:</strong> {item.snack}
+                          </p>
+                          <p className="text-[10px] font-bold text-amber-900 bg-amber-100/80 p-2 rounded-lg">
+                            ⚠️ {item.allergenNote}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 6: 🚌 SIRALI SERVİS ROTASI (ROOT - SIRA ATLANAMAZ, DİĞER ÇOCUKLAR GİZLİ) */}
+                {activeVeliTab === 'servis_rota' && (
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
+                          🚌 Sıralı Servis Rotası (Root) &amp; Zincirleme Veli Bildirimi
+                        </span>
+                        <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
+                          {currentStudent.name} — Canlı Durak Sırası (Öğrenciler Atlanarak İlerlenemez)
+                        </h3>
+                        <p className="text-xs text-slate-500">
+                          Bir önceki durak tamamlandığında sıradaki veliye otomatik hazırlık zili çalar. KVKK gereği diğer velilerin çocuk isimleri gizlidir.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {shuttleStops.map(stop => {
+                        const isCurrentActiveStop =
+                          firstActiveStop && firstActiveStop.stopOrder === stop.stopOrder;
+                        const isMyChildStop =
+                          stop.studentId === currentStudent.id ||
+                          (showDemoSibling && stop.studentId === 'aliefe');
+                        return (
+                          <div
+                            key={stop.stopOrder}
+                            className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                              stop.completed
+                                ? 'bg-emerald-50/60 border-emerald-200'
+                                : isCurrentActiveStop
+                                ? 'bg-amber-50 border-amber-400 ring-2 ring-amber-400/40'
+                                : 'bg-slate-50 border-slate-200 opacity-75'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-9 h-9 rounded-xl bg-primary-container text-white font-black text-xs flex items-center justify-center shrink-0">
+                                #{stop.stopOrder}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-extrabold text-sm text-slate-900">
+                                    {isMyChildStop
+                                      ? `${stop.studentName} (Çocuğunuzun Durağı)`
+                                      : `${stop.stopOrder}. Durak (Diğer Öğrenci — KVKK Gizli)`}
+                                  </span>
+                                  <span className="text-xs font-mono font-bold text-primary-container">
+                                    Tahmini: {stop.plannedTime}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-slate-600">
+                                  {isMyChildStop ? stop.addressStop : 'Güzergah Üzeri Ara Durak'}
+                                </p>
+                                <span className="text-[11px] font-extrabold text-indigo-900 mt-0.5 block">
+                                  Durum: {stop.status}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-2 shrink-0">
+                              {stop.completed ? (
+                                <span className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold">
+                                  ✓ Tamamlandı
+                                </span>
+                              ) : isCurrentActiveStop && isMyChildStop ? (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleCompleteShuttleStop(
+                                        stop.stopOrder,
+                                        'Veli: Çocuğu Servise Verdim / Teslim Aldım ✅',
+                                        'Veli'
+                                      )
+                                    }
+                                    className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold cursor-pointer"
+                                  >
+                                    👨‍👩‍👧 Veli: Servise Verdim / Aldım ✓
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleCompleteShuttleStop(
+                                        stop.stopOrder,
+                                        'Bugün Gelmedi (Atlandı)',
+                                        'Veli'
+                                      )
+                                    }
+                                    className="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-extrabold cursor-pointer"
+                                  >
+                                    Bugün Binmeyecek
+                                  </button>
+                                </>
+                              ) : (
+                                <span className="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-600 text-xs font-bold flex items-center gap-1">
+                                  <Lock className="w-3.5 h-3.5" />
+                                  <span>
+                                    {isCurrentActiveStop
+                                      ? 'Servis Görevlisi Onayı Bekleniyor'
+                                      : `Önce #${firstActiveStop?.stopOrder}. Durak Tamamlanmalı`}
+                                  </span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 7: 📢 ÖNCELİK SIRALI DUYURULAR */}
+                {activeVeliTab === 'duyurular' && (
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-4">
+                    <h3 className="font-display font-extrabold text-base text-slate-900">
+                      📢 Kurum Duyuruları (Önemli ve Resmi Duyurular En Üstte Sabittir)
+                    </h3>
+                    <div className="space-y-3">
+                      {sortedAnnouncements.map(ann => (
+                        <div
+                          key={ann.id}
+                          className={`p-4 rounded-2xl border space-y-1.5 ${
                             ann.tag === 'Önemli Duyuru'
-                              ? 'bg-rose-600 text-white'
+                              ? 'bg-rose-50/70 border-rose-300'
                               : ann.tag === 'Resmi Duyuru'
-                              ? 'bg-indigo-700 text-white'
-                              : ann.tag === 'Hatırlatma'
-                              ? 'bg-amber-500 text-slate-950'
-                              : 'bg-slate-200 text-slate-800'
+                              ? 'bg-indigo-50/70 border-indigo-300'
+                              : 'bg-slate-50 border-slate-200'
                           }`}
                         >
-                          {ann.tag}
-                        </span>
-                        <span className="text-xs text-slate-500 font-bold">{ann.date}</span>
-                      </div>
-                      <h4 className="font-display font-extrabold text-sm text-slate-900">
-                        {ann.title}
-                      </h4>
-                      <p className="text-xs text-slate-600 leading-relaxed">{ann.content}</p>
+                          <div className="flex items-center justify-between">
+                            <span
+                              className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+                                ann.tag === 'Önemli Duyuru'
+                                  ? 'bg-rose-600 text-white'
+                                  : ann.tag === 'Resmi Duyuru'
+                                  ? 'bg-indigo-700 text-white'
+                                  : ann.tag === 'Hatırlatma'
+                                  ? 'bg-amber-500 text-slate-950'
+                                  : 'bg-slate-200 text-slate-800'
+                              }`}
+                            >
+                              {ann.tag}
+                            </span>
+                            <span className="text-xs text-slate-500 font-bold">{ann.date}</span>
+                          </div>
+                          <h4 className="font-display font-extrabold text-sm text-slate-900">
+                            {ann.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 leading-relaxed">{ann.content}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                )}
 
-            {/* TAB 8: 💳 AİDAT & FATURA */}
-            {activeVeliTab === 'aidat_odeme' && (
-              <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
-                    KREŞ EĞİTİM &amp; BESLENME TAKSİTİ
-                  </span>
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 mt-2">
-                    {currentStudent.name} — Kasım 2026 Dönem Ödemesi: ₺
-                    {currentStudent.tuitionAmount.toLocaleString('tr-TR')}
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Durum: {currentStudent.tuitionPaid ? 'Ödendi ✅' : 'Ödeme Bekliyor'}
-                  </p>
-                </div>
-                {!currentStudent.tuitionPaid && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      updateStudent(currentStudent.id, s => ({
-                        ...s,
-                        tuitionPaid: true,
-                        invoiceNo: 'GIB202600049881'
-                      }));
-                      triggerAlert('✅ Eğitim taksiti ödendi ve resmi e-Faturanız oluşturuldu!');
-                    }}
-                    className="px-5 py-3 rounded-2xl bg-primary-container text-white text-xs font-extrabold cursor-pointer"
-                  >
-                    3D Secure ile Şimdi Öde
-                  </button>
+                {/* TAB 8: 💳 AİDAT & FATURA */}
+                {activeVeliTab === 'aidat_odeme' && (
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
+                        💳 Kreş Eğitim &amp; Beslenme Taksiti
+                      </span>
+                      <h3 className="font-display font-extrabold text-lg text-slate-900 mt-2">
+                        {currentStudent.name} — Kasım 2026 Dönem Ödemesi: ₺
+                        {currentStudent.tuitionAmount.toLocaleString('tr-TR')}
+                      </h3>
+                      <p className="text-xs text-slate-500">
+                        Durum: {currentStudent.tuitionPaid ? 'Ödendi ✅' : 'Ödeme Bekliyor'}
+                      </p>
+                    </div>
+                    {!currentStudent.tuitionPaid && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateStudent(currentStudent.id, s => ({
+                            ...s,
+                            tuitionPaid: true,
+                            invoiceNo: 'GIB202600049881'
+                          }));
+                          triggerAlert('✅ Eğitim taksiti ödendi ve resmi e-Faturanız oluşturuldu!');
+                        }}
+                        className="px-5 py-3 rounded-2xl bg-primary-container text-white text-xs font-extrabold cursor-pointer"
+                      >
+                        3D Secure İle Şimdi Öde
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
+
+              {/* RIGHT 4 COLUMNS: SAĞDA ALT ALTA İKONLU VELİ & ÖĞRENCİ MENÜSÜ (DESKTOP) */}
+              <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 order-1 lg:order-2 sticky top-40">
+                <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs p-4 space-y-2">
+                  <div className="px-3 py-2 border-b border-slate-100">
+                    <span className="text-[11px] font-extrabold text-primary-container block">
+                      👨‍👩‍👧 Veli &amp; Öğrenci Menüsü
+                    </span>
+                    <h3 className="font-display font-extrabold text-sm text-slate-900">
+                      Hızlı Erişim Modülleri
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    {VELI_MENU_ITEMS.map(tab => {
+                      const isActive = activeVeliTab === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setActiveVeliTab(tab.id)}
+                          className={`w-full text-left px-3.5 py-3 rounded-2xl transition cursor-pointer flex items-center justify-between gap-2 ${
+                            isActive
+                              ? 'bg-primary-container text-white shadow-sm'
+                              : 'bg-slate-50/80 hover:bg-indigo-50/60 text-slate-700 border border-slate-200/60'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="text-base shrink-0">{tab.icon}</span>
+                            <div className="truncate">
+                              <span className="text-xs font-extrabold block truncate">
+                                {tab.label.replace(/^[^\s]+\s/, '')}
+                              </span>
+                              <span
+                                className={`text-[10px] block truncate ${
+                                  isActive ? 'text-indigo-100' : 'text-slate-400'
+                                }`}
+                              >
+                                {tab.desc}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight
+                            className={`w-4 h-4 shrink-0 ${
+                              isActive ? 'text-white' : 'text-slate-400'
+                            }`}
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </aside>
+            </div>
           </div>
         )}
 
@@ -1348,8 +1478,8 @@ export default function ParentPortalView({
           <div className="space-y-6 animate-fade-in">
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
-                  👩‍🏫 ÖĞRETMEN HIZLI SINIF PANELİ • AYŞE YILMAZ
+                <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
+                  👩‍🏫 Öğretmen Hızlı Sınıf Paneli • Ayşe Yılmaz
                 </span>
                 <h2 className="text-xl font-extrabold font-display text-slate-900 mt-2">
                   Sadece Yemeyen/Gelmeyen Öğrenciyi İşaretleyin &amp; İlaç Saatlerini Onaylayın
@@ -1360,11 +1490,11 @@ export default function ParentPortalView({
               </div>
             </div>
 
-            {/* Incoming Parent 2. Aşama Requests for Teacher */}
+            {/* Incoming Parent Hızlı Talepler for Teacher */}
             <div className="bg-amber-50/90 p-5 rounded-3xl border border-amber-300 space-y-3">
               <h3 className="font-display font-extrabold text-sm text-amber-950 flex items-center gap-2">
                 <DoorOpen className="w-4 h-4 text-amber-700" />
-                <span>Velilerden Gelen Kapı / Erken Alma / Görüşme Talepleri</span>
+                <span>Velilerden Gelen Hızlı Talepler</span>
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {requests.map(req => (
@@ -1493,7 +1623,7 @@ export default function ParentPortalView({
                                 type="button"
                                 onClick={() =>
                                   triggerAlert(
-                                    `⏰ İLAÇ ZİLİ: ${std.name} isimli öğrencinin saat ${med.time} "${med.medicineName}" (${med.howToGive}) ilaç vakti geldi!`,
+                                    `⏰ İlaç Zili: ${std.name} isimli öğrencinin saat ${med.time} "${med.medicineName}" (${med.howToGive}) ilaç vakti geldi!`,
                                     'medicine'
                                   )
                                 }
@@ -1604,8 +1734,8 @@ export default function ParentPortalView({
           <div className="space-y-6 animate-fade-in">
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
-                  🚌 SERVİSÇİ &amp; HOSTES SIRALI ROTA (ROOT) PANELİ
+                <span className="text-xs font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
+                  🚌 Servisçi &amp; Hostes Sıralı Rota (Root) Paneli
                 </span>
                 <h2 className="text-xl font-extrabold font-display text-slate-900 mt-2">
                   Sıralı Öğrenci Alım / İndirim ve Sabah-Akşam İstisna Takibi
@@ -1731,8 +1861,8 @@ export default function ParentPortalView({
             <aside className="lg:col-span-3 space-y-2">
               <div className="bg-[#111827] border border-slate-800 rounded-3xl p-4 space-y-1.5">
                 <div className="px-3 py-2 border-b border-slate-800 mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 block">
-                    🌙 KOYU TEMA YÖNETİM AĞACI
+                  <span className="text-[11px] font-extrabold text-amber-400 block">
+                    🌙 Koyu Tema Yönetim Ağacı
                   </span>
                   <h3 className="font-display font-extrabold text-sm text-white mt-0.5">
                     İSTEM Kids Kurum Menüsü
@@ -1828,8 +1958,8 @@ export default function ParentPortalView({
               {/* Top Executive Dark Banner */}
               <div className="bg-gradient-to-r from-[#111827] via-[#1E293B] to-[#111827] border border-slate-800 rounded-3xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 block">
-                    AKTİF YÖNETİM MODÜLÜ • {activeMgmtSubTab.toUpperCase()}
+                  <span className="text-xs font-extrabold text-amber-400 block">
+                    Aktif Yönetim Modülü • {activeMgmtSubTab}
                   </span>
                   <h2 className="font-display font-black text-xl text-white mt-1">
                     Özel Zerdali Kreş &amp; Anaokulu — Kurum ve Stok Pratik Yönetim Masası
@@ -1989,7 +2119,7 @@ export default function ParentPortalView({
                     /* Kurum Ders & Teneffüs Zili Aylık Plan Girişi */
                     <div className="space-y-4">
                       <h3 className="font-display font-extrabold text-sm text-white">
-                        🔔 1. Aşama Kurum Ders Başlangıç, Bitiş ve Ara (Teneffüs) Saatleri Tanımlama
+                        🔔 Otomatik Kurum Ders Başlangıç, Bitiş ve Ara (Teneffüs) Saatleri Tanımlama
                       </h3>
                       <form
                         onSubmit={e => {
@@ -2352,15 +2482,15 @@ export default function ParentPortalView({
       </div>
 
       {/* =====================================================================
-          2. AŞAMA KAPI ÇALMA / VELİ HIZLI TALEP & BİLGİLENDİRME MODALI
+          HIZLI TALEBİNİ İLET MODALI
          ===================================================================== */}
       {isRequestModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white text-slate-900 w-full max-w-lg rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider bg-secondary-fixed text-secondary px-2.5 py-0.5 rounded-full">
-                  2. AŞAMA: KAPI ÇAL / HIZLI TALEP SİSTEMİ
+                <span className="text-xs font-extrabold bg-secondary-fixed text-secondary px-2.5 py-0.5 rounded-full">
+                  Hızlı Talebini İlet
                 </span>
                 <h3 className="font-display font-extrabold text-base text-slate-900 mt-1">
                   Öğretmen veya Yönetime Hazır Şablonlu Bilgilendirme İlet
