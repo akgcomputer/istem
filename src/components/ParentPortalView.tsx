@@ -55,15 +55,58 @@ type ManagementMenuTab =
   | 'stok_pratik_erp'
   | 'diger_islemler';
 
+type InstallmentStatus = 'odeme_bekliyor' | 'odeme_yapildi' | 'zamani_gelmedi';
+
+interface TuitionInstallmentItem {
+  id: string;
+  studentId: string;
+  studentName: string;
+  parentName: string;
+  month: string;
+  dueDate: string;
+  amount: number;
+  status: InstallmentStatus;
+  invoiceNo?: string;
+  pendingNotification?: {
+    method: 'Elden Ödedim' | 'Banka İle Ödedim' | 'Kurumda POS İle Ödedim';
+    note?: string;
+    reportedAt: string;
+  };
+}
+
+const INITIAL_MONTHLY_INSTALLMENTS: TuitionInstallmentItem[] = [
+  { id: 'zeynep-eylul', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Eylül 2026', dueDate: '05.09.2026', amount: 14500, status: 'odeme_yapildi', invoiceNo: 'GIB202600049101' },
+  { id: 'zeynep-ekim', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Ekim 2026', dueDate: '05.10.2026', amount: 14500, status: 'odeme_yapildi', invoiceNo: 'GIB202600049452' },
+  { id: 'zeynep-kasim', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Kasım 2026', dueDate: '05.11.2026', amount: 14500, status: 'odeme_bekliyor' },
+  { id: 'zeynep-aralik', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Aralık 2026', dueDate: '05.12.2026', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-ocak', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Ocak 2027', dueDate: '05.01.2027', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-subat', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Şubat 2027', dueDate: '05.02.2027', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-mart', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Mart 2027', dueDate: '05.03.2027', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-nisan', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Nisan 2027', dueDate: '05.04.2027', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-mayis', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Mayıs 2027', dueDate: '05.05.2027', amount: 14500, status: 'zamani_gelmedi' },
+  { id: 'zeynep-haziran', studentId: 'zeynep', studentName: 'Zeynep Sarı', parentName: 'Fatih Sarı', month: 'Haziran 2027', dueDate: '05.06.2027', amount: 14500, status: 'zamani_gelmedi' },
+
+  { id: 'aliefe-eylul', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Eylül 2026', dueDate: '05.09.2026', amount: 15500, status: 'odeme_yapildi', invoiceNo: 'GIB202600049108' },
+  { id: 'aliefe-ekim', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Ekim 2026', dueDate: '05.10.2026', amount: 15500, status: 'odeme_yapildi', invoiceNo: 'GIB202600049460' },
+  { id: 'aliefe-kasim', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Kasım 2026', dueDate: '05.11.2026', amount: 15500, status: 'odeme_bekliyor' },
+  { id: 'aliefe-aralik', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Aralık 2026', dueDate: '05.12.2026', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-ocak', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Ocak 2027', dueDate: '05.01.2027', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-subat', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Şubat 2027', dueDate: '05.02.2027', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-mart', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Mart 2027', dueDate: '05.03.2027', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-nisan', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Nisan 2027', dueDate: '05.04.2027', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-mayis', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Mayıs 2027', dueDate: '05.05.2027', amount: 15500, status: 'zamani_gelmedi' },
+  { id: 'aliefe-haziran', studentId: 'aliefe', studentName: 'Ali Efe Kaya', parentName: 'Murat Kaya', month: 'Haziran 2027', dueDate: '05.06.2027', amount: 15500, status: 'zamani_gelmedi' }
+];
+
 const VELI_MENU_ITEMS: { id: VeliSectionTab; label: string; icon: string; desc: string }[] = [
   { id: 'gunluk_karne', label: '📋 Günlük Karne & Yoklama', icon: '📋', desc: 'Beslenme, Uyku ve Yoklama' },
   { id: 'kazanimlar', label: '🎯 Bireysel Kazanımlar', icon: '🎯', desc: 'Gelişim ve Beceri Tablosu' },
   { id: 'kresten_gunlukler', label: '📸 Kreşten Günlükler (Şifreli & KVKK)', icon: '📸', desc: 'Kapalı Devre Albüm & İzin' },
   { id: 'ilac_saglik', label: '💊 İlaç & Sağlık Çizelgesi', icon: '💊', desc: 'Salgın Tanısı ve İlaç Zili' },
-  { id: 'beslenme_menu', label: '🍽️ Diyetisyen Beslenme Menüsü', icon: '🍽️', desc: 'Haftalık Onaylı Yemek Listesi' },
-  { id: 'servis_rota', label: '🚌 Sıralı Servis Rotası (Root)', icon: '🚌', desc: 'Sıralı Durak ve Veli Onayı' },
+  { id: 'beslenme_menu', label: '🍽️ Haftalık Beslenme Tablosu', icon: '🍽️', desc: 'Haftalık Yemek Listesi' },
+  { id: 'servis_rota', label: '🚌 Servis Rotası ve Veli Bildirimi', icon: '🚌', desc: 'Sıralı Durak ve Veli Onayı' },
   { id: 'duyurular', label: '📢 Duyurular (Önem Sıralı)', icon: '📢', desc: 'Önemli ve Resmi Bildirimler' },
-  { id: 'aidat_odeme', label: '💳 Aidat & Fatura', icon: '💳', desc: 'Eğitim Taksiti ve e-Fatura' }
+  { id: 'aidat_odeme', label: '💳 Eğitim Taksiti', icon: '💳', desc: 'Tüm Aylar Taksit ve Ödeme Takibi' }
 ];
 
 export default function ParentPortalView({
@@ -87,6 +130,11 @@ export default function ParentPortalView({
   const [diaryPosts, setDiaryPosts] = useState<KidsDiaryPost[]>(INITIAL_DIARY_POSTS);
   const [pickupPersons, setPickupPersons] = useState<KidsPickupPerson[]>(INITIAL_PICKUP_PERSONS);
   const [weeklyMenu, setWeeklyMenu] = useState(INITIAL_WEEKLY_DIET_MENU);
+  const [installments, setInstallments] = useState<TuitionInstallmentItem[]>(INITIAL_MONTHLY_INSTALLMENTS);
+  const [openPaymentReportId, setOpenPaymentReportId] = useState<string | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'Elden Ödedim' | 'Banka İle Ödedim' | 'Kurumda POS İle Ödedim'>('Banka İle Ödedim');
+  const [paymentReportNote, setPaymentReportNote] = useState<string>('');
+  const [mgmtSelectedStudentForTuition, setMgmtSelectedStudentForTuition] = useState<string>('zeynep');
 
   // Active child in Veli view (By default only 1 child for demo parent; optional sibling toggle if parent has >1 child)
   const [selectedChildId, setSelectedChildId] = useState<string>('zeynep');
@@ -146,7 +194,7 @@ export default function ParentPortalView({
   const [medName, setMedName] = useState('');
   const [medTime, setMedTime] = useState('13:00');
   const [medStomach, setMedStomach] = useState<'Tok Karnına' | 'Aç Karnına'>('Tok Karnına');
-  const [medHowToGive, setMedHowToGive] = useState('Su ile karıştırarak');
+  const [medHowToGive, setMedHowToGive] = useState('');
   const [medDuration, setMedDuration] = useState('İlaç bitene kadar');
 
   // Teacher States
@@ -261,7 +309,7 @@ export default function ParentPortalView({
           medicineName: medName.trim(),
           time: medTime,
           stomachStatus: medStomach,
-          howToGive: medHowToGive,
+          howToGive: medHowToGive.trim() || 'Su ile karıştırarak',
           durationText: medDuration,
           enteredBy: activeKidsRole === 'kurum_sahibi' ? 'Yönetim' : 'Veli',
           given: false
@@ -270,6 +318,7 @@ export default function ParentPortalView({
     }));
     setMedName('');
     setMedDiseaseName('');
+    setMedHowToGive('');
     triggerAlert(
       `💊 "${medName}" (${medTime} • ${medStomach} • ${medHowToGive}) çizelgeye eklendi ve ilaç zili kuruldu!`,
       'medicine'
@@ -326,7 +375,7 @@ export default function ParentPortalView({
           TOP HEADER BAR: THEME INDICATOR + 4 ROLE SWITCHER
          ===================================================================== */}
       <div
-        className={`sticky top-16 z-30 border-b shadow-xs transition-colors ${
+        className={`relative z-20 border-b shadow-xs transition-colors ${
           isDarkManagement
             ? 'bg-[#111827]/95 border-slate-800 text-white'
             : 'bg-white/95 border-slate-200 text-slate-900'
@@ -545,17 +594,7 @@ export default function ParentPortalView({
 
               {/* Hızlı Talebini İlet & Mobil Sandwich Menü Tetikleyici */}
               <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setReqTemplate('Kapıdayım, öğrenciyi teslim alacağım');
-                    setIsRequestModalOpen(true);
-                  }}
-                  className="px-4 py-3 rounded-2xl bg-secondary hover:opacity-95 text-white font-display font-extrabold text-xs flex items-center gap-2 shadow-md cursor-pointer"
-                >
-                  <DoorOpen className="w-4 h-4" />
-                  <span>Hızlı Talebini İlet</span>
-                </button>
+
 
                 {/* Mobile / App Sandwich Menu Button (Visible on screens < lg) */}
                 <button
@@ -615,7 +654,7 @@ export default function ParentPortalView({
                ================================================================= */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               {/* LEFT 8 COLUMNS: ACTIVE VELI TAB CONTENT */}
-              <div className="lg:col-span-8 xl:col-span-9 space-y-6 order-2 lg:order-1">
+              <div className="lg:col-span-8 xl:col-span-9 space-y-6 order-2 lg:order-2">
                 {/* TAB 1: GÜNLÜK KARNE & SAYISAL YOKLAMA ÖZETİ */}
                 {activeVeliTab === 'gunluk_karne' && (
                   <div className="space-y-5">
@@ -1105,7 +1144,7 @@ export default function ParentPortalView({
                             type="text"
                             value={medHowToGive}
                             onChange={e => setMedHowToGive(e.target.value)}
-                            placeholder="Örn: Su ile karıştırarak / Meyve püresiyle / 1 ölçek"
+                            placeholder="Su ile karıştırarak"
                             className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 font-semibold"
                           />
                         </div>
@@ -1174,7 +1213,7 @@ export default function ParentPortalView({
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <span className="text-xs font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
-                          🍽️ Diyetisyen Onaylı Haftalık Beslenme Tablosu
+                          🍽️ Haftalık Beslenme Tablosu
                         </span>
                         <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
                           Haftalık Kahvaltı, Öğle Yemeği ve İkindi Menüsü
@@ -1231,7 +1270,7 @@ export default function ParentPortalView({
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
-                          🚌 Sıralı Servis Rotası (Root) &amp; Zincirleme Veli Bildirimi
+                          🚌 Servis Rotası ve Veli Bildirimi
                         </span>
                         <h3 className="text-lg font-extrabold font-display text-slate-900 mt-2">
                           {currentStudent.name} — Canlı Durak Sırası (Öğrenciler Atlanarak İlerlenemez)
@@ -1380,43 +1419,244 @@ export default function ParentPortalView({
                   </div>
                 )}
 
-                {/* TAB 8: 💳 AİDAT & FATURA */}
+                {/* TAB 8: 💳 EĞİTİM TAKSİTİ (TÜM AYLAR, DURUM RENKLERİ & ÖDEMEYİ YAPTIM BİLDİRİMİ) */}
                 {activeVeliTab === 'aidat_odeme' && (
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
-                        💳 Kreş Eğitim &amp; Beslenme Taksiti
-                      </span>
-                      <h3 className="font-display font-extrabold text-lg text-slate-900 mt-2">
-                        {currentStudent.name} — Kasım 2026 Dönem Ödemesi: ₺
-                        {currentStudent.tuitionAmount.toLocaleString('tr-TR')}
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        Durum: {currentStudent.tuitionPaid ? 'Ödendi ✅' : 'Ödeme Bekliyor'}
-                      </p>
+                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-2xs space-y-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                      <div>
+                        <span className="text-xs font-extrabold bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">
+                          💳 Eğitim Taksiti
+                        </span>
+                        <h3 className="font-display font-extrabold text-lg text-slate-900 mt-2">
+                          {currentStudent.name} — 2026 / 2027 Eğitim Dönemi Tüm Aylar Taksit Çizelgesi
+                        </h3>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          Ödemenizi 3D Secure ile anında yapabilir veya elden / banka yoluyla yaptıysanız <strong>Ödemeyi Yaptım</strong> butonu ile yönetime bildirebilirsiniz.
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-[11px] font-extrabold shrink-0">
+                        <span className="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300">
+                          ● Ödeme Bekliyor
+                        </span>
+                        <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                          ● Ödeme Yapıldı
+                        </span>
+                        <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                          ● Zamanı Gelmedi
+                        </span>
+                      </div>
                     </div>
-                    {!currentStudent.tuitionPaid && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          updateStudent(currentStudent.id, s => ({
-                            ...s,
-                            tuitionPaid: true,
-                            invoiceNo: 'GIB202600049881'
-                          }));
-                          triggerAlert('✅ Eğitim taksiti ödendi ve resmi e-Faturanız oluşturuldu!');
-                        }}
-                        className="px-5 py-3 rounded-2xl bg-primary-container text-white text-xs font-extrabold cursor-pointer"
-                      >
-                        3D Secure İle Şimdi Öde
-                      </button>
-                    )}
+
+                    <div className="space-y-3">
+                      {installments
+                        .filter(inst => inst.studentId === currentStudent.id)
+                        .map(inst => {
+                          const isPaid = inst.status === 'odeme_yapildi';
+                          const isWaiting = inst.status === 'odeme_bekliyor';
+                          const isFuture = inst.status === 'zamani_gelmedi';
+                          const isReportOpen = openPaymentReportId === inst.id;
+
+                          return (
+                            <div
+                              key={inst.id}
+                              className={`p-4 rounded-2xl border transition space-y-3 ${
+                                isPaid
+                                  ? 'bg-emerald-50/50 border-emerald-200'
+                                  : isWaiting
+                                  ? 'bg-rose-50/60 border-rose-300 shadow-2xs'
+                                  : 'bg-amber-50/40 border-amber-200'
+                              }`}
+                            >
+                              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2.5 flex-wrap">
+                                    <span className="font-display font-black text-sm text-slate-900">
+                                      {inst.month} — 💳 Eğitim Taksiti
+                                    </span>
+                                    <span className="text-xs font-extrabold text-slate-700 bg-white px-2.5 py-0.5 rounded-lg border border-slate-200">
+                                      ₺{inst.amount.toLocaleString('tr-TR')}
+                                    </span>
+                                    <span className="text-[11px] text-slate-500 font-semibold">
+                                      Son Ödeme: {inst.dueDate}
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                                    {isPaid && (
+                                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span>Durum: Ödeme Yapıldı</span>
+                                        {inst.invoiceNo && (
+                                          <span className="font-mono text-[10px] opacity-80">
+                                            ({inst.invoiceNo})
+                                          </span>
+                                        )}
+                                      </span>
+                                    )}
+                                    {isWaiting && (
+                                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-rose-100 text-rose-800 border border-rose-300">
+                                        <span>Durum: Ödeme Bekliyor</span>
+                                      </span>
+                                    )}
+                                    {isFuture && (
+                                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
+                                        <span>Durum: Zamanı Gelmedi</span>
+                                      </span>
+                                    )}
+
+                                    {inst.pendingNotification && !isPaid && (
+                                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-indigo-100 text-indigo-900 border border-indigo-300">
+                                        ⏳ Yönetime Ödeme Bildirildi ({inst.pendingNotification.method} • {inst.pendingNotification.reportedAt}) — Onay Bekleniyor
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Action Buttons: 3D Secure Şimdi Öde + Ödemeyi Yaptım */}
+                                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                                  {!isPaid ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setInstallments(prev =>
+                                          prev.map(item =>
+                                            item.id === inst.id
+                                              ? {
+                                                  ...item,
+                                                  status: 'odeme_yapildi',
+                                                  invoiceNo: 'GIB2026000' + Math.floor(10000 + Math.random() * 89999),
+                                                  pendingNotification: undefined
+                                                }
+                                              : item
+                                          )
+                                        );
+                                        setOpenPaymentReportId(null);
+                                        triggerAlert(
+                                          `✅ ${inst.month} Eğitim Taksiti 3D Secure ile ödendi ve durum "Ödeme Yapıldı" (Yeşil) olarak güncellendi!`
+                                        );
+                                      }}
+                                      className="px-4 py-2.5 rounded-xl bg-primary-container hover:bg-primary text-white text-xs font-extrabold cursor-pointer shadow-2xs transition"
+                                    >
+                                      3D Secure Şimdi Öde
+                                    </button>
+                                  ) : (
+                                    <span className="px-3.5 py-2 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-extrabold">
+                                      ✅ Tahsilat Tamamlandı
+                                    </span>
+                                  )}
+
+                                  {/* Ödemeyi Yaptım Button: Active Green if odeme_bekliyor or zamani_gelmedi, Passive if odeme_yapildi */}
+                                  <button
+                                    type="button"
+                                    disabled={isPaid}
+                                    onClick={() => {
+                                      if (isPaid) return;
+                                      setOpenPaymentReportId(isReportOpen ? null : inst.id);
+                                      setSelectedPaymentMethod('Banka İle Ödedim');
+                                      setPaymentReportNote('');
+                                    }}
+                                    className={`px-4 py-2.5 rounded-xl text-xs font-extrabold transition ${
+                                      isPaid
+                                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                        : 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-2xs'
+                                    }`}
+                                  >
+                                    Ödemeyi Yaptım
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Expandable Payment Method Options when Parent clicks "Ödemeyi Yaptım" */}
+                              {isReportOpen && !isPaid && (
+                                <div className="p-4 rounded-2xl bg-white border-2 border-emerald-500/40 shadow-md space-y-3 animate-fade-in">
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-display font-extrabold text-xs text-slate-900">
+                                      ✅ {inst.month} Taksiti İçin Ödeme Yönteminizi Seçin (Yönetime Bildirim Gider)
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => setOpenPaymentReportId(null)}
+                                      className="p-1 rounded-lg bg-slate-100 text-slate-500 cursor-pointer"
+                                    >
+                                      <X className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+
+                                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                    {(
+                                      [
+                                        'Elden Ödedim',
+                                        'Banka İle Ödedim',
+                                        'Kurumda POS İle Ödedim'
+                                      ] as const
+                                    ).map(method => (
+                                      <button
+                                        key={method}
+                                        type="button"
+                                        onClick={() => setSelectedPaymentMethod(method)}
+                                        className={`p-2.5 rounded-xl border text-xs font-extrabold text-left transition cursor-pointer ${
+                                          selectedPaymentMethod === method
+                                            ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
+                                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                                        }`}
+                                      >
+                                        • {method}
+                                      </button>
+                                    ))}
+                                  </div>
+
+                                  <div className="flex flex-col sm:flex-row gap-2">
+                                    <input
+                                      type="text"
+                                      value={paymentReportNote}
+                                      onChange={e => setPaymentReportNote(e.target.value)}
+                                      placeholder="Dekont No veya Açıklama (İsteğe Bağlı)"
+                                      className="flex-1 h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const nowTime = new Date().toLocaleTimeString('tr-TR', {
+                                          hour: '2-digit',
+                                          minute: '2-digit'
+                                        });
+                                        setInstallments(prev =>
+                                          prev.map(item =>
+                                            item.id === inst.id
+                                              ? {
+                                                  ...item,
+                                                  pendingNotification: {
+                                                    method: selectedPaymentMethod,
+                                                    note: paymentReportNote.trim() || undefined,
+                                                    reportedAt: nowTime
+                                                  }
+                                                }
+                                              : item
+                                          )
+                                        );
+                                        setOpenPaymentReportId(null);
+                                        setPaymentReportNote('');
+                                        triggerAlert(
+                                          `📩 "${inst.month} — ${selectedPaymentMethod}" ödeme bildiriminiz Kurum Yönetimine iletildi. Yönetim doğruladığında durum "Ödeme Yapıldı" (Yeşil) olacaktır.`,
+                                          'request'
+                                        );
+                                      }}
+                                      className="px-5 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold cursor-pointer shrink-0"
+                                    >
+                                      Yönetime Ödeme Bildirimi Gönder
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* RIGHT 4 COLUMNS: SAĞDA ALT ALTA İKONLU VELİ & ÖĞRENCİ MENÜSÜ (DESKTOP) */}
-              <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 order-1 lg:order-2 sticky top-40">
+              <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 order-1 lg:order-1 sticky top-6">
                 <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs p-4 space-y-2">
                   <div className="px-3 py-2 border-b border-slate-100">
                     <span className="text-[11px] font-extrabold text-primary-container block">
@@ -2420,47 +2660,182 @@ export default function ParentPortalView({
                 </div>
               )}
 
-              {/* 6. STOK PRATİK MUHASEBE & DEPO */}
+              {/* 6. STOK PRATİK MUHASEBE, TÜM AYLAR EĞİTİM TAKSİTİ & VELİ ÖDEME DOĞRULAMA */}
               {activeMgmtTab === 'stok_pratik_erp' && (
-                <div className="bg-[#111827] border border-slate-800 rounded-3xl p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display font-extrabold text-base text-white">
-                      💳 Stok Pratik Kurumsal Ön Muhasebe, Aidat Tahsilatı &amp; GİB e-Fatura
-                    </h3>
-                    <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
-                      Sadece İşletme Sahiplerine Özel
-                    </span>
-                  </div>
-                  <div className="divide-y divide-slate-800 text-xs">
-                    {students.map(s => (
-                      <div
-                        key={s.id}
-                        className="py-3 flex items-center justify-between"
-                      >
-                        <div>
-                          <p className="font-bold text-white">
-                            {s.parentName} ({s.name})
-                          </p>
-                          <p className="text-slate-400">{s.className}</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="font-extrabold text-white">
-                            ₺{s.tuitionAmount.toLocaleString('tr-TR')}
-                          </span>
-                          <span
-                            className={`px-3 py-1 rounded-full font-bold ${
-                              s.tuitionPaid
-                                ? 'bg-emerald-500/20 text-emerald-300'
-                                : 'bg-amber-500/20 text-amber-300'
-                            }`}
-                          >
-                            {s.tuitionPaid
-                              ? `Ödendi (${s.invoiceNo || 'e-Fatura'})`
-                              : 'Vade Bekliyor'}
-                          </span>
-                        </div>
+                <div className="space-y-6">
+                  {/* Pending Parent "Ödemeyi Yaptım" Notifications Box */}
+                  <div className="bg-[#111827] border border-emerald-500/40 rounded-3xl p-6 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-extrabold">
+                          🔔 Veli "Ödemeyi Yaptım" Bildirimleri &amp; Doğrulama Masası
+                        </span>
+                        <h3 className="font-display font-extrabold text-base text-white mt-2">
+                          Onay Bekleyen Veli Ödeme Bildirimleri
+                        </h3>
                       </div>
-                    ))}
+                      <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
+                        Doğrulandığında Veli Ekranında Yeşil (Ödeme Yapıldı) Olur
+                      </span>
+                    </div>
+
+                    {installments.filter(i => i.pendingNotification && i.status !== 'odeme_yapildi').length === 0 ? (
+                      <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-400">
+                        Şu anda onay bekleyen yeni bir veli ödeme bildirimi bulunmuyor. Veli ekranından <strong>"Ödemeyi Yaptım"</strong> butonuna basıldığında burada listelenir.
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {installments
+                          .filter(i => i.pendingNotification && i.status !== 'odeme_yapildi')
+                          .map(item => (
+                            <div
+                              key={item.id}
+                              className="p-4 rounded-2xl bg-slate-900 border border-emerald-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                            >
+                              <div className="space-y-1">
+                                <p className="font-extrabold text-white text-sm">
+                                  {item.parentName} (Öğrenci: {item.studentName}) — {item.month} Eğitim Taksiti
+                                </p>
+                                <p className="text-emerald-300 font-bold">
+                                  Beyan Edilen Yöntem: {item.pendingNotification?.method} • Saat: {item.pendingNotification?.reportedAt}
+                                  {item.pendingNotification?.note ? ` • Not: "${item.pendingNotification.note}"` : ''}
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setInstallments(prev =>
+                                    prev.map(inst =>
+                                      inst.id === item.id
+                                        ? {
+                                            ...inst,
+                                            status: 'odeme_yapildi',
+                                            invoiceNo: 'GIB2026000' + Math.floor(10000 + Math.random() * 89999),
+                                            pendingNotification: undefined
+                                          }
+                                        : inst
+                                    )
+                                  );
+                                  triggerAlert(
+                                    `✅ ${item.studentName} (${item.month}) ödemesi doğrulandı! Veli ekranında durum "Ödeme Yapıldı" (Yeşil) olarak güncellendi.`
+                                  );
+                                }}
+                                className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold cursor-pointer shrink-0"
+                              >
+                                ✅ Ödemeyi Doğrula (Ödeme Yapıldı Yap)
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* All Months Installment Status Management Table */}
+                  <div className="bg-[#111827] border border-slate-800 rounded-3xl p-6 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h3 className="font-display font-extrabold text-base text-white">
+                          💳 Eğitim Taksiti — Tüm Aylar Durum Yönetimi (Stok Pratik Ön Muhasebe)
+                        </h3>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          Öğrencinin tüm aylardaki taksit durumlarını takip edebilir veya güncelleyebilirsiniz.
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {(['zeynep', 'aliefe'] as const).map(stId => {
+                          const stObj = students.find(s => s.id === stId);
+                          return (
+                            <button
+                              key={stId}
+                              type="button"
+                              onClick={() => setMgmtSelectedStudentForTuition(stId)}
+                              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold cursor-pointer ${
+                                mgmtSelectedStudentForTuition === stId
+                                  ? 'bg-amber-500 text-slate-950'
+                                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                              }`}
+                            >
+                              {stObj?.name || stId}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="divide-y divide-slate-800 text-xs">
+                      {installments
+                        .filter(inst => inst.studentId === mgmtSelectedStudentForTuition)
+                        .map(inst => (
+                          <div
+                            key={inst.id}
+                            className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2.5">
+                                <span className="font-extrabold text-white text-sm">
+                                  {inst.month} — 💳 Eğitim Taksiti
+                                </span>
+                                <span className="font-extrabold text-amber-300">
+                                  ₺{inst.amount.toLocaleString('tr-TR')}
+                                </span>
+                                <span className="text-slate-400">Vade: {inst.dueDate}</span>
+                              </div>
+                              {inst.pendingNotification && inst.status !== 'odeme_yapildi' && (
+                                <p className="text-emerald-400 font-bold">
+                                  🔔 Veli Bildirimi Var: {inst.pendingNotification.method} ({inst.pendingNotification.reportedAt})
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span
+                                className={`px-3 py-1 rounded-full font-extrabold ${
+                                  inst.status === 'odeme_yapildi'
+                                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                                    : inst.status === 'odeme_bekliyor'
+                                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                                    : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                }`}
+                              >
+                                {inst.status === 'odeme_yapildi'
+                                  ? 'Durum: Ödeme Yapıldı'
+                                  : inst.status === 'odeme_bekliyor'
+                                  ? 'Durum: Ödeme Bekliyor'
+                                  : 'Durum: Zamanı Gelmedi'}
+                              </span>
+
+                              <select
+                                value={inst.status}
+                                onChange={e => {
+                                  const nextStatus = e.target.value as InstallmentStatus;
+                                  setInstallments(prev =>
+                                    prev.map(item =>
+                                      item.id === inst.id
+                                        ? {
+                                            ...item,
+                                            status: nextStatus,
+                                            pendingNotification:
+                                              nextStatus === 'odeme_yapildi'
+                                                ? undefined
+                                                : item.pendingNotification
+                                          }
+                                        : item
+                                    )
+                                  );
+                                  triggerAlert(
+                                    `🔄 ${inst.studentName} — ${inst.month} durumu güncellendi!`
+                                  );
+                                }}
+                                className="h-9 px-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-bold cursor-pointer"
+                              >
+                                <option value="odeme_bekliyor">🔴 Ödeme Bekliyor</option>
+                                <option value="odeme_yapildi">🟢 Ödeme Yapıldı</option>
+                                <option value="zamani_gelmedi">🟡 Zamanı Gelmedi</option>
+                              </select>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -2493,7 +2868,7 @@ export default function ParentPortalView({
                   Hızlı Talebini İlet
                 </span>
                 <h3 className="font-display font-extrabold text-base text-slate-900 mt-1">
-                  Öğretmen veya Yönetime Hazır Şablonlu Bilgilendirme İlet
+                  Öğretmen veya Yönetime Bilgilendirme İlet
                 </h3>
               </div>
               <button
@@ -2586,7 +2961,7 @@ export default function ParentPortalView({
                   type="submit"
                   className="flex-1 py-2.5 rounded-xl bg-primary-container text-white font-extrabold cursor-pointer"
                 >
-                  🔔 Sesli Bildirimle Gönder
+                  Bildirim Gönder
                 </button>
               </div>
             </form>
